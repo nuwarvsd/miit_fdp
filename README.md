@@ -194,9 +194,30 @@ show multiple_modules
 Here there are no instances of U1 and U2 and hierarchy is not present.
 
 Asynchoronous and Synchronous resets
+Asynchronous set: this set signal does not wait for a clock. The moment asynchronous reset is signal received output queue becomes 1 irrespective of the clock.
 
-![diff](https://user-images.githubusercontent.com/123365818/214514554-1d0a9b5b-9c68-44bb-b384-8dbf7afeb29f.PNG)
+Asynchronous reset: this reset signal does not wait for a clock .The moment asynchronous reset signal is received output queue becomes 0 irrespective of the clock.
 
 GTKWAVE RTL Simulation and Observations :
+![diff](https://user-images.githubusercontent.com/123365818/214514554-1d0a9b5b-9c68-44bb-b384-8dbf7afeb29f.PNG)
+
+Synchronous Set:
+when async_set=0,Q follows d only at the posedge of the clock.
+![Asyn_set0](https://user-images.githubusercontent.com/123365818/214528718-2fe82d80-0b1d-440d-ac5f-05d7ad450129.PNG)
+
+when async_set=1,Q becomes 1 without waiting for the next edge of the clock.
+![Asyn_set](https://user-images.githubusercontent.com/123365818/214527724-2774e65c-395a-4704-97e7-bc6766f29f69.PNG)
+
+
+Verilog codes of asynchronous set :
+![Asyn_set_vim](https://user-images.githubusercontent.com/123365818/214529620-793670a7-710e-4a43-b7c0-34c4edce67c7.PNG)
+
+Verilog codes of asynchronous reset :
 ![dff](https://user-images.githubusercontent.com/123365818/214512607-34a7ac9e-f970-45ff-ba86-0ef3c62c31cc.PNG)
+
+Synthesis implementation results :
+asynchoronous reset :
+![dffsync](https://user-images.githubusercontent.com/123365818/214518276-a29c10b3-0895-4c64-9c34-3e92591f44a7.PNG)
+asynchronous set:
+![Asyn_set1](https://user-images.githubusercontent.com/123365818/214531275-56f430dd-3171-4d7f-addf-7140aef0f10f.PNG)
 
