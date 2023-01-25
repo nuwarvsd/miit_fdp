@@ -153,6 +153,42 @@ It gives the description of various pin in terms of their capacitance transition
 For better understanding, a small gate (two input AND) is choosen to see it's behaviour view.
 ![Captureand](https://user-images.githubusercontent.com/123365818/214482018-f242f393-d638-464d-99e1-09ed286592ed.PNG)
 Four possible combinations the leakage power and the logic levels of which are specified.
-It can be compared between the and gates.
+It can be compared between the two input and gates (1,2,4).
 
 ![Captureand1](https://user-images.githubusercontent.com/123365818/214483776-d5022338-f901-4165-b817-9d36b83c7b6a.PNG) ![Captureand2](https://user-images.githubusercontent.com/123365818/214483964-622f7224-532a-4e65-976d-063628b7cfb5.PNG)
+![Captureand4](https://user-images.githubusercontent.com/123365818/214484733-59462614-1885-4b62-ba5d-11121ecb8fc5.PNG)
+According to the comparison, the area of the and gate "and2_4" is larger than the area of the and gate "and2_2" which in turn has more area with the and gate "and2_0". because of and2_4 employs wider transistors. These are the different flavours of the same and gate. And and2_4 being the widest also has large leakage power values as well as large area. But it will have small delay values as it is faster.
+
+SKY130RTL D2SK2 - Hierarchical vs Flat Synthesis
+To understand the multiple modules are present while synthesizing, the sysnthesis can be done in two forms
+![hier mult](https://user-images.githubusercontent.com/123365818/214486111-d5280aa5-cb0e-4d30-8fbb-db8ca2f03798.PNG)
+sub_module 1 and sub_module 2 can be seen in above vim window.
+It has two some moduels. The module 1 is an OR gate ,sub module 2 is AND gate. The sub module called multiple modules instantiates sub module 1 as u1 and sub module 2 as u2. It has three inputs a b c and an output y.
+![Capturesubmodule1](https://user-images.githubusercontent.com/123365818/214487248-f6a0ec7b-49db-46e5-9825-4b3d77015606.PNG)
+![Capturemultiplesynth](https://user-images.githubusercontent.com/123365818/214487314-75fe8ac0-f762-4262-ad22-56d88a9a6dd0.PNG)
+It also specifies the type and number of cells in a synthesis of RTL design.
+
+![Capturesynthesis](https://user-images.githubusercontent.com/123365818/214487668-e67df9dc-8ddf-49c2-8da5-e1c1e565207b.PNG)
+The report has inferred submodule1 having one AND gate ,submodule2 to having one OR gate and multiple module having two cells . 
+Now this design is linked to the library using abc command. 
+To display the graphical version ,
+
+show multiple_modules
+On execution of show command,a synthesized implementation of multiple_modules design is visible.
+
+![Captureshow](https://user-images.githubusercontent.com/123365818/214488480-a3e3e6f2-18d4-4f1a-aa5b-f27f81e918c3.PNG)
+Instead of or and and gates it shows the instances u1 and u2 while preserving the hierarchy. This is called the hierarchical design.
+![yosyswritenetlist](https://user-images.githubusercontent.com/123365818/214488903-fc185813-6999-419a-9630-bb1e8b93ed51.PNG)
+![Yousys](https://user-images.githubusercontent.com/123365818/214490023-67436daf-6bc2-4ede-93a9-6062f6358735.PNG)
+![yosysnetlistgenerate](https://user-images.githubusercontent.com/123365818/214489769-4f6a896e-0490-4db4-9063-59654ed8b72d.PNG)
+Instead of or, and the circuit is implemented using nand and inverter gates. 
+it is always prefered stacked NMOS's(nand gates)to stacked the PMOS's(nor cascaded with inverter for or). Because pmos has a very poor mobility and therefore they have to be made quite wide to obtain a good logical effort .
+It can be used flatten to generate a flat netlist. 
+flatten
+ write_verilog -noattr multiple_modules_flatten_netlist.v
+![flatten](https://user-images.githubusercontent.com/123365818/214491064-8620c421-e6cf-4a94-bf50-89b2cf7c32cc.PNG)
+![flatten1](https://user-images.githubusercontent.com/123365818/214491394-f59ff1fb-4cb1-4397-ac6c-7334563918b6.PNG)
+Even in the design view using show command, it can be seen that it simply displays the structure completely without any hierarchy.
+show multiple_modules
+![flatten3](https://user-images.githubusercontent.com/123365818/214492017-97018b7a-f94c-4eaa-98c7-9064daa276db.PNG)
+Here there are no instances of U1 and U2 and hierarchy is not present.
