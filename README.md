@@ -1,7 +1,7 @@
-# miit_fdp
-Day 1 - Introduction to Verilog RTL design and Synthesis
+#miit_fdp
+ #Day 1 - Introduction to Verilog RTL design and Synthesis
 
-Introduction to iverilog design test bench
+  #Introduction to iverilog design test bench
 
 Simulator: tool used for simulating the design.
 RTL Design is checked for adherence to the spec by simulating the design.
@@ -11,7 +11,7 @@ Design : the actual verilog code or set of verilog codes which has the intended 
 Test_bench: the setput to apply the stimulus (test vector) to the design to check its functionality
 ![image](https://user-images.githubusercontent.com/123365818/214258781-80db0540-cd8c-499a-b1b2-016e08af44da.png)
 
-Labs using iverilog and gtkwave
+   #Labs using iverilog and gtkwave
 1. Installation the opensource software Virtual box for ruuning the Linux Ubuntu without actually installing it.
  mkdir vsd  
  cd vsd  
@@ -46,7 +46,7 @@ vim tb_good_mux.v -o good_mux.v
 
 ![Capturevim1](https://user-images.githubusercontent.com/123365818/214261023-1eaa6f6d-e572-4fa6-8e19-29f078106265.PNG)
 
-Introduction to Yosys and Logic synthesis
+  #Introduction to Yosys and Logic synthesis
 Synthesizer :It is a tool used for the conversion of an RTL to a netlist.
 Netlist : It is a representation of the input design to yosys in terms of standard cells present in the library. Yosys is the Synthesizer tool that we will be using. Diiferent levels of abstraction and synthesis
 ![image](https://user-images.githubusercontent.com/123365818/214261468-9e7ad23e-3e6d-4e9a-9f81-c5c4c9fdc200.png)
@@ -57,7 +57,7 @@ A synthesizer performs gate level translation.
 Design is converted into gates and connections are made between the gates.
 The file what we write out finally is a gate-level netlist.
 .lib is the collection of logic modules which includes basic logic gates such as AND, OR, NOT, etc. It also contains different flavours of the same gate.
-Setup time Analysis
+   #Setup time Analysis
 It should take 1 CLK cycle for the signal to propagate from the Launch DFF-A to the Capture DFF-B through the combimational circuit.
 While this propagation all delays : Propagation delay of DFF A (Tcq-a)+ Propagation delay of combinational circuit(Tcomb)+Setup time of DFF-B(Tsetup_b). Thus ,the constraint becomes:
 
@@ -66,17 +66,18 @@ Setup time is the time for which data should arrive before the launch clock edge
 For high performance we need high speed gates.So, The frequency of a gates should be high or the Tclk should be less . So all the above mentioned delay should be less. 
 
  ![image](https://user-images.githubusercontent.com/123365818/214262680-103e1268-c5e2-4fce-8b6a-8188aacfc182.png)
- Hold up time Analysis
+    #Hold up time Analysis
 After the after the edge of the clock I don't want data to change . So, the fastest change that can happen at the input of we would be after the hold time window so that I can reliably capture the previous clock edge of launch flop DFF-A to ensure there are no hold issues at DFF-B . 
  Thold_b<Tcq-a+Tcomb
  ![image](https://user-images.githubusercontent.com/123365818/214262923-574ba77b-3371-4f87-be73-2138b30196c2.png)
 
-Comparison of Faster Cells and Slower Cells
+   #Comparison of Faster Cells and Slower Cells
 The load for a cell in a digital logic circuit usually is taken as a capacitor.
 Propagation delay is the time required for the input to be reflected in the output of the cell it depends on the gate driving capacity which is dependent on the capacitance. Faster the charging and discharging of a capacitance, lesser will be the cell delay. In order to charge/discharge the capacitance fast, we need transistors which are capable of sourcing more current which means it is a wide transistor as the current carrying capacity of a transistor is the function of its width. Wider the transistors, lower will be the delay but more is the area and power. Narrow Transistors will have more delay but less area and less power.
 
 So fastercells don't come free. They come at the tradeoffs of area and power.
-Labs using Yosys and Sky130 PDKs
+ 
+  #Labs using Yosys and Sky130 PDKs
 Commands to obtain a synthesized implementation of good_mux design
 1.To read verilog files, .lib files and writing out the netlist after invoking yosys. 
 yosys
@@ -104,16 +105,16 @@ show
 
 ![yosysshow](https://user-images.githubusercontent.com/123365818/214264660-61cf37a0-0c17-4002-ba44-9aefdd196ffb.PNG)
 
-Commands to write a netlist
+   #Commands to write a netlist
 
 write_verilog -noattr good_mux_netlist.v
 !vim  good_mux_netlist.v
 
 ![yosisnetlist](https://user-images.githubusercontent.com/123365818/214264824-22b5ea78-c964-42f2-b6d9-c08ba47ef3b6.PNG)
 
-Day 2 - Timing libs, hierarchical vs flat synthesis and efficient flop coding styles
+#Day 2 - Timing libs, hierarchical vs flat synthesis and efficient flop coding styles
 
-SKY130RTL D2SK1 - Introduction to timing .libs
+  #SKY130RTL D2SK1 - Introduction to timing .libs
 
 To study the name of the library
 
@@ -159,7 +160,7 @@ It can be compared between the two input and gates (1,2,4).
 ![Captureand4](https://user-images.githubusercontent.com/123365818/214484733-59462614-1885-4b62-ba5d-11121ecb8fc5.PNG)
 According to the comparison, the area of the and gate "and2_4" is larger than the area of the and gate "and2_2" which in turn has more area with the and gate "and2_0". because of and2_4 employs wider transistors. These are the different flavours of the same and gate. And and2_4 being the widest also has large leakage power values as well as large area. But it will have small delay values as it is faster.
 
-SKY130RTL D2SK2 - Hierarchical vs Flat Synthesis
+  #SKY130RTL D2SK2 - Hierarchical vs Flat Synthesis
 To understand the multiple modules are present while synthesizing, the sysnthesis can be done in two forms
 ![hier mult](https://user-images.githubusercontent.com/123365818/214486111-d5280aa5-cb0e-4d30-8fbb-db8ca2f03798.PNG)
 sub_module 1 and sub_module 2 can be seen in above vim window.
@@ -192,6 +193,22 @@ Even in the design view using show command, it can be seen that it simply displa
 show multiple_modules
 ![flatten3](https://user-images.githubusercontent.com/123365818/214492017-97018b7a-f94c-4eaa-98c7-9064daa276db.PNG)
 Here there are no instances of U1 and U2 and hierarchy is not present.
+
+   #Why Flops and Flop coding styles
+
+More the combinational circuits can occur more glitch in the output . 
+That is why an element is needed to store the value of the output and that element is called FLOP(storage element).Flop provides resistance to glitches as they transition only at the clock edges. Even though the input of the flop is glitching ,the output will be stable. This avoids glitch propagation in further combinational circuits. 
+
+![image](https://user-images.githubusercontent.com/123365818/214586866-5b036ac8-707a-40db-9bf1-577cf7a75f4e.png)
+![image](https://user-images.githubusercontent.com/123365818/214587086-0007299d-7b01-4b2b-90e7-697873467af6.png)
+
+
+
+     #what is glitch?
+Glitches are the unwanted or unexpected transactions that occur due to propagation delays in digital circuits. Glitches occur when an input signal changes state ,provided the signal takes two or more paths for circuit and both paths have unequal delays. The higher delay on one of the parts can cause a glitch when the single pass arrive at the output gate.
+
+
+Also,Initialising the flop is required else the combination circuit will evaluate it to a garbage value. To initialise the flop, reset and set pins can be found. These two pins can be either synchronous or asynchronous.
 
  #Asynchoronous and Synchronous resets
 
@@ -237,5 +254,27 @@ show dff_async_set
 ![libmap_set](https://user-images.githubusercontent.com/123365818/214535396-f3a92d0b-e7c7-47d9-9ed2-85da3855ec1a.PNG)
 
 ![Asyn_reset_libmap](https://user-images.githubusercontent.com/123365818/214536557-35f22761-4af5-4bd9-b83e-8a23f9fa86fc.PNG)
+
+  #OPTIMISATIONS
+
+vim mult_*.v -o
+![multby2](https://user-images.githubusercontent.com/123365818/214590091-54c65636-9d00-45c2-908f-d2b3e330f3d1.PNG)
+
+read_liberty -lib ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+read_verilog mult_2.v
+synth -top mul2
+
+![mul2](https://user-images.githubusercontent.com/123365818/214592011-81f2bf79-3a44-430b-9dd1-51fd0af2224c.PNG)
+
+show
+
+On synthesizing the netlist and look at its graphical realisation , the same optimisation is occuring in the netlist.
+![mul2](https://user-images.githubusercontent.com/123365818/214592592-5ac9ec48-9bb3-409e-9c59-b8f6d62b248d.PNG)
+There is no hardware required fot it.
+![image](https://user-images.githubusercontent.com/123365818/214593530-8268d1dc-e0f2-4842-8202-996dc2761d0b.png)
+
+abc -liberty ../lib/sky130_fd_sc_hd_tt_025C_1v80.lib  
+write_verilog -noattr opt_check_netlist.v 
+show
 
 
