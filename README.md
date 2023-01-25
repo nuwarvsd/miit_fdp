@@ -286,7 +286,7 @@ show
 ### SKY130RTL D3SK1 - Introduction to optimizations
 The simulator performs many types of optimisations on the combinational and sequential circuits to make a optimized digital circuit design interms of area and power.
 
-** Combinational optimisation methods: **
+***Combinational optimisation methods: ***
 
 * Squezzing the logic to get the most optimised design
  * Area and Power savings
@@ -295,10 +295,11 @@ The simulator performs many types of optimisations on the combinational and sequ
 * Boolean Logic Optimisation
  * K-map
  * Quine-mckluskey Algorithm
+ 
 ![image](https://user-images.githubusercontent.com/123365818/214612874-37159ee4-acc3-4f19-be61-898eebe0660b.png)
 ![image](https://user-images.githubusercontent.com/123365818/214613107-15ae3dc6-077c-4866-bd34-601fa7ce58f0.png)
 
-** Sequential optimisation methods: **
+***Sequential optimisation methods:***
 
 * Basic
  * Sequential constant Propogation
@@ -306,6 +307,7 @@ The simulator performs many types of optimisations on the combinational and sequ
  * State Optimisation
  * Retiming
  * Sequential Logic Cloning (Floor Plan Aware Synthesis)
+ 
 ![image](https://user-images.githubusercontent.com/123365818/214613867-c166801c-9676-4933-afca-0d2e3a441853.png)
 ![image](https://user-images.githubusercontent.com/123365818/214614411-d96a7b39-e825-4701-8b75-be2a378c235b.png)
 
