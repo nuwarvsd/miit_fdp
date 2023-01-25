@@ -194,6 +194,9 @@ show multiple_modules
 Here there are no instances of U1 and U2 and hierarchy is not present.
 
 Asynchoronous and Synchronous resets
+
+![diff](https://user-images.githubusercontent.com/123365818/214514554-1d0a9b5b-9c68-44bb-b384-8dbf7afeb29f.PNG)
+
 GTKWAVE RTL Simulation and Observations :
 ![dff](https://user-images.githubusercontent.com/123365818/214512607-34a7ac9e-f970-45ff-ba86-0ef3c62c31cc.PNG)
 
