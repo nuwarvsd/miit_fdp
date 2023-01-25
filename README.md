@@ -110,3 +110,49 @@ write_verilog -noattr good_mux_netlist.v
 !vim  good_mux_netlist.v
 
 ![yosisnetlist](https://user-images.githubusercontent.com/123365818/214264824-22b5ea78-c964-42f2-b6d9-c08ba47ef3b6.PNG)
+
+Day 2 - Timing libs, hierarchical vs flat synthesis and efficient flop coding styles
+
+SKY130RTL D2SK1 - Introduction to timing .libs
+
+To study the name of the library
+
+Command: vim ../my_lib/lib/SKY130_fd_sc_hd__tt_025C_1v80.lib
+![Capture1](https://user-images.githubusercontent.com/123365818/214477368-67cff53e-f4f0-47c2-9ce5-efe06a096bf4.PNG)
+
+TT : it stands for typical.
+
+The important three parameters of the library:
+
+P- Process:The variations due to fabrication
+V -Voltage: Variations in voltage also impact the behavior of the circuit
+T- Temperature :Semiconductors are very sensitive to temperature variations too. All this variations determine the performance of a silicon whether it is fast or slow. 
+
+Turning off the red color
+
+ Command : syn off
+ 
+The technology and units of all the parameters can be seen in the lib file.
+![Capture2](https://user-images.githubusercontent.com/123365818/214477750-f94770d6-9cb2-4057-9363-f8f48d4702bc.PNG)
+
+The voltage, process and temperature values are also specified.
+![Capturevpt](https://user-images.githubusercontent.com/123365818/214478521-cd1da395-6699-4247-adea-4b1c2454df23.PNG)
+
+Different flavors of this same as well as different types of cells.
+![Capturedifferent](https://user-images.githubusercontent.com/123365818/214479825-deb7c282-e0d1-491f-b92d-70d548aa745b.PNG)
+The name a21110 signifies that it's And OR gate where in the first two inputs A1 and A2 are And'ed. It's result is OR'ed with the rest of the three inputs B1,C1 and D1. 
+
+The library describes the different features of the cell like its leakage power,the various input's combinations and the operations between them.
+![Capturediff1](https://user-images.githubusercontent.com/123365818/214480038-2dbd1802-cfc1-42d0-a5c4-2d1b734e1027.PNG)
+
+To understand the functionality of the cell, it needed to look into the equivalent verilog model. Each of the input can take a high or a low power level.
+For 5 inputs, there are 32 combinations in total. The behaviour model specifies the delay and power for each of these inputs. 
+Inside the cell block,it can specified different power combinations and their respective leakage power values. It also shows the area. 
+It gives the description of various pin in terms of their capacitance transition , internal power and the delay associated with this pins.
+![CaptureCap](https://user-images.githubusercontent.com/123365818/214480933-f9c62e59-9686-405a-b281-a329347ff7fd.PNG)
+For better understanding, a small gate (two input AND) is choosen to see it's behaviour view.
+![Captureand](https://user-images.githubusercontent.com/123365818/214482018-f242f393-d638-464d-99e1-09ed286592ed.PNG)
+Four possible combinations the leakage power and the logic levels of which are specified.
+It can be compared between the and gates.
+
+![Captureand1](https://user-images.githubusercontent.com/123365818/214483776-d5022338-f901-4165-b817-9d36b83c7b6a.PNG) ![Captureand2](https://user-images.githubusercontent.com/123365818/214483964-622f7224-532a-4e65-976d-063628b7cfb5.PNG)
