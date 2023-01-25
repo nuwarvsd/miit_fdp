@@ -113,9 +113,9 @@ write_verilog -noattr good_mux_netlist.v
 
 ![yosisnetlist](https://user-images.githubusercontent.com/123365818/214264824-22b5ea78-c964-42f2-b6d9-c08ba47ef3b6.PNG)
 
-# Day 2 - Timing libs, hierarchical vs flat synthesis and efficient flop coding styles
+## Day 2 - Timing libs, hierarchical vs flat synthesis and efficient flop coding styles
 
-  ## SKY130RTL D2SK1 - Introduction to timing .libs
+  ### SKY130RTL D2SK1 - Introduction to timing .libs
 
 To study the name of the library
 
@@ -161,7 +161,7 @@ It can be compared between the two input and gates (1,2,4).
 ![Captureand4](https://user-images.githubusercontent.com/123365818/214484733-59462614-1885-4b62-ba5d-11121ecb8fc5.PNG)
 According to the comparison, the area of the and gate "and2_4" is larger than the area of the and gate "and2_2" which in turn has more area with the and gate "and2_0". because of and2_4 employs wider transistors. These are the different flavours of the same and gate. And and2_4 being the widest also has large leakage power values as well as large area. But it will have small delay values as it is faster.
 
-  ## SKY130RTL D2SK2 - Hierarchical vs Flat Synthesis
+  ### SKY130RTL D2SK2 - Hierarchical vs Flat Synthesis
 To understand the multiple modules are present while synthesizing, the sysnthesis can be done in two forms
 ![hier mult](https://user-images.githubusercontent.com/123365818/214486111-d5280aa5-cb0e-4d30-8fbb-db8ca2f03798.PNG)
 sub_module 1 and sub_module 2 can be seen in above vim window.
@@ -194,6 +194,8 @@ Even in the design view using show command, it can be seen that it simply displa
 show multiple_modules
 ![flatten3](https://user-images.githubusercontent.com/123365818/214492017-97018b7a-f94c-4eaa-98c7-9064daa276db.PNG)
 Here there are no instances of U1 and U2 and hierarchy is not present.
+
+### SKY130RTL D2SK3 - Various Flop Coding Styles and optimization
 
    #### Why Flops and Flop coding styles
 
@@ -256,7 +258,7 @@ show dff_async_set
 
 ![Asyn_reset_libmap](https://user-images.githubusercontent.com/123365818/214536557-35f22761-4af5-4bd9-b83e-8a23f9fa86fc.PNG)
 
-  ### OPTIMISATIONS
+  #### OPTIMISATIONS
 
 vim mult_*.v -o
 ![multby2](https://user-images.githubusercontent.com/123365818/214590091-54c65636-9d00-45c2-908f-d2b3e330f3d1.PNG)
@@ -277,5 +279,91 @@ There is no hardware required fot it.
 abc -liberty ../lib/sky130_fd_sc_hd_tt_025C_1v80.lib  
 write_verilog -noattr opt_check_netlist.v 
 show
+![mul8](https://user-images.githubusercontent.com/123365818/214616067-4124dc5d-861c-48a1-9fc8-a4871a1e39d2.PNG)
+
+## Day 3 - Combinational and sequential optmizations
+
+### SKY130RTL D3SK1 - Introduction to optimizations
+The simulator performs many types of optimisations on the combinational and sequential circuits to make a optimized digital circuit design interms of area and power.
+
+** Combinational optimisation methods: **
+
+* Squezzing the logic to get the most optimised design
+ * Area and Power savings
+* Constant propogation
+ * Direct Optimisation
+* Boolean Logic Optimisation
+ * K-map
+ * Quine-mckluskey Algorithm
+![image](https://user-images.githubusercontent.com/123365818/214612874-37159ee4-acc3-4f19-be61-898eebe0660b.png)
+![image](https://user-images.githubusercontent.com/123365818/214613107-15ae3dc6-077c-4866-bd34-601fa7ce58f0.png)
+
+** Sequential optimisation methods: **
+
+* Basic
+ * Sequential constant Propogation
+* Advanced
+ * State Optimisation
+ * Retiming
+ * Sequential Logic Cloning (Floor Plan Aware Synthesis)
+![image](https://user-images.githubusercontent.com/123365818/214613867-c166801c-9676-4933-afca-0d2e3a441853.png)
+![image](https://user-images.githubusercontent.com/123365818/214614411-d96a7b39-e825-4701-8b75-be2a378c235b.png)
+
+### Combinational Logic Optimisations
+All the optimisation examples files are under the verilog_files directory.
+ls *opt*
+vim opt_check*.v -o
+![opt-vim](https://user-images.githubusercontent.com/123365818/214618398-db31c423-2987-4a1e-9934-87b516aef547.PNG)
+ 1. Case 1
+  **assign y=a?b:0;**
+Ideally ,the above ternary operator should give us a mux. 
+![image](https://user-images.githubusercontent.com/123365818/214619776-619d4857-a557-4834-ae99-3f0692be1da9.png)
+
+But the constant 0 propagates further in the logic. Using boolean simplification , it can be obtained as y = ab.
+
+##### Synthesizing this in yosys :
+
+Before realising the netlist, we must issue a command to yosys to perform optimisations. It removes all unused cells and wires to prduce optimised digital circuit.This can be done using the **opt_clean -purge** command as shown below.
+
+![opt_clean](https://user-images.githubusercontent.com/123365818/214621433-65ca2118-0060-4ec5-8df8-d84c30d942df.PNG)
+Observation : After executing **synth -top opt_check**, it can be seen in the report that one AND gate has been inferred.
+Then,
+ abc -liberty ../lib/sky130_fd_sc_hd_tt_025C_1v80.lib  
+ write_verilog -noattr opt_check_netlist.v 
+ show
+On viewing the graphical synthesis realisation , it can be seen the Yosys has synthesized an AND gate as expected.
+![AND](https://user-images.githubusercontent.com/123365818/214623016-bd9f6a8d-bd0a-4682-a130-6d3446ef898e.PNG)
+
+2. Case 2
+ **assign y=a?b:1;**
+Ideally ,the above ternary operator should give us a mux. 
+![image](https://user-images.githubusercontent.com/123365818/214623854-68f964b7-a409-4c5b-82e1-3f52b5ef4adf.png)
+
+But the constant 1 propagates further in the logic. Using boolean simplification , it can be obtained as y = a+b.
+On viewing the graphical synthesis realisation , it can be seen the Yosys has synthesized an OR gate as expected.
+
+![OR](https://user-images.githubusercontent.com/123365818/214625403-f4849e04-8077-4d61-9c7e-6ac5ec994af7.PNG)
+
+**assign y = a?(c?b:0):0;**
+The output to be a 3 input AND gate based on constant propagation and boolean logic optimisation.The output y can be simplified to y = abc.
+
+![image](https://user-images.githubusercontent.com/123365818/214628384-5ab8c05f-33ce-40c5-95fe-f3c97c2741ad.png)
+
+Next we generate the netlist and observe its graphical representation after synthesis
+![ASD3](https://user-images.githubusercontent.com/123365818/214628691-ba214bd4-cc9d-4379-8c15-832943513907.PNG)
+
+**assign y = a?(b?(a & c ):c):(!c);**
+The output to be a 2 input XNOR gate based on constant propagation and boolean logic optimisation.The output y can be simplified to y = a xnor c.
+
+![XNOR](https://user-images.githubusercontent.com/123365818/214630835-0c1f458b-94dd-403a-813f-83d87f29affe.PNG)
+
+In multiple module case,
+![multiplemodule](https://user-images.githubusercontent.com/123365818/214633220-be46fb2f-d129-40f0-af4e-26078cf96496.PNG)
+there are two sub modules in the vim.
+After sysnthesizing,
+![multiple](https://user-images.githubusercontent.com/123365818/214633426-ec744c83-51af-434d-a65c-e79eff1ef86a.PNG)
+
+
+
 
 
