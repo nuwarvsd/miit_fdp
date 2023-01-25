@@ -192,3 +192,8 @@ Even in the design view using show command, it can be seen that it simply displa
 show multiple_modules
 ![flatten3](https://user-images.githubusercontent.com/123365818/214492017-97018b7a-f94c-4eaa-98c7-9064daa276db.PNG)
 Here there are no instances of U1 and U2 and hierarchy is not present.
+
+Asynchoronous and Synchronous resets
+GTKWAVE RTL Simulation and Observations :
+![dff](https://user-images.githubusercontent.com/123365818/214512607-34a7ac9e-f970-45ff-ba86-0ef3c62c31cc.PNG)
+
