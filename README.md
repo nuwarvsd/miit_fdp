@@ -286,7 +286,7 @@ show
 ### SKY130RTL D3SK1 - Introduction to optimizations
 The simulator performs many types of optimisations on the combinational and sequential circuits to make a optimized digital circuit design interms of area and power.
 
-***Combinational optimisation methods: ***
+***Combinational optimisation methods:***
 
 * Squezzing the logic to get the most optimised design
  * Area and Power savings
