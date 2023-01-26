@@ -319,6 +319,7 @@ vim opt_check*.v -o
  1. Case 1
   **assign y=a?b:0;**
 Ideally ,the above ternary operator should give us a mux. 
+
 ![image](https://user-images.githubusercontent.com/123365818/214619776-619d4857-a557-4834-ae99-3f0692be1da9.png)
 
 But the constant 0 propagates further in the logic. Using boolean simplification , it can be obtained as y = ab.
@@ -330,9 +331,9 @@ Before realising the netlist, we must issue a command to yosys to perform optimi
 ![opt_clean](https://user-images.githubusercontent.com/123365818/214621433-65ca2118-0060-4ec5-8df8-d84c30d942df.PNG)
 Observation : After executing **synth -top opt_check**, it can be seen in the report that one AND gate has been inferred.
 Then,
- abc -liberty ../lib/sky130_fd_sc_hd_tt_025C_1v80.lib  
- write_verilog -noattr opt_check_netlist.v 
- show
+ * abc -liberty ../lib/sky130_fd_sc_hd_tt_025C_1v80.lib  
+ * write_verilog -noattr opt_check_netlist.v 
+ * show
 On viewing the graphical synthesis realisation , it can be seen the Yosys has synthesized an AND gate as expected.
 ![AND](https://user-images.githubusercontent.com/123365818/214623016-bd9f6a8d-bd0a-4682-a130-6d3446ef898e.PNG)
 
@@ -360,15 +361,22 @@ The output to be a 2 input XNOR gate based on constant propagation and boolean l
 ![XNOR](https://user-images.githubusercontent.com/123365818/214630835-0c1f458b-94dd-403a-813f-83d87f29affe.PNG)
 
 In multiple module case,
+
 module sub_module1(input a , input b , output y);
+
 	assign y = a & b;
+
 endmodule
 
+
 module sub_module2(input a , input b , output y);
+	
 	assign y = a^b;
+
 endmodule
 
 module multiple_module_opt(input a , input b , input c , input d , output y);
+
 wire n1, n2, n3;
 
 
@@ -409,4 +417,89 @@ endmodule
 
 ![multiple2synth](https://user-images.githubusercontent.com/123365818/214658656-83b73bd1-df26-4fdb-b1eb-201a31427abc.PNG)
 
+### Sequential Logic Optimisations
+To understand each of the sequential optimisations through different RTL code examples, the synthesis implementation is checked through yosys to understand how the optimisations take place.
+All the optimisation examples are in files dff_const2.v,dff_const3.v,dffconst4.v and dff_const5.v which are under the verilog_files directory.
 
+![dffvim](https://user-images.githubusercontent.com/123365818/214756357-4f3f6a2e-db28-4106-8e80-fc5f5cfc6b4a.PNG)
+Above the figure,
+Case 1: dff_const1.v
+
+module dff_const1(input clk, input reset, output reg q);
+
+always @(posedge clk, posedge reset)
+
+begin
+
+	if(reset)
+	
+		q <= 1'b0;
+		
+	else
+	
+		q <= 1'b1;
+		
+end
+
+endmodule
+Here, it appears that the output Q should be equal to an inverted reset or Q=!reset. 
+However, as the reset is synchronous,even if the flop has D pinned to logic 1,when reset becomes 0, Q does not immediately goto 1. It waits untill the positive edge of the next clock cycle.
+This is observed by simulating the design in verilog, and viewing the VCD with GTKWave as follows
+
+![const1](https://user-images.githubusercontent.com/123365818/214756440-416cf7bc-52b3-422e-8b8e-b3949861b7b9.PNG)
+
+In the gtk waveform above , when reset becomes 0, Q becomes 1 at the next clock edge. Since Q can be either 1 or 0, a sequential constant cannot be received, and no optimisations should be possible here. 
+To verify it using Yosys synthesis and optimisation.
+It is needed to use in synthesising process
+
+ dfflibmap -liberty ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+
+dfflibmap is a switch that tells the synthesizer about the library to pick sequential circuits( mainly Dff's and latches) from.
+
+Andthen generate the netlist
+
+abc -liberty ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib 
+write_verilog -noattr dff_const1_netlist.v 
+show
+
+![constsys](https://user-images.githubusercontent.com/123365818/214758740-3fa0d88e-3b99-4a36-a8ee-c70cd27f31a2.PNG)
+According to above figure, no optimisation is performed in th yosys implementation during synthesis.
+
+Case 2 : dff_const2.v
+
+module dff_const2(input clk, input reset, output reg q);
+always @(posedge clk, posedge reset)
+begin
+	if(reset)
+		q <= 1'b1;
+	else
+		q <= 1'b1;
+end
+endmodule
+Here, Regardless of the inputs, the output q always remains constant at 1 .
+This is observed by simulating the design in verilog, and viewing the VCD with GTKWave as follows
+
+![Const2](https://user-images.githubusercontent.com/123365818/214756975-8d2cfc8e-50d2-4a7b-9df6-b582c1bba5be.PNG)
+
+Since the output is always constant ie Q=1, it can easily be optimised during synthesis.
+
+![const2sys](https://user-images.githubusercontent.com/123365818/214758880-80c8edc2-0b1b-4d09-951a-ae3b25379cc9.PNG)
+Case 3
+The RTL code is 
+![vimconst3](https://user-images.githubusercontent.com/123365818/214761994-8154a459-a658-459a-9ff7-d79a3165d234.PNG)
+The GTK wave
+
+Synthesis with yosys
+![Const3sys](https://user-images.githubusercontent.com/123365818/214762224-5234514a-75a7-4d62-9a58-dd5060a52cc1.PNG)
+
+Both the D flip-flops are present in the synthesized netlist.
+Case 4
+The RTL code is 
+
+![Const4vim](https://user-images.githubusercontent.com/123365818/214762075-e342d4e8-3d03-4b28-b19c-d8aeea227c34.PNG)
+
+Independent of the input and reset, Q1 is always going to be constant i.e. Q1=1 . As q can only be 1 or q1 depending on the reset input , but q1 = 1 .Thus q is also constant at the value 1. it can be confirmed this with the simulated waveforms as shown below.
+
+![Const4](https://user-images.githubusercontent.com/123365818/214761417-0533db74-51af-4066-95fa-fac5e25a350b.PNG)
+It can easily be optimised using Yosys as shown in the graphical representation because of constant output.
+![Const4sys](https://user-images.githubusercontent.com/123365818/214761792-2ba64ba3-a77b-4f61-b8a1-b4deecf98b4c.PNG)
