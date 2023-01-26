@@ -572,18 +572,33 @@ It can easily be optimised using Yosys as shown in the graphical representation 
 ## Day 4 - GLS, blocking vs non-blocking and Synthesis-Simulation mismatch
 
 ### Gate Level Simulations
+**What is GLS?**
+
+Running the test bench with Netlist as Design Under Test.
+Netlist is logically same as RTL code. 
+* Same test bench will align with the design.
+
+**Why GLS?**
+* Verify the logical correctness of the design after synthesis
+* Ensuring the timing of the design is met
+	* For the GLS need to be run with delay annotation
 
 Validate the RTL design by providing stimulus to the testbench 
 Check whether it meets the specifications earlier we were running the test bench with the RTL code as the design under test
-But now under Gate Level Simulation ,the netlist is applied to the testbench as desh under test. What We did at the behavioral level in the RTL code got transformed to the net list in terms of the standard cells present in the library. So,net list is logically same as the RTL code. They both have the same inputs and outputs so the netlist should seamlessly fit in the place of the RTL code. We put the netlist in place of the RTL file and run the simulation with the test bench.
-When we do simulation in with the help of RTL code there is no concept of timing analysis such as the hold and setup time which are critical for a circuit. For meeting this setup and hold time criteria there are different flavours of cell in the library.
+But now under Gate Level Simulation,the netlist is applied to the testbench as desh under test. What it is done at the behavioral level in the RTL code got transformed to the net list in terms of the standard cells present in the library. So, net list is logically same as the RTL code. They both have the same inputs and outputs so the netlist should seamlessly fit in the place of the RTL code. The netlist is putting in place of the RTL file and run the simulation with the test bench.
+When simulation is done with the help of RTL code there is no concept of timing analysis such as the hold and setup time which are critical for a circuit. For meeting this setup and hold time criteria there are different flavours of cell in the library.
+
+**GLS Using iverilog**
 
 ![image](https://user-images.githubusercontent.com/123365818/214803242-3c140fff-4639-44a6-8981-fa7fcca541a4.png)
 
-In GLS using iverilog flow, the design is a netlist which is given to Iverilog simulator in terms of standard cells present in the library. The library has different flavours of the same type of cell available.To make the simulator understand the specification of the different annotations of the cell the GATE level verilog models is also given as an input. If the GATE level models are timing aware (delay annotated ),then we can use the GLS for timing validation as well.
+In GLS using iverilog flow, the design is a netlist which is given to Iverilog simulator in terms of standard cells present in the library. In the library, there are different flavours of the same type of cell available. To make the simulator understand the specification of the different annotations of the cell, the GATE level verilog models is also given as an input. If the GATE level models are timing aware (delay annotated),then the GLS can be used for timing validation as well.
 
-Question : If netlist is the true representation of my RTL code then what is the need of functional validation of my net list?
+Question : If netlist is the true representation of the RTL code then what is the need of functional validation of the net list?
 Answer: Because they can be simulation and synthesis mismatches.
+
+![image](https://user-images.githubusercontent.com/123365818/214917046-0a0c4899-2335-4935-9a97-9cd284b56d23.png)
+
 
 ### GLS, Synthesis Simulation Mismatches
 
@@ -591,7 +606,10 @@ Answer: Because they can be simulation and synthesis mismatches.
 
 * Blocking and non blocking statements
 
+* Non Standard Verilog Coding
+
 **Missing sensitivity list**
+![image](https://user-images.githubusercontent.com/123365818/214919029-af61cf3f-4307-459a-a9f9-789742ee80c3.png)
 
 Simulator functions on the basis of activity that is it looks for if either of the inputs change. If there is no change in the inputs the simulator won't evaluate the output at all.
 
@@ -623,12 +641,20 @@ end
 
 endmodule
 
-The problem in this mux code is that simulation happens only when the select is high so if select is slow and there are changes in i zero aur i1 they get completely missed. So for the simulator this marks is as good as a latch a double h block but the synthesizer does not look at the sensitivity list rather on functionality creates a mux. Simulation: latch Synthesis:mux Hence,Mismatch.
+The problem in this two input multiplexer code is that simulation happens only when the select is high so if select is slow and there are changes in i0 and i1 they get completely missed. So for the simulator this marks is as good as a latch a double edge flop but the synthesizer does not look at the sensitivity list rather on functionality creates a mux. Simulation: latch Synthesis:mux That is why mismatch is happen.
 
-Blocking and non blocking statements Inside always block
+**Blocking and non blocking statements Inside always block**
+Inside always blocks
+* = -> Blocking
+	* Executes the statements in the order it is written 
+	* So the first statement is evaluated before the second statement
+	
+* <= ->Non Blocking 
+	* Executes all the RHS when always block is entered and assigns to LHS. 
+	* Parallel evaluation
 
-Blocking Executes the statements in the order it is written So the first statement is evaluated before the second statement
-Non Blocking Executes all the RHS when always block is entered and assigns to LHS. Parallel evaluation
+![image](https://user-images.githubusercontent.com/123365818/214921718-4c1486a6-cdd1-48d2-abc7-3747fafc6f0f.png)
+
 Example of Blocking assignments:
 
 module shift_register(input clk, input reset, input d, output reg q1);
@@ -658,11 +684,14 @@ In the above RTL code if
 		q0 <= d;
 		q1 <= q0;
       end
-In the non blocking assignments all the RHS are evaluated and parallel assigned to lhs irrespective of the order in which they appear. So we will always get a two flop shift register.
+In the non blocking assignments all the RHS are evaluated and parallel assigned to lhs irrespective of the order in which they appear. So it will always be goot a two flop shift register.
+![image](https://user-images.githubusercontent.com/123365818/214923197-acacf65f-9322-4069-81b7-57fbbd42534c.png)
 
-Therefore we always use non blocking statements for writing sequential circuits.
+Therefore, non blocking statements should be used for writing sequential circuits.
 
 Other example:
+
+![image](https://user-images.githubusercontent.com/123365818/214924063-02579655-cbae-4708-b39c-2341470e31ec.png)
 
 module comblogic(input a, input b, input c, output reg y);
 reg q0;
@@ -673,24 +702,57 @@ begin
 	q0 = a|b;
 end
 endmodule
-We enter into the loop whenever any of the inputs a b or C changes but Y is assigned with old Qo value since it is using the value of the previous Tclk ,the simulator mimics a delay or a flop. Where as, during synthesis we see the the OR and AND gates as expected.
+Look into the always loop whenever any of the inputs a and b or C changes but Y is assigned with old Qo value since it is using the value of the previous Tclk ,the simulator mimics a delay or a flop. Where as, during synthesis, it can be seen the the OR and AND gates as expected.
+Therefore, while using blocking statements in this case,we should evaluate Q0 first and then Y so that Y takes on the updated values of Qo. Although both the circuits on synthesis give the same digital circuit comprising of AND, OR gates. But on simulation we get different behaviours.
 
-Therefore ,while using blocking statements in this case,we should evaluate Q0 first and then Y so that Y takes on the updated values of Qo. Although both the circuits on synthesis give the same digital circuit comprising of AND, OR gates. But on simulation we get different behaviours.
+### SKY130RTL D4SK2 L1 Lab GLS Synth Sim Mismatch
 
-Labs on GLS and Synthesis-Simulation Mismatch
+**Ternary operator**
+![image](https://user-images.githubusercontent.com/123365818/214925636-7120a11d-c0b6-4055-abad-1abe31907d17.png)
+<cond> ? <True>:<False>
 
-Example 1: A mux designed with the help of ternary operator
+**Case 1: A mux designed with the help of ternary operator**
 
 module ternary_operator_mux (input i0 , input i1 , input sel , output y);
 	assign y = sel?i1:i0;
 endmodule
+To write the RTL code
+* vim ternary_operator_mux.v
+
+![RTL code](https://user-images.githubusercontent.com/123365818/214931040-295750ec-6ded-4c4b-bea1-bdbe6695ae73.PNG)
+
+* iverilog ternary_operator_mux.v -o tb_ternary_operator_mux.v
+* ./a.out
+To see the waveform of RTL simulation, execute the following command further
+* gtkwave tb_ternary_operator_mux.vcd
+
+![Ternary_wave](https://user-images.githubusercontent.com/123365818/214930518-afe10754-e72e-4875-92a0-6bc2f0cdfa6d.PNG)
+
 The synthesized netlist for the above,using yosys
+![ternary_mux](https://user-images.githubusercontent.com/123365818/214932308-94f2e634-4ac0-48e3-8d3d-1fde905f7450.PNG)
 
 To invoke GLS,
 
-We need to read our netlist file and the test bench file assosciated with it.
-We need to read 2 extra files that contain the description of verilog models in the netlist.
+Need to read the netlist file and the test bench file assosciated with it.
+Need to read 2 extra files that contain the description of verilog models in the netlist.
 iverilog ../my_lib/verilog_model/primitives.v ../my_lib/verilog_model/sky130_fd_sc_hd.v ternary_operator_mux_net.v tb_ternary_operator_mux.v
+To see the waveform of RTL simulation,
+./a.out
+gtkwave tb_ternary_operator_mux.vcd
+![GLS_ternary_wave](https://user-images.githubusercontent.com/123365818/214934539-87823eb4-2992-428c-8f82-c9016d186bfc.PNG)
+The generated netlist does behave like a 2X1 multiplexer.
 
+**Case 2: Missing sensitivity list**
+
+module bad_mux (input i0 , input i1 , input sel , output reg y);
+always @(sel)
+begin
+	if(sel)
+		y <= i1;
+	else
+		y <= i0;
+end 
+endmodule
+In this example,javascriptalways is evaluated only if javascriptselect is high.It is insensitive to javascriptio or i1 because javascriptselect is low.
 
 
