@@ -758,7 +758,9 @@ endmodule
 Look into the always loop whenever any of the inputs a and b or C changes but Y is assigned with old Qo value since it is using the value of the previous Tclk ,the simulator mimics a delay or a flop. Where as, during synthesis, it can be seen the the OR and AND gates as expected.
 Therefore, while using blocking statements in this case,we should evaluate Q0 first and then Y so that Y takes on the updated values of Qo. Although both the circuits on synthesis give the same digital circuit comprising of AND, OR gates. But on simulation we get different behaviours.
 
-### SKY130RTL D4SK2 L1 Lab GLS Synth Sim Mismatch
+### SKY130RTL D4SK2 - Labs on GLS and Synthesis-Simulation Mismatch
+
+#### SKY130RTL D4SK2 L1 Lab GLS Synth Sim Mismatch
 
 **Ternary operator**
 ![image](https://user-images.githubusercontent.com/123365818/214925636-7120a11d-c0b6-4055-abad-1abe31907d17.png)
@@ -845,8 +847,10 @@ Implementing it's GATE level netlist through GLS and observing the waveform,
 ![bad_gls_wave](https://user-images.githubusercontent.com/123365818/214941821-a39b9bd4-fe7c-4c0b-9070-94ce4ca73f7c.PNG)
 It shows the behaviour of a 2X1 mux.
 According to the above two waveforms,the waveforms of stimulated RTL Code : Is of a LATCH the waveforms of gate level netlist thruogh GLS after synthesis: Is of 2X1 MUX. It can be seen a Synthesis-Simulation Mismatch.
-	
-**Case 3: Wrong order of assignment in blocking assignments**
+
+#### SKY130RTL D4SK3 - Labs on synth-sim mismatch for blocking statement	
+
+	**Case 3: Wrong order of assignment in blocking assignments**
 ![image](https://user-images.githubusercontent.com/123365818/214943739-6f648327-7fa4-4269-acef-09e7719fd609.png)
 	
 module blocking_caveat (input a , input b , input c , output reg d);
