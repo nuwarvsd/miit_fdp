@@ -888,3 +888,800 @@ Analyzing the design with gate level simulations on this netlist in verilog, the
 ![Blocking_GLS_wave](https://user-images.githubusercontent.com/123365818/214948000-1139397c-0e2c-4e23-af83-111c0aaa1497.PNG
 
 The circuit behaves as intended combinational ckt. Output d results from the present value of inputs, and not the previous clock values like in the simulation results. Since the waveforms of the stimulated RTL verilog code do not match with the gate level simulation of generated netlist,a Synthesis-Simulation Mismatch is occured.
+
+## Day 5 - If, case, for loop and for generate
+
+### SKY130RTL D5SK1 - If, Case constructs
+
+**If constructs**
+
+If condition is used to to write priority logic. The condition one has a priority or if has more priority than the consecutive else statements . Only when condition 1 is not met condition 2 is evaluated and so on and y is assigned accordingly depending on the matching conditions.
+
+if (cond_1)
+
+begin 
+
+	y = statement_1;
+	
+end
+
+else if (cond_2)
+
+begin
+
+	y = statement_2;
+	
+end
+
+else if (cond_3)
+
+begin
+
+	y = statement_3;
+	
+end
+
+else
+
+begin
+
+	y = statement_4;
+	
+end
+![image](https://user-images.githubusercontent.com/123365818/215223187-a744a8fa-d566-4538-9922-b903fe3a6a00.png)
+
+If-else block implements a Priority logic that is if cond_1 is satisfied, next if statements are not executed. Thus above If-Else code translates to a ladder like multiplexer structure in the final design instead of a single multiplexer.
+
+Dangers of using Incomplete If statements Inferred Logic which occurs due to bad coding styles that is incomplete if statements.
+
+if (condt1) 
+
+    y-a;
+    
+else if (condt2)
+
+    y=b;
+    
+In the above code if condition 1 is matched y is equal to a else if condition 2 is matched y is equal to b but there is no specification for the case when condition2 is not matched, as a result of which the simulator tries to latch this case to the output y. It wants to retain the value of y.
+![image](https://user-images.githubusercontent.com/123365818/215223520-26540684-65e5-4a40-84c5-81808e0f7e75.png)
+
+This is a combinational loop to avoid that the simulator infers a latch. Enable of this latch is OR of the condition 1 and condition 2. If neither condition 1 or condition 2 is met the OR gate output disables the latch. The latch retains the value of y and stores it.
+This is called the inferred latch due to incomplete if statements which is very dangerous for RTL designing. It should be avoided except for some special cases like the counter.
+
+reg[2:0]
+
+always @(posedge clk,posedge reset)
+
+Begin
+
+If (reset)
+
+	Count<= 3'b000;
+
+else if(enable)
+
+	Count<= count+1;
+
+end
+
+This is also a case of incomplete if statements. Here ,if there is no enable the counter should latch onto the previous value.For example if the counter has counted up till 4 and there is no enable then it should retain the value 4 rather than going to 0 again.
+So here the incomplete if statements result in latching And retaining the previous value which is our desired behavior in a counter. The earlier mux example was a combinational circuit and therefore we cannot have inferred latches.
+![image](https://user-images.githubusercontent.com/123365818/215223727-5d33ad25-e799-49a4-b664-dddc90304731.png)
+
+Note:
+* If, case statements are used inside always block.
+* In verilog whatever variable we use to assign in if or case statements must be a register variable.
+
+**CASE Constructs**
+
+Let's look at the following verilog code block. Here, the inferred hardware should be a 4:1 multiplexer. The CASE statements do not have priority logic like IF statements.
+
+always @(*)
+
+begin
+
+     case(sel)
+     
+		2'b00: begin
+		
+			y = statement_1;
+			
+			end
+			
+		2'b01: begin
+		
+			y = statement_2;
+			
+			end
+			
+		2'b10: begin
+		
+			y = statement_3;
+			
+			end
+			
+		2'b11: begin
+		
+			y = statement_4;
+						
+			end
+			
+	endcase
+	
+end
+
+Depending on the cases matching the select y is assigned accordingly.
+
+![image](https://user-images.githubusercontent.com/123365818/215224082-eabacfee-cc6f-4fa0-adc6-277d4585e493.png)
+
+Some caveats with using CASE statements:
+
+**Incomplete CASE**
+Let's say we have a two bit variable select.
+
+reg [1:0] sel
+
+always @(*)
+
+begin
+
+     case(sel)
+     
+     2'b00: begin
+     
+                   . condition 1
+		   
+                   end
+		   
+     2'b01: begin
+     
+                   . condition 2
+		   
+                   end
+				
+    end case
+    
+    end
+    
+Then select is C1 or C3 the conditions are not specified. It causes an incomplete case which results in inferred latches for these two cases that latch on to output y.This occurs when some cases are not specified inside the CASE block.
+For example, if the 2'b10 and 2'b11 cases were not mentioned , the tool would synthesize inferred latches at the 3rd and 4th inputs of the multiplexer.
+![image](https://user-images.githubusercontent.com/123365818/215224423-90b84bfa-e2c5-4273-bb34-5e602534b458.png)
+
+Solution is code case with default inside the CASE block so that the tool knows what to do when a case that is not specified occurs.
+
+**Correct code :**
+
+reg [1:0] sel
+
+always @(*)
+
+begin
+
+     case(sel)
+     
+     2'b00: begin
+     
+                   . condition 1
+		   
+                   end
+		   
+     2'b01: begin
+     
+                   . condition 2
+		   
+                   end
+		   
+    **default :**begin
+    
+                   . condition 3
+		   
+                   end   
+		   
+    end case
+    
+    end
+    
+**Partial assignments**
+
+always @(*)
+
+begin
+
+	case(sel)
+	
+		2'boo: begin
+		
+			x = a;
+			
+			y = b;
+			
+		2'b01: begin
+		
+			x = c;
+			
+		default: begin
+		
+			x = d;
+			
+			y = d;
+			
+			end
+			
+	endcase
+	
+end
+
+In the above example, we have 2 outputs x and y. This will create two 4X1 multiplexers with the respective outputs. 
+If we look at case 2'b01, we have specified the value of x for this case ,but not the value of y. It appears that it is okay to do so, as a default case is specified for both the outputs, and if we don't directly specify the value of y for any case, the simulator will implement the default case. 
+This, however , is incorrect. 
+In partial assignments such as this, the simulator will infer a latch at the 2nd input for multiplexer y as no value is specified for a particular case.
+![image](https://user-images.githubusercontent.com/123365818/215224793-c7e155a5-e280-4545-b677-016224a288f1.png)
+Note: assign all the outputs in all the segment of CASE
+
+**Overlapping cases**
+
+always @(*)
+
+begin
+
+	case(sel)
+	
+		2'b00: begin
+		
+			y = a;
+			
+		2'b01: begin
+		
+			y = b;
+			
+			end
+			
+		2'b10: begin
+		
+			y = c;
+			
+		2'b1?: begin
+		
+			y = d;
+			
+			end
+			
+	endcase
+	
+end
+
+In the above code block ,2'b1? specifies that the corresponding bit can be either be 0 or 1. This means when the sel input is holding a value 3 i.e 2'b11, cases 3 and 4 both hold true. What is synthesized depends on the mercy of the simulator. It can lead to **Synthesis-Simulation mismatches**.
+If we used an IF condition here, due to **priority logic**, condition 4 would be ignored when condition 3 is met. 
+However,in the CASE statement , even if the upper case is matched,--all the cases are checked--.So,if there is overlapping in cases,it poses a problem as the cases are not mutually exclusive. And we would get an unpredictable output.
+
+![image](https://user-images.githubusercontent.com/123365818/215225110-8d4a5844-ce9f-4297-8e4b-8c0f56e1d86d.png)
+
+### SKY130RTL D5SK2 - Labs on "Incomplete If Case"
+**Case 1: Incomplete If statements**
+
+Below is the file titled incomp_if.v, and can be found in the directory verilog_files.
+
+module incomp_if(input i0 , input i1 , input i2 , output reg y);
+
+always @(*)
+
+begin
+
+	if(i0)
+	
+		y <= i1;
+		
+end
+
+endmodule
+
+![incomple_if_RTL](https://user-images.githubusercontent.com/123365818/215185966-2b9196a5-2674-4623-8424-4c901d193386.PNG)
+
+The code contains an incomplete IF statement as no else condition corresponding to it is mentioned . 
+
+![image](https://user-images.githubusercontent.com/123365818/215185863-2fd5a671-e264-4b82-b395-62dfe2666e2c.png)
+
+On simulating this design , following gtkwave is obtained
+![if_gtkwave](https://user-images.githubusercontent.com/123365818/215186188-bc561372-508a-43e1-ae33-54511df3d267.PNG)
+From the above waveform, it can be observed no change in y when i0=0.
+![ifwave](https://user-images.githubusercontent.com/123365818/215186158-09296e0f-9acc-45cc-b379-b2ff8429cdc7.PNG)
+ It's equal to previous value when io=0. 
+ This shows latching Action, which is verified by looking at the synthesis implementation using Ysosys.
+ ![if_incom_syn](https://user-images.githubusercontent.com/123365818/215186321-1639a99d-6b62-478b-a4e6-35c6591dd2bd.PNG)
+It can be seen a D latch is created in the synthesized netlist.
+
+**Case 2:**
+
+Below is a similar example of incomp_if2.v
+
+module incomp_if2(input i0 , input i1 , input i2 , input i3,  output reg y);
+always @(*)
+begin
+	if(i0)
+		y <= i1;
+	else if (i2)
+		y <= i3;
+
+end
+endmodule
+The above code contains an incomplete IF statement as well. We can also see its test bench by using vim 
+![if2_rtl](https://user-images.githubusercontent.com/123365818/215189066-92f5c53d-af9c-4f2f-875a-b0cbd9bf3ded.PNG)
+
+Here, there are 2 inputs i1 and i3, as well as 2 conditional inputs i0 and i2. 
+As we do not specify the case when both i0 and i2 go low, which results in an issue in the synthesis.
+![image](https://user-images.githubusercontent.com/123365818/215189525-09be8908-d0d9-417f-81e7-036382b3702d.png)
+![image](https://user-images.githubusercontent.com/123365818/215192625-e18879b5-b718-4f68-8cf4-e9d7aa80ea08.png)
+
+The gtkwaveform of the simulated design is below
+
+![if2wave](https://user-images.githubusercontent.com/123365818/215189297-c7152986-3aee-4a05-8eaa-49ebb12060de.PNG)
+Analyzing the waveform, 
+When io is high,output follows i1. When io is low,it looks for i2. 
+If i2 is high,it follows i3. 
+But if i2 is low(and io is already low),y attains a constant value=previous output.
+This can also be verified by checking the graphical realisation of the yosys synthesis below.
+![if2syn](https://user-images.githubusercontent.com/123365818/215190210-75e9751d-4d14-4f6e-9530-658b7d524c7a.PNG)
+Yosys synthesizes a multiplexer as well as a latch with some combinational logic at its enable pin.
+
+### SKY130RTL D5SK3 - Labs on "Incomplete overlapping Case"
+In this lab, we will study four cases.
+
+![Case](https://user-images.githubusercontent.com/123365818/215191420-ab2836c9-8cd2-413d-ace4-91589e3382ce.PNG)
+
+**Case 1: Incomplete Case**
+
+A design with Incomplete Case's specification in a mux
+
+module incomp_case (input i0 , input i1 , input i2 , input [1:0] sel , output reg y);
+
+always @ (*)
+
+begin
+
+	case(sel)
+	
+		2'b00: y = i0;
+		
+		2'b01: y = i1;
+		
+	endcase
+	
+end
+
+endmodule
+By using vim command,
+![incomcasrtl](https://user-images.githubusercontent.com/123365818/215192804-8805000e-d64f-4a14-aa55-3836c3aa7e7a.PNG)
+
+The truth table for the above 2X1 mux looks like:
+
+sel[1]	sel[0]	y
+0	0	io
+0	1	i1
+1	0	latch
+1	1	latch
+Whenever se[1]=1 ,latching action takes place. 
+![image](https://user-images.githubusercontent.com/123365818/215193211-1ad6cd2a-c6ae-4371-90a4-b80819211c2d.png)
+The GTKWave, 
+![incomcasewave](https://user-images.githubusercontent.com/123365818/215194213-20493df7-4376-4ea8-a6cc-5c4d4a38340c.PNG)
+
+When sel is 10 and 11, there is inferring latch.
+
+The yosys synthesis implementation is given below.
+
+![incomcasesyn](https://user-images.githubusercontent.com/123365818/215194911-5f7722a0-2f88-4f2b-9fd3-e9b583ce138a.PNG)
+!(sel[1]) is going to D latch enable. 2.The inputs io,sel[0], !(sel[1]) go to the upper mixing logic that is implemented on D pin of the latch.
+
+**Case 2: Complete Case**
+
+Complete Mux along with all the cases specified.
+
+module comp_case (input i0 , input i1 , input i2 , input [1:0] sel , output reg y);
+
+always @ (*)
+
+begin
+
+	cae(sel)
+	
+		2'b00: y = i0;
+		
+		2'b01: y = i1;
+		
+		default:y = i2;
+		
+	endcase
+	
+end
+
+endmodule
+The RTL code by using vim
+![complecasertl](https://user-images.githubusercontent.com/123365818/215195429-9ce8f3b1-9820-4557-8d13-654256d38101.PNG)
+
+Output follows i2 at default case,if i1 and io go low. 
+![image](https://user-images.githubusercontent.com/123365818/215195312-744fd609-5e91-452f-ac44-b5923f3d11d1.png)
+
+Hence a 4X1 mux is synthesized without any latch that can be verified below.
+![compcasesyn](https://user-images.githubusercontent.com/123365818/215196675-38262c2c-f6af-496e-be09-9685a1ec4f0d.PNG)
+
+**Case 3: Partial Assignments**
+
+module partial_case_assign (input i0 , input i1 , input i2 , input [1:0] sel , output reg y , output reg x);
+
+always @ (*)
+
+begin
+
+	cae(sel)
+	
+		2'b00: begin
+		
+			y = i0;
+			
+			x = i2;
+			
+			end
+			
+		2'b01: y = i1;
+		
+		default: begin 
+		
+			x = i1;
+			
+			y = i2;
+			
+			end
+			
+	endcase
+	
+end
+
+endmodule
+
+Aim: The 2X1 mux with output y is inferred without any latch. To find out the latching condition of the second mux we take the help of the following truth table:
+
+sel[1]	sel[0]	x
+
+0	0	i2
+
+0	1	latch
+
+1	0	i1
+
+1	1	i1
+
+Condition for enabling:
+
+              en=sel[1]+!(sel[0]) 
+	      
+
+![image](https://user-images.githubusercontent.com/123365818/215197604-7115e463-3780-4872-968b-b211abf615df.png)
+Using Redundancy Theorem
+
+Yosys implementation of the above design after synthesis,
+![partialcasesyn](https://user-images.githubusercontent.com/123365818/215199242-058c8b9d-7f7f-4b59-aa66-abfbf9805650.PNG)
+
+As expected, only one D latch is inferred for X. No latch is inferred for y.
+
+**Case 4: Overlapping Bad cases**
+
+Design of 4X1 mux having overlapping cases
+
+module bad_case (input i0 , input i1 , input i2 , input [1:0] sel , output reg y);
+
+always @ (*)
+
+begin
+
+	cae(sel)
+	
+		2'b00: y = i0;
+		
+		2'b01: y = i1;
+		
+		2'b10: y = i2;
+		
+		2'b1?: y = i3;
+		
+		
+	endcase
+	
+end
+
+endmodule
+By using vim command,
+
+![bad cas-rtl](https://user-images.githubusercontent.com/123365818/215200480-c15d0bf1-bdf0-435c-ad9d-5b7643cbb06c.PNG)
+
+
+In gtkwaveform of RTL simulation:
+![badcasewave](https://user-images.githubusercontent.com/123365818/215202515-bdfaaeab-9504-4665-9371-73a036523b6c.PNG)
+
+Yosys implementation of the above design after synthesis,
+![bad case syn](https://user-images.githubusercontent.com/123365818/215201644-838b9ea4-5b2e-4682-b6d2-4466b6635c92.PNG)
+Analyze the waveform: 
+When sel[1:0]=11, the output neither follows i2 nor i3. 
+It simply latches to 1.
+
+Running GLS on the netlist,the waveform of the synthesized netlist behaves as 4X1 mux as shown below
+
+![GLSwithbadcase](https://user-images.githubusercontent.com/123365818/215203465-2781cc2d-1d59-44b9-abba-db2f8887d8d4.PNG)
+
+Overlapping cases confuse the simulator and leads to Synthesis-Simulation Mismatches.
+
+### SKY130RTL D5SK4 - for loop and for generate
+There are two types of FOR loops in verilog.
+
+1.FOR loop 
+
+	1.Used within the always block
+	
+	2.Used to evaluate expressions
+
+2. Generate FOR loop 
+
+	1.Only used outside the always block
+	
+	2.Used for instantiating hardware
+![image](https://user-images.githubusercontent.com/123365818/215204285-67587082-dbb1-4550-ac9d-d65879cce834.png)
+
+Necessity of FOR loops
+
+**For loops** are extremely useful when we want to write a code design that involves multiple assignments or evaluations within the always block. 
+For example,
+If we want to write the code for 4:1 multiplexer, we can easily do so using a either four if blocks or using a case block with 4 cases,as seen in the previous if-else blocks.But this approach is not suitable for complicated design with numerous inputs/outputs say 256X1 mux.
+![image](https://user-images.githubusercontent.com/123365818/215205019-9402cd88-6198-455f-adcb-b8fd5cb1751f.png)
+in code point of view
+![image](https://user-images.githubusercontent.com/123365818/215205285-96d0ba1c-d114-4202-b17a-8ff1261b7b4d.png)
+
+If we wanted to design a 256X1 multiplexer, we will have to write 256 lines of condition statements using select and corresponding assignments. 
+But in for loop,be it 4X1 or 256X1 we would always be writing 4 lines of code only. Although we need to provide 256 inputs using an internal bus.
+
+
+integer k;
+
+always @(*)
+
+begin
+
+	for (k = 0, k < 256, k= i  +1)
+	
+	begin
+	
+		if (k== sel)
+		
+			y = in[i];
+			
+		end
+		
+	end
+	
+end
+
+This code can be infinitely scaled up by just replacing the condition i < 256 with the desired specification for the target multiplexer.
+
+Similarly, it can be made High input demultiplexers as well.
+
+integer k
+
+always @(*)
+
+begin
+
+	int_bus[15:0] = 16b'0;
+	
+	for (k= 0; k< 16; k= k+ 1) 
+	
+	begin
+	
+		if (k == sel)
+		
+			int_bus[k] = inp[k];
+			
+		end
+		
+	end
+	
+end
+
+Here , A 16:1 demultiplexer is made by using for loops within the always block. 
+The int_bus[15:0] specifies the internal bus which takes on the input of the demux. 
+It is necessary to assign all outputs to low for a new value of sel else latches will be inferred resulting in the incorrect implementation of our logic.
+![image](https://user-images.githubusercontent.com/123365818/215206097-8dec2b83-be2e-4c8d-82fe-02c04017bb7c.png)
+Note: **for** is inside the **always**.
+![image](https://user-images.githubusercontent.com/123365818/215206572-ae60e3cf-55c3-45a7-a716-53f9b6303854.png)
+Note: Replacte the Hardware, **for** is outside the **always** .
+For example, 
+In Ripple Carry Adder, we need to replicate the full adder.
+![image](https://user-images.githubusercontent.com/123365818/215208756-7748f598-68ff-44b5-a499-27fb9251790f.png)
+To summrize,
+![image](https://user-images.githubusercontent.com/123365818/215208940-b72f9e31-3b4a-4b89-be20-dcbb06c5e3db.png)
+
+### SKY130RTL D5SK - Labs on "for loop" and "for generate"
+
+Below are few of the examples of FOR construct .
+
+**Case 1:FOR construct**
+
+file mux_generate.v that generates a 4X1 mux using For loop.
+
+module mux_generate (input  i0, input i1 , input i2 , input i3 , input [1:0] sel , output reg y);
+
+wire [3:0] i_int;
+
+assign i_int = {i3,i2,i1,i0};
+
+integer k;
+
+always @(*)
+
+begin
+
+	for(k = 0; k < 4; k=k+1)begin
+	
+		if(k == sel)
+		
+			y = i_int[k];
+			
+	end
+	
+end
+
+endmodule
+
+The 4 inputs get assigned to a the internal 4 bit bus named i_int.
+![muxgeneratertl](https://user-images.githubusercontent.com/123365818/215210708-179ca342-cd58-4992-84d9-2596acb103bb.PNG)
+![image](https://user-images.githubusercontent.com/123365818/215211114-c80808dc-424e-4bbf-9abc-ff78dbb3977d.png)
+
+
+The gtkwave obtained after the simulation
+![muxgenerwave](https://user-images.githubusercontent.com/123365818/215212674-bbe56678-42dd-4f86-a0e3-7d758bb0e4b4.PNG)
+
+Yosys implementation of the above design after synthesis
+![muxgeneratesyn](https://user-images.githubusercontent.com/123365818/215219740-0e0ed9bf-6502-4839-be94-5982b4c0a98c.PNG)
+
+While running GLS on the netlist,the waveform of the synthesized netlist is the same with the RTL simulation
+![mux_gene_gls](https://user-images.githubusercontent.com/123365818/215221538-f9922523-4d36-42da-ada1-7f99a542567e.PNG)
+ 
+
+**Case 2: Blocking** 
+
+Similar to case 1, file demux_generate.v that generates a 4X1 demux using For loop.
+
+module demux_generate (output o0 , output 02 , output o3 ,  output o4 , output o5 , output o6 , output o7 , input [2:0] sel , input i);
+
+reg [7:0]y_int;
+
+assign {o7,o6,o5,o4,o3,o2,o1,o0} = y_int;
+
+integer k;
+
+
+always @(*)
+
+begin
+
+	y_int = 8'bo;
+	
+	for( k = 0; k < 8; k++) begin
+	
+
+		if(k == sel)
+		
+			y_int[k] = i;
+			
+	end
+	
+end 
+
+endmodule
+
+![demux_rtl](https://user-images.githubusercontent.com/123365818/215215171-39d04429-949d-4cf5-ace5-4df909cca450.PNG)
+
+The above code has good readabilty,scalability and easy to write as well. Let's verify if it functions as a 8X1 demux as expected by viewing its gtkwave simulated waveform.
+![demux_wave](https://user-images.githubusercontent.com/123365818/215214750-ed96ab3c-e44a-41b3-994a-82a3b7bdfb58.PNG)
+
+Yosys implementation of the above design after synthesis
+
+![demux-syn](https://user-images.githubusercontent.com/123365818/215220248-250f3f9b-c41e-4950-b928-8cf395e5f75e.PNG)
+
+While running GLS on the netlist,the waveform of the synthesized netlist is the same with the RTL simulation
+![demu-gls](https://user-images.githubusercontent.com/123365818/215222196-65b41b72-bee7-47b3-b52a-eb6a3b391230.PNG)
+
+
+**Case 3: 8 bit Ripple Carry Adder with replicating**
+RCA
+![image](https://user-images.githubusercontent.com/123365818/215216601-7f0730da-34a5-4d9a-93a0-6342829e8e92.png)
+One way
+![image](https://user-images.githubusercontent.com/123365818/215216995-080384dd-c5fc-4c92-8bc1-d81951535eee.png)
+Another way
+![image](https://user-images.githubusercontent.com/123365818/215217319-9b053165-6433-4c1b-b793-ab43300c3742.png)
+
+FOR Generate and its Uses
+**FOR Generate** is used when we need to create multiple instances of the same hardware. We must use the For generate outside the always block.
+We take example of a 8 bit Ripple Carry Adder to understand the ease of instantiations provided by the For generate statement.
+A Ripple Carry Adder consists of Full Adders tied in series where the carry out of the previous full adder is fed as the carry in bit of the next full adder in the chain. 
+Hence, we can make use of generate for to instantiate every full adder in the design , as they are all represent the same hardware.
+
+For this example , we use the file rcs.v which holds the code for the ripple carry adder. It also needs to be included in our simulation.
+
+module rca (input [7:0] num1 , input  [7:0] num2 , output [8:0] sum);
+
+wire [7:0] int_sum;
+
+wire [7:0] int_co;
+
+
+genvar i;
+
+generate
+
+	for (i = 1; i < 8; i=i+1) 
+	begin
+	
+		fa u_fa_1 (.a(num1[i]),.b(num2[i],.c(int_co[i-1],.co(int_co[i]),.sum(int_sum[i]));
+		
+	end
+	
+
+endgenerate
+
+fa u_fa_0 (.a(num1[0]),.b(num2[0]),.c(1'b0),.co(int_co[0]),.sum(int_sum[0]));
+
+
+assign sum[7:0] = int_sum;
+
+assign sum[8] = int_co[7];
+
+endmodule
+
+Here, fa references another verilog design file containing the definition of for the full adder submodules .This is shown below, from the fa.v file
+
+module fa(input a, input b , input c,  output co, output sum);
+
+	assign  {co,sum} = a +b + c;
+	
+endmodule
+
+In the RCA verilog code, we instantiate fa in a loop using generate for outside the always block.
+
+Rules for addition :
+
+N + N bit number --> Sum will be N + 1 bits N +M bit number --> Sum will be max(N,M) +1 bits
+
+Now, let us simulate this design in verilog and view its waveform with GKTWave.
+As the rca design referances the file fa.v , we must specify it in our commands as follows
+
+**iverilog fa.v rca.v tb_rca.v**
+
+./a.out
+
+gtkwave tb_rca.v
+
+The resulting gtkwaveform is shown below that shows an adder being simulated:
+
+![rcawave](https://user-images.githubusercontent.com/123365818/215218603-c1455913-70a5-472a-9eec-22f85bb4fa58.PNG)
+
+Yosys implementation of the above design after synthesis
+
+![rcasyn](https://user-images.githubusercontent.com/123365818/215220734-963d766e-9d02-422c-89fb-234cb434a219.PNG)
+
+While running GLS on the netlist,the waveform of the synthesized netlist is the same with the RTL simulation
+
+![rcagls](https://user-images.githubusercontent.com/123365818/215222667-d40d2bb3-6e6d-4681-a13e-807dc6b792a7.PNG)
+
+**Takeaways from this workshop:**
+
+* Learning how to write the verilog codes using for, for generate,if-else, case ,blocking/non blocking assignments so that our intended functionality is met.
+
+* Learning to genertaed the gtk waveform ans see the simulated wave results. We learnt to read timing diagrams as well
+
+* Learning to synthesize the rtl verilog design using yosys and understand how the synthesizer implements the logic considering area and delay optimisations
+
+* Learning to verify the simulation -synthesis results by feeding netlist+testbench+Gate verilog models to the iverilog,during GLS(gate level synthesis simulation)
+
+* Learning good coding practices and ways to write optimised verilog codes
+
+**Acknowledgment:**
+
+1.Kunal Ghosh - Co-founder(Vsd corp. pvt.ltd.)
+2.Shon Taware
