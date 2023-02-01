@@ -1838,7 +1838,14 @@ Time waveform
 	
 Schematic is also not correct
 	![image](https://user-images.githubusercontent.com/123365818/215945042-04089e49-2a2c-4129-926d-f0c75280d343.png)
+	
+	![image](https://user-images.githubusercontent.com/123365818/215946850-460391bc-ce09-4963-924a-6e6b47552aac.png)
+	
+	![image](https://user-images.githubusercontent.com/123365818/215946931-c5db926d-6cfe-4bfd-b0c1-5c3ed4d20ff3.png)
 
+	![image](https://user-images.githubusercontent.com/123365818/215947044-392c7b50-a8b1-4ab5-8ed9-a20c640021be.png)
+	
+	
 6. Generate Bit Stream
 	![image](https://user-images.githubusercontent.com/123365818/215945305-bfedff9b-82d8-41a4-a88d-47ae0bc2e8ba.png)
 Open hardware manager
@@ -1850,6 +1857,270 @@ Open implemented Design
 	![image](https://user-images.githubusercontent.com/123365818/215945980-db625141-2bc1-46b9-be1c-6d1d4e525e85.png)
 	
 7. Run Implemetation
+
+	![image](https://user-images.githubusercontent.com/123365818/215947241-6c1620de-dab0-4579-a116-6f3d1b342ab6.png)
+
+Appear warning message
+	![image](https://user-images.githubusercontent.com/123365818/215947473-5799441f-2198-430f-a06a-b86dcc948442.png)
+	
+![image](https://user-images.githubusercontent.com/123365818/215947531-2ee5c370-efe6-471e-8c20-0dddf340f01c.png)
+	
+![image](https://user-images.githubusercontent.com/123365818/215947603-b792a5ed-c99c-4b97-95e2-fb5b305a909d.png)
+	
+	Error is occured
+	![image](https://user-images.githubusercontent.com/123365818/215948042-fbdf4bd7-e965-4e07-9d09-da6d6fb8e89f.png)
+![image](https://user-images.githubusercontent.com/123365818/215948111-6027d66a-2325-48cd-b228-71cce13bcc2c.png)
+
+## Day 7
+### SKY130_D1_SK1 - How to talk to computers
+
+FPGA Board in Embedded System, etc.
+Example Board is 
+![image](https://user-images.githubusercontent.com/123365818/215948656-82e2d02f-4aba-406b-a0eb-ddb0d8809bc6.png)
+	
+VCC, GND , SDRAM . etc. are inside the chip on the board
+	
+	![image](https://user-images.githubusercontent.com/123365818/215948851-ba3d7131-0abd-407b-b9da-33a3215ea900.png)
+**Basic Terms:**
+	**Packages **
+	Pin location
+	![image](https://user-images.githubusercontent.com/123365818/215949144-5a38b2bd-da86-46d7-b84b-3f853a223aa8.png)
+
+	Chip in the center of package
+   **Wire bonding**
+	![image](https://user-images.githubusercontent.com/123365818/215949321-d154e9a1-777e-4d07-b4ab-7e55a2c25dc9.png)
+
+	Look Inside the chip , pads, die and core can be found
+	
+**Pads:** signal can go inside the chip and outside of the chip through the pads
+	
+**Core:** digital logics are placed in the area
+	
+**Die:** manufacturing on the silicon wafer 
+	![image](https://user-images.githubusercontent.com/123365818/215949668-8fac0de7-12b8-475e-a70e-1e422be89d75.png)
+	
+	ADC, DAC, SRAM,PLL are called as Foundry IP’s.
+	
+Digital Block such as SPI and SOC are called as **Macro** (pure digial logic)
+	
+	![image](https://user-images.githubusercontent.com/123365818/215949823-29c07595-007c-42dc-a7c1-a601807b9b28.png)
+	
+**Foundry IP**: all Intellectual Property, whether Background IP or Foreground IP, regardless of when or for what purpose it is developed, pertaining to genetic components, pathways, and strains; and methods and tools for design, genetic engineering, testing and/or small-scale fermentation of microbial strains. Notwithstanding the foregoing, this category shall exclude Ginkgo Background IP, Collaboration Strain and Process IP, and Foreground Application IP.
+
+### SKY_L2 - Introduction to RISC-V
+
+	Talk to computer
+
+	ISA (instruction set architecture)
+	
+	![image](https://user-images.githubusercontent.com/123365818/215950361-185a069d-950b-4874-aec6-5da7c2dcad54.png)
+
+	C program to assembly language program (hex format or binary format) map  particular layout.
+
+	Implementation in RTL 
+	
+	![image](https://user-images.githubusercontent.com/123365818/215950696-dc6762a2-9fdd-4d39-b1ab-a052fc4cd9d6.png)
+
+### SKY_L3 - From Software Applications to Hardware
+
+	Application software to Hardware by using ISA
+
+	![image](https://user-images.githubusercontent.com/123365818/215951076-eccf91cf-8180-49e8-bb44-4a0598340eda.png)
+
+	Application Software to System Software to Hardware
+	Major components of system software : OS, Compiler, Assembler
+	OS: Handle IO operations
+	    Allocate memory
+            Low level system functions
+	
+	![image](https://user-images.githubusercontent.com/123365818/215951335-c3f0bf51-6179-4837-82c5-3001d2c509a9.png)
+	
+![image](https://user-images.githubusercontent.com/123365818/215951393-748d0a2f-877e-4aed-b101-be493de83d06.png)
+	
+#### SoC Design using Openlane
+	
+	![image](https://user-images.githubusercontent.com/123365818/215955732-7c2649e9-3005-44ae-ad5a-114ed08c0b29.png)
+
+1. RTL Designs
+	
+	Librecores.org
+	
+	Opencores.org
+	
+	Github.com
+	
+2. EDA Tools
+	
+	Qflow
+	
+	OpenROAD
+	
+	OpenLANE
+3. PDK
+	
+See Pure Play Fabs and Fabless design companies
+	![image](https://user-images.githubusercontent.com/123365818/215955099-250dd64f-c082-4e92-9053-f1b107559892.png)
+
+	
+PDK = the interface between the FAB and the designers
+	
+PDK=Process Design Kit
+	
+	Collection of files used to model a fabrication process for the EDA tools used to design an IC
+	
+	Process Design Rules: DRC, LVS, PEX
+	
+	Device Models
+	
+	Digital standard Cell Libraries
+	
+	I/O Libraries
+	
+#### SKY_L2 - Simplified RTL2GDS flow
+
+**Simplified RTL to GDSII Flow**
+	
+	
+	Synthesis 
+	
+	Floor/Power Planning
+	
+	Placement
+	
+	Clock Tree Sysnthesis
+	
+	Routing 
+	
+	Sign Off
+	
+	![image](https://user-images.githubusercontent.com/123365818/215955821-fa250fa4-17c9-4e18-ad46-a05a76027c6f.png)
+	
+**Synthesis**
+	
+Converts RTL to a circuit out of components from the standard cell library (SCL)
+	
+	![image](https://user-images.githubusercontent.com/123365818/215956556-26e16513-ffed-4932-9634-1df362fa3af4.png)
+
+Standard Cell have regular layout
+
+	Each has different views/models
+
+	Electrical,HDL,SPICE
+
+	Layout(Abstract and Detailed)
+	
+	![image](https://user-images.githubusercontent.com/123365818/215956668-36826493-8eed-4dda-97c7-aeca3fc45fc1.png)
+	
+**Floor and Power Planning**
+
+	Chip Floor Planning: Partition the chip die between different system building blocks and place the I/O Pads
+	
+	![image](https://user-images.githubusercontent.com/123365818/215957005-9d814e3c-3911-4e8a-b2d5-31cbcabee6a6.png)
+	
+	Macro floor Panning: Dimensions, pin locations, row definition
+	![image](https://user-images.githubusercontent.com/123365818/215957152-91fbbdc8-b710-4b17-9e6e-f3f4583734b6.png)
+  
+	Power Planning
+	![image](https://user-images.githubusercontent.com/123365818/215957377-3b962e4a-052c-4170-ae43-7fae90e60719.png)
+	
+	Placement: Place the cells on the floorplan rows, aligned with the sites
+	
+	![image](https://user-images.githubusercontent.com/123365818/215957542-2131deca-7ae1-4647-a43b-dfa04478e423.png)
+	
+	Usually done in two steps: Global and Detailed
+	
+	![image](https://user-images.githubusercontent.com/123365818/215958746-8db624eb-4887-4c06-8b96-4b8557548038.png)
+
+**Clock tree Synthesis**
+
+Create a clock distribution network
+
+	To deliver the clock to all sequential elements (e.g., FF)
+
+	With minimum skew (zero is hard to achieve)
+
+	And in a good shape
+
+	Usually a Tree (H,X,..)
+	
+	![image](https://user-images.githubusercontent.com/123365818/215958873-0ddec3a8-f6aa-45dd-b579-31ca65289f72.png)
+	
+**Routing : ** Implement the interconnect using the available metal layers.
+	
+	![image](https://user-images.githubusercontent.com/123365818/215958966-0d1ca977-c966-428b-bce3-c097cdf2871a.png)
+
+	Metal tracks from a routing grid
+
+	Routing grid is huge
+
+	Divide and Conquer
+
+		Global Routing: Generates routing guides
+
+		Detailed Routing: Uses the routing guides to implement the actual wiring
+**Sign Off**
+
+	* Physical Verifications
+
+		* Design Rules Checking (DRC)
+
+		* Layout vs. Schematic (LVS)
+
+	* Timing Verification
+
+		* Static Timing Analysis (STA)
+### SKY_L3 - Introduction to OpenLANE and Strive chipsets
+
+**Problem**
+
+	The Problem is tougher when using Open Source EDA
+
+	* Tools Qualification?
+
+	* Tools Calibration?
+
+	* Missing Tools?
+
+**OpenLANE**
+Started as an Open-Source Flow for a True Open Source Tape-out Experiment
+	
+StriVe is a family of open everything SoCs 
+	
+	Open PDK, Open EDA, Open RTL
+	
+![image](https://user-images.githubusercontent.com/123365818/215960300-7c212c71-8332-41b0-ab3c-82ecd7c58db8.png)
+	
+	![image](https://user-images.githubusercontent.com/123365818/215960416-08c4ee0b-5e27-4f6a-9826-8554a6ed6612.png)
+   
+
+
+
+
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 	
 
