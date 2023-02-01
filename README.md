@@ -2091,6 +2091,176 @@ StriVe is a family of open everything SoCs
 ![image](https://user-images.githubusercontent.com/123365818/215960300-7c212c71-8332-41b0-ab3c-82ecd7c58db8.png)
 	
 	![image](https://user-images.githubusercontent.com/123365818/215960416-08c4ee0b-5e27-4f6a-9826-8554a6ed6612.png)
+	
+**Main Goal:**
+
+	Produce a clean GDSII with no human intervention (no-human-in-the-loop)
+
+	Clean means:
+
+	* No LVD Violation
+
+	* No DRC Violations
+
+	* Timing Violations
+	
+	Tuned for SkyWater 130nm Open PDK
+
+	Containerized
+
+	* Functionl out of the box
+
+	* Instructions to build and run natively will follow
+###  Introduction to OpenLANE detailed ASIC design flow
+	
+	![image](https://user-images.githubusercontent.com/123365818/215968726-eaef76b5-3e29-48bd-aed6-10ae710c8103.png)
+
+### SKY130_D1_SK3 - Get familiar to open-source EDA tools
+
+#### SKY_L1 - OpenLANE Directory structure in detail
+cd Desktop
+	cd work/tools
+	ls -ltr
+	
+	![image](https://user-images.githubusercontent.com/123365818/215980541-ea1f89e3-6221-4eea-8268-40d2a553fd80.png)
+
+	cd openlane_working dir
+	
+	cd pdks
+	
+	ls -ltr
+	
+	![image](https://user-images.githubusercontent.com/123365818/215980582-68a8c5ce-706d-49ca-876c-4b22506b4e12.png)
+	
+	cd sky130A
+	
+	ls -ltr
+	
+	![image](https://user-images.githubusercontent.com/123365818/215981089-2748cca8-587e-42b2-b757-dc38c41a6cd3.png)
+	
+	libs.ref ---specific to technology
+	
+	![image](https://user-images.githubusercontent.com/123365818/215981550-62b3f4e7-30ea-4ba5-9160-57b581a0bf09.png)
+
+	
+	libs.tech --specific to tool
+	
+	![image](https://user-images.githubusercontent.com/123365818/215981821-4e0b9509-4176-4e33-8162-c6b79688a140.png)
+	
+	cd sky130_fd_sc_hd
+	ls -ltr
+	
+	![image](https://user-images.githubusercontent.com/123365818/215982319-ac1fd81f-f3a6-49a7-846f-27137e891b80.png)
+	
+	cd lib
+	
+	ls -ltr
+	![image](https://user-images.githubusercontent.com/123365818/215982743-2b7a50e3-9ea2-4790-8855-04ed412672e8.png)
+	
+	cd ..
+	cd lef
+	ls -ltr
+	
+	![image](https://user-images.githubusercontent.com/123365818/215983086-ffa8e288-6eee-4750-9fc0-a1b771b9bae5.png)
+	tlef is technology lef
+	
+	cd ..
+	cd ..
+	cd ..
+	cd  openlane
+	
+	![image](https://user-images.githubusercontent.com/123365818/215983750-7e7f54b9-8a8e-4df8-99b9-16e23a1b0291.png)
+	
+#### SKY_L2 - Design Preparation Step
+	
+go to bash shell
+
+	docker
+	
+	![image](https://user-images.githubusercontent.com/123365818/215984216-cde75248-5d1a-4759-a179-e5b8db9a5307.png)
+	
+	ls -ltr
+	
+	![image](https://user-images.githubusercontent.com/123365818/215984582-80da5808-1a5f-479d-9ed8-8fa38ff19f44.png)
+	
+	./flow.tcl -interactive
+	
+	![image](https://user-images.githubusercontent.com/123365818/215985044-1da04e4a-5648-45a4-80b1-90e91c9ed66e.png)
+changing promt to percentage symbol %
+	
+Required to input the package
+	**package require openlane 0.9**
+	
+	![image](https://user-images.githubusercontent.com/123365818/215985890-b8198df9-15b2-4805-b095-ed48b914c143.png)
+Look into the design flolder
+	![image](https://user-images.githubusercontent.com/123365818/215986426-3662ae6d-bc47-49c9-a6ac-e9e10558cfdc.png)
+	cd picorva32a
+	ls -ltr
+	![image](https://user-images.githubusercontent.com/123365818/215986711-71426a30-2217-43e2-b9e0-bd0cc5079f5e.png)
+	src file : source file
+	tcl file
+	config.tcl
+	
+	
+looking into configuration file
+	less config.tcl
+	![image](https://user-images.githubusercontent.com/123365818/215987238-86dd541c-8fc1-4abe-997b-255bbc1732b0.png)
+	20 ns clock period, etc are in the config file 
+
+	And then go to bash shell
+	
+	prep -design picorv32a
+mergelef.py: Merging LEFs
+	![image](https://user-images.githubusercontent.com/123365818/215988574-f4d3c42e-4694-40a5-935f-674b74763c56.png)
+	
+#### SKY_L3 - Review files after design prep and run synthesis
+	
+	cd runs
+	
+	ls -ltr
+	
+	![image](https://user-images.githubusercontent.com/123365818/215989065-d72c517c-d9a0-4bd5-995a-72c44f4955e9.png)
+	
+	cd 01.02_08.19 ( today)
+	ls -ltr
+	![image](https://user-images.githubusercontent.com/123365818/215989310-fbc9ff9a-0b61-4c3f-a7bf-dba3796d83ce.png)
+	
+	cd tmp
+	
+	ls -ltr
+	
+	![image](https://user-images.githubusercontent.com/123365818/215989833-26d87d1a-a54e-422a-be2d-f38d69920777.png)
+	
+	less merged.ref
+	
+	![image](https://user-images.githubusercontent.com/123365818/215990017-c15e3022-ae2c-4aa0-b08d-ec4b542f04e8.png)
+	
+	cd results
+	ls -ltr
+	![image](https://user-images.githubusercontent.com/123365818/215990668-2b7bbf25-5b98-4acc-9503-7bf0ce64958a.png)
+
+
+
+	
+
+
+
+	
+
+
+
+
+
+
+
+
+
+	
+
+	
+
+	
+
    
 
 
