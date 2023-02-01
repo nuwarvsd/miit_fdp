@@ -2237,7 +2237,23 @@ mergelef.py: Merging LEFs
 	
 	cd results
 	ls -ltr
+	
+	![image](https://user-images.githubusercontent.com/123365818/215992243-11c80cc4-782f-48a8-b6d7-61e3df11411e.png)
+	
+	cd reports
+	ls -ltr
+
 	![image](https://user-images.githubusercontent.com/123365818/215990668-2b7bbf25-5b98-4acc-9503-7bf0ce64958a.png)
+	
+	less config.tcl
+	
+	![image](https://user-images.githubusercontent.com/123365818/215997708-dbabaea5-6eaf-4127-8e69-3a591e34634e.png)
+	pdk information
+	
+	
+
+	
+	
 
 
 
