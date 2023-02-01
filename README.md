@@ -1824,8 +1824,35 @@ Time waveform
 
 	There are no user specified timing constraints.
 5. Add Constraints
+	![image](https://user-images.githubusercontent.com/123365818/215944184-a48cf0af-dbef-4e90-a6fb-093ddb97a7ca.png)
+
 	
-In Constraint wizard,
+ Constraint wizard,
+	![image](https://user-images.githubusercontent.com/123365818/215944335-055bacc3-c946-476c-89eb-d928104a7167.png)
+	
+	![image](https://user-images.githubusercontent.com/123365818/215944511-30372fa8-16e6-4de1-baef-cc117509c957.png)
+
+	There is no clk information to select.
+ Edit Timing Constraints, create clock with 10 ns.
+	![image](https://user-images.githubusercontent.com/123365818/215944835-cebf1e67-0232-4f3b-9ee8-ea2ec22ba925.png)
+	
+Schematic is also not correct
+	![image](https://user-images.githubusercontent.com/123365818/215945042-04089e49-2a2c-4129-926d-f0c75280d343.png)
+
+6. Generate Bit Stream
+	![image](https://user-images.githubusercontent.com/123365818/215945305-bfedff9b-82d8-41a4-a88d-47ae0bc2e8ba.png)
+Open hardware manager
+	![image](https://user-images.githubusercontent.com/123365818/215945487-1469692c-c8e4-41e3-8afc-794f8dffbc38.png)
+
+	Open target, connect auto
+![image](https://user-images.githubusercontent.com/123365818/215945764-1680b3a7-4d6e-47f5-9ecd-196c0f54fa3a.png)
+Open implemented Design
+	![image](https://user-images.githubusercontent.com/123365818/215945980-db625141-2bc1-46b9-be1c-6d1d4e525e85.png)
+	
+7. Run Implemetation
+
+	
+
 
 
 
