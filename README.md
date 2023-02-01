@@ -1776,8 +1776,24 @@ Lookup Table
 ![image](https://user-images.githubusercontent.com/123365818/215937531-8041ecb0-feb5-4725-b7f4-050809fb0293.png)
 
 ### FPGA_D1SK2_Vivado-counter
+1. Create Project in Vivado
+![image](https://user-images.githubusercontent.com/123365818/215939049-c385da41-e343-4894-a922-c61dad47c29f.png)
 
-Run Simulation
+	Add Source for design file
+
+	![image](https://user-images.githubusercontent.com/123365818/215939214-6b9b9ecc-81bb-4347-92c6-767f42686a9b.png)
+	
+	Add simulation for test file
+	![image](https://user-images.githubusercontent.com/123365818/215939333-da1faa05-23ef-4bc6-802e-eff0b6a871cc.png)
+
+
+
+2. Run Simulation
+	Run Behaviour Simulation
+	![image](https://user-images.githubusercontent.com/123365818/215939420-9916abf6-1119-4a2d-b887-226cc0880f99.png)
+
+	![image](https://user-images.githubusercontent.com/123365818/215939501-53322a63-c2c0-4e87-8166-48f5c0ce6d4b.png)
+
 ![image](https://user-images.githubusercontent.com/123365818/215938258-7305001d-062d-4699-846a-1a575d5c9119.png)
 Time waveform
 ![image](https://user-images.githubusercontent.com/123365818/215938321-ce1089aa-49a3-4e21-8a25-156e4bd29104.png)
