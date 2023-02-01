@@ -1783,6 +1783,10 @@ Lookup Table
 
 	![image](https://user-images.githubusercontent.com/123365818/215939214-6b9b9ecc-81bb-4347-92c6-767f42686a9b.png)
 	
+	Design Verilog file
+	![image](https://user-images.githubusercontent.com/123365818/215940664-8aa683a1-575d-4227-86c7-00244472da05.png)
+
+	
 	Add simulation for test file
 	![image](https://user-images.githubusercontent.com/123365818/215939333-da1faa05-23ef-4bc6-802e-eff0b6a871cc.png)
 
@@ -1798,11 +1802,30 @@ Lookup Table
 Time waveform
 ![image](https://user-images.githubusercontent.com/123365818/215938321-ce1089aa-49a3-4e21-8a25-156e4bd29104.png)
 
-Elaboration
-Schematic
-![image](https://user-images.githubusercontent.com/123365818/215938430-1f85f4a0-e701-4aa6-84b6-73bedf2cc7a6.png)
-IO Floor Planing
-![image](https://user-images.githubusercontent.com/123365818/215938543-9c323d68-c632-42a1-b6fb-8440f7c42c1c.png)
+3. Elaboration
+	Open Elaboration Design
+	![image](https://user-images.githubusercontent.com/123365818/215940305-46d7799e-90a6-46f7-961a-6c1231d39146.png)
+
+	Schematic
+	![image](https://user-images.githubusercontent.com/123365818/215938430-1f85f4a0-e701-4aa6-84b6-73bedf2cc7a6.png)
+	
+	IO Floor Planing
+	
+	![image](https://user-images.githubusercontent.com/123365818/215940455-5c6853f6-8766-460b-bb97-150a7e55a17d.png)
+	
+	Pin mapping and Voltage Specification
+	Vcc =3.3V
+	![image](https://user-images.githubusercontent.com/123365818/215941348-dac72335-c5c3-4753-8e9a-2b290e9800cf.png)
+4. Run Synthesis
+	![image](https://user-images.githubusercontent.com/123365818/215941482-797c8e10-9288-44a5-a599-1773ddca27d6.png)
+
+	Report timing summry
+	![image](https://user-images.githubusercontent.com/123365818/215941623-938f845d-385b-462b-ae8b-2305ab9c08c2.png)
+
+	There are no user specified timing constraints.
+5. Add Constraints
+	
+In Constraint wizard,
 
 
 
