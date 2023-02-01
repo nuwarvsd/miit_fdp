@@ -2113,16 +2113,21 @@ StriVe is a family of open everything SoCs
 	* Instructions to build and run natively will follow
 ###  Introduction to OpenLANE detailed ASIC design flow
 	
-	![image](https://user-images.githubusercontent.com/123365818/215968726-eaef76b5-3e29-48bd-aed6-10ae710c8103.png)
+	![image](https://user-images.githubusercontent.com/123365818/216004054-b8001334-ed60-47d9-909f-41c504fcd6e1.png)
+
+	
 
 ### SKY130_D1_SK3 - Get familiar to open-source EDA tools
 
 #### SKY_L1 - OpenLANE Directory structure in detail
-cd Desktop
+       cd Desktop
+	
 	cd work/tools
+	
 	ls -ltr
 	
-	![image](https://user-images.githubusercontent.com/123365818/215980541-ea1f89e3-6221-4eea-8268-40d2a553fd80.png)
+	![image](https://user-images.githubusercontent.com/123365818/216004162-93652469-0c44-461d-9f10-25f6e571ffc9.png)
+
 
 	cd openlane_working dir
 	
@@ -2263,6 +2268,10 @@ mergelef.py: Merging LEFs
 	It take 2 to 3 minutes
 	
 	![image](https://user-images.githubusercontent.com/123365818/216002594-af4cc725-e46c-4d6e-abb1-17ca2fcfab08.png)
+	
+	Successfully synthesis
+	![image](https://user-images.githubusercontent.com/123365818/216004700-cf966074-05c8-4cfd-a4bc-5cf4dc285a73.png)
+
 
 	
 
