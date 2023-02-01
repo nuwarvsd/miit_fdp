@@ -1757,3 +1757,42 @@ While running GLS on the netlist,the waveform of the synthesized netlist is the 
 
 1.Kunal Ghosh - Co-founder(Vsd corp. pvt.ltd.)
 
+## Day 6
+### FPGA_D1SK1 - FPGA introduction
+
+What Is FPGA And FPGA Architecture?
+FPGA vs ASIC
+
+![image](https://user-images.githubusercontent.com/123365818/215936708-24cb884a-f9d9-400e-a689-b910dbbf236a.png)
+
+FPGA Architecture
+![image](https://user-images.githubusercontent.com/123365818/215936823-d62af9da-02b9-4652-bd05-68b7b4f5a271.png)
+
+Lookup Table
+![image](https://user-images.githubusercontent.com/123365818/215937009-1590770c-9cef-41e4-9142-08b4ffe7fd1d.png)
+
+![image](https://user-images.githubusercontent.com/123365818/215937409-b211d6ad-b16e-46e3-a295-0d98152a06d0.png)
+
+![image](https://user-images.githubusercontent.com/123365818/215937531-8041ecb0-feb5-4725-b7f4-050809fb0293.png)
+
+### FPGA_D1SK2_Vivado-counter
+
+Run Simulation
+![image](https://user-images.githubusercontent.com/123365818/215938258-7305001d-062d-4699-846a-1a575d5c9119.png)
+Time waveform
+![image](https://user-images.githubusercontent.com/123365818/215938321-ce1089aa-49a3-4e21-8a25-156e4bd29104.png)
+
+Elaboration
+Schematic
+![image](https://user-images.githubusercontent.com/123365818/215938430-1f85f4a0-e701-4aa6-84b6-73bedf2cc7a6.png)
+IO Floor Planing
+![image](https://user-images.githubusercontent.com/123365818/215938543-9c323d68-c632-42a1-b6fb-8440f7c42c1c.png)
+
+
+
+
+
+
+
+
+
