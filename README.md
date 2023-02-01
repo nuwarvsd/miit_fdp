@@ -2249,7 +2249,23 @@ mergelef.py: Merging LEFs
 	
 	![image](https://user-images.githubusercontent.com/123365818/215997708-dbabaea5-6eaf-4127-8e69-3a591e34634e.png)
 	pdk information
+	min max library info
 	
+	to look the command file
+	less cmds.log
+	![image](https://user-images.githubusercontent.com/123365818/216001600-3127261c-b967-4ec2-ac8e-d1d3edba8d7d.png)
+	
+	Coming back to the openlane
+	after preparation complete
+	we can run the synthesis
+	
+	run_synthesis
+	It take 2 to 3 minutes
+	
+	![image](https://user-images.githubusercontent.com/123365818/216002594-af4cc725-e46c-4d6e-abb1-17ca2fcfab08.png)
+
+	
+
 	
 	
 
