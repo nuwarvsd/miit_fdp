@@ -1868,10 +1868,11 @@ Appear warning message
 ![image](https://user-images.githubusercontent.com/123365818/215947603-b792a5ed-c99c-4b97-95e2-fb5b305a909d.png)
 	
 	Error is occured
-	![image](https://user-images.githubusercontent.com/123365818/215948042-fbdf4bd7-e965-4e07-9d09-da6d6fb8e89f.png)
+	
 	
 ![image](https://user-images.githubusercontent.com/123365818/216298131-735085c9-2f02-40de-951a-f222e402d03d.png)
 
+![image](https://user-images.githubusercontent.com/123365818/216330968-d3208044-c926-457c-97f9-b34a46388cfb.png)
 
 ## Day 7
 ### SKY130_D1_SK1 - How to talk to computers
@@ -1883,21 +1884,23 @@ Example Board is
 	
 VCC, GND , SDRAM . etc. are inside the chip on the board
 	
+	![image](https://user-images.githubusercontent.com/123365818/216331554-9bd595aa-d794-4691-b242-72beca0c87d6.png)
+
 	
-	![image](https://user-images.githubusercontent.com/123365818/215948851-ba3d7131-0abd-407b-b9da-33a3215ea900.png)
 	
 **Basic Terms:**
 	**Packages **
 	Pin location
 	
-	![image](https://user-images.githubusercontent.com/123365818/215949144-5a38b2bd-da86-46d7-b84b-3f853a223aa8.png)
+	![image](https://user-images.githubusercontent.com/123365818/216331498-49a65676-4412-4069-b4ee-566942d7b290.png)
+
 
 	Chip in the center of package
    **Wire bonding**
 	
-	![image](https://user-images.githubusercontent.com/123365818/215949321-d154e9a1-777e-4d07-b4ab-7e55a2c25dc9.png)
-	
+	![image](https://user-images.githubusercontent.com/123365818/216331386-57f4ff1e-0d82-4b39-a2ab-e6b03b5dd6ac.png)
 
+	
 	Look Inside the chip , pads, die and core can be found
 	
 **Pads:** signal can go inside the chip and outside of the chip through the pads
@@ -1906,13 +1909,13 @@ VCC, GND , SDRAM . etc. are inside the chip on the board
 	
 **Die:** manufacturing on the silicon wafer 
 	
-	![image](https://user-images.githubusercontent.com/123365818/215949668-8fac0de7-12b8-475e-a70e-1e422be89d75.png)
+	![image](https://user-images.githubusercontent.com/123365818/216331658-17a47c88-257f-42c3-bd76-4d75ccf09e79.png)
 	
 	ADC, DAC, SRAM,PLL are called as Foundry IP’s.
 	
 Digital Block such as SPI and SOC are called as **Macro** (pure digial logic)
 	
-	![image](https://user-images.githubusercontent.com/123365818/216298608-a90c8e97-e133-40f7-a587-958828be20bd.png)
+	![image](https://user-images.githubusercontent.com/123365818/216331704-dcfc9ecf-a86b-4fb5-ae44-8e6d0ee2f2da.png)
 	
 	
 **Foundry IP**: all Intellectual Property, whether Background IP or Foreground IP, regardless of when or for what purpose it is developed, pertaining to genetic components, pathways, and strains; and methods and tools for design, genetic engineering, testing and/or small-scale fermentation of microbial strains. Notwithstanding the foregoing, this category shall exclude Ginkgo Background IP, Collaboration Strain and Process IP, and Foreground Application IP.
