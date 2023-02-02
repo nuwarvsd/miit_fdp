@@ -1884,7 +1884,7 @@ Example Board is
 	
 VCC, GND , SDRAM . etc. are inside the chip on the board
 	
-	![image](https://user-images.githubusercontent.com/123365818/216331554-9bd595aa-d794-4691-b242-72beca0c87d6.png)
+![image](https://user-images.githubusercontent.com/123365818/216331554-9bd595aa-d794-4691-b242-72beca0c87d6.png)
 
 	
 	
@@ -1892,13 +1892,13 @@ VCC, GND , SDRAM . etc. are inside the chip on the board
 	**Packages **
 	Pin location
 	
-	![image](https://user-images.githubusercontent.com/123365818/216331498-49a65676-4412-4069-b4ee-566942d7b290.png)
+![image](https://user-images.githubusercontent.com/123365818/216331498-49a65676-4412-4069-b4ee-566942d7b290.png)
 
 
 	Chip in the center of package
    **Wire bonding**
 	
-	![image](https://user-images.githubusercontent.com/123365818/216331386-57f4ff1e-0d82-4b39-a2ab-e6b03b5dd6ac.png)
+![image](https://user-images.githubusercontent.com/123365818/216331386-57f4ff1e-0d82-4b39-a2ab-e6b03b5dd6ac.png)
 
 	
 	Look Inside the chip , pads, die and core can be found
@@ -1909,13 +1909,13 @@ VCC, GND , SDRAM . etc. are inside the chip on the board
 	
 **Die:** manufacturing on the silicon wafer 
 	
-	![image](https://user-images.githubusercontent.com/123365818/216331658-17a47c88-257f-42c3-bd76-4d75ccf09e79.png)
+![image](https://user-images.githubusercontent.com/123365818/216331658-17a47c88-257f-42c3-bd76-4d75ccf09e79.png)
 	
 	ADC, DAC, SRAM,PLL are called as Foundry IP’s.
 	
 Digital Block such as SPI and SOC are called as **Macro** (pure digial logic)
 	
-	![image](https://user-images.githubusercontent.com/123365818/216331704-dcfc9ecf-a86b-4fb5-ae44-8e6d0ee2f2da.png)
+![image](https://user-images.githubusercontent.com/123365818/216331704-dcfc9ecf-a86b-4fb5-ae44-8e6d0ee2f2da.png)
 	
 	
 **Foundry IP**: all Intellectual Property, whether Background IP or Foreground IP, regardless of when or for what purpose it is developed, pertaining to genetic components, pathways, and strains; and methods and tools for design, genetic engineering, testing and/or small-scale fermentation of microbial strains. Notwithstanding the foregoing, this category shall exclude Ginkgo Background IP, Collaboration Strain and Process IP, and Foreground Application IP.
@@ -1926,19 +1926,19 @@ Digital Block such as SPI and SOC are called as **Macro** (pure digial logic)
 
 	ISA (instruction set architecture)
 	
-	![image](https://user-images.githubusercontent.com/123365818/215950361-185a069d-950b-4874-aec6-5da7c2dcad54.png)
+![image](https://user-images.githubusercontent.com/123365818/215950361-185a069d-950b-4874-aec6-5da7c2dcad54.png)
 
 	C program to assembly language program (hex format or binary format) map  particular layout.
 
 	Implementation in RTL 
 	
-	![image](https://user-images.githubusercontent.com/123365818/215950696-dc6762a2-9fdd-4d39-b1ab-a052fc4cd9d6.png)
+![image](https://user-images.githubusercontent.com/123365818/215950696-dc6762a2-9fdd-4d39-b1ab-a052fc4cd9d6.png)
 
 ### SKY_L3 - From Software Applications to Hardware
 
 	Application software to Hardware by using ISA
 
-	![image](https://user-images.githubusercontent.com/123365818/215951076-eccf91cf-8180-49e8-bb44-4a0598340eda.png)
+![image](https://user-images.githubusercontent.com/123365818/215951076-eccf91cf-8180-49e8-bb44-4a0598340eda.png)
 
 	Application Software to System Software to Hardware
 	Major components of system software : OS, Compiler, Assembler
@@ -1946,13 +1946,13 @@ Digital Block such as SPI and SOC are called as **Macro** (pure digial logic)
 	    Allocate memory
             Low level system functions
 	
-	![image](https://user-images.githubusercontent.com/123365818/215951335-c3f0bf51-6179-4837-82c5-3001d2c509a9.png)
+![image](https://user-images.githubusercontent.com/123365818/215951335-c3f0bf51-6179-4837-82c5-3001d2c509a9.png)
 	
 ![image](https://user-images.githubusercontent.com/123365818/215951393-748d0a2f-877e-4aed-b101-be493de83d06.png)
 	
 #### SoC Design using Openlane
 	
-	![image](https://user-images.githubusercontent.com/123365818/215955732-7c2649e9-3005-44ae-ad5a-114ed08c0b29.png)
+![image](https://user-images.githubusercontent.com/123365818/215955732-7c2649e9-3005-44ae-ad5a-114ed08c0b29.png)
 
 1. RTL Designs
 	
@@ -1972,7 +1972,7 @@ Digital Block such as SPI and SOC are called as **Macro** (pure digial logic)
 3. PDK
 	
 See Pure Play Fabs and Fabless design companies
-	![image](https://user-images.githubusercontent.com/123365818/215955099-250dd64f-c082-4e92-9053-f1b107559892.png)
+![image](https://user-images.githubusercontent.com/123365818/215955099-250dd64f-c082-4e92-9053-f1b107559892.png)
 
 	
 PDK = the interface between the FAB and the designers
@@ -2006,13 +2006,13 @@ PDK=Process Design Kit
 	
 	Sign Off
 	
-	![image](https://user-images.githubusercontent.com/123365818/215955821-fa250fa4-17c9-4e18-ad46-a05a76027c6f.png)
+![image](https://user-images.githubusercontent.com/123365818/215955821-fa250fa4-17c9-4e18-ad46-a05a76027c6f.png)
 	
 **Synthesis**
 	
 Converts RTL to a circuit out of components from the standard cell library (SCL)
 	
-	![image](https://user-images.githubusercontent.com/123365818/215956556-26e16513-ffed-4932-9634-1df362fa3af4.png)
+![image](https://user-images.githubusercontent.com/123365818/215956556-26e16513-ffed-4932-9634-1df362fa3af4.png)
 
 Standard Cell have regular layout
 
@@ -2022,27 +2022,27 @@ Standard Cell have regular layout
 
 	Layout(Abstract and Detailed)
 	
-	![image](https://user-images.githubusercontent.com/123365818/215956668-36826493-8eed-4dda-97c7-aeca3fc45fc1.png)
+![image](https://user-images.githubusercontent.com/123365818/215956668-36826493-8eed-4dda-97c7-aeca3fc45fc1.png)
 	
 **Floor and Power Planning**
 
 	Chip Floor Planning: Partition the chip die between different system building blocks and place the I/O Pads
 	
-	![image](https://user-images.githubusercontent.com/123365818/215957005-9d814e3c-3911-4e8a-b2d5-31cbcabee6a6.png)
+![image](https://user-images.githubusercontent.com/123365818/215957005-9d814e3c-3911-4e8a-b2d5-31cbcabee6a6.png)
 	
 	Macro floor Panning: Dimensions, pin locations, row definition
-	![image](https://user-images.githubusercontent.com/123365818/215957152-91fbbdc8-b710-4b17-9e6e-f3f4583734b6.png)
+![image](https://user-images.githubusercontent.com/123365818/215957152-91fbbdc8-b710-4b17-9e6e-f3f4583734b6.png)
   
 	Power Planning
-	![image](https://user-images.githubusercontent.com/123365818/215957377-3b962e4a-052c-4170-ae43-7fae90e60719.png)
+![image](https://user-images.githubusercontent.com/123365818/215957377-3b962e4a-052c-4170-ae43-7fae90e60719.png)
 	
 	Placement: Place the cells on the floorplan rows, aligned with the sites
 	
-	![image](https://user-images.githubusercontent.com/123365818/215957542-2131deca-7ae1-4647-a43b-dfa04478e423.png)
+![image](https://user-images.githubusercontent.com/123365818/215957542-2131deca-7ae1-4647-a43b-dfa04478e423.png)
 	
 	Usually done in two steps: Global and Detailed
 	
-	![image](https://user-images.githubusercontent.com/123365818/215958746-8db624eb-4887-4c06-8b96-4b8557548038.png)
+![image](https://user-images.githubusercontent.com/123365818/215958746-8db624eb-4887-4c06-8b96-4b8557548038.png)
 
 **Clock tree Synthesis**
 
@@ -2056,11 +2056,11 @@ Create a clock distribution network
 
 	Usually a Tree (H,X,..)
 	
-	![image](https://user-images.githubusercontent.com/123365818/215958873-0ddec3a8-f6aa-45dd-b579-31ca65289f72.png)
+![image](https://user-images.githubusercontent.com/123365818/215958873-0ddec3a8-f6aa-45dd-b579-31ca65289f72.png)
 	
 **Routing : ** Implement the interconnect using the available metal layers.
 	
-	![image](https://user-images.githubusercontent.com/123365818/215958966-0d1ca977-c966-428b-bce3-c097cdf2871a.png)
+![image](https://user-images.githubusercontent.com/123365818/215958966-0d1ca977-c966-428b-bce3-c097cdf2871a.png)
 
 	Metal tracks from a routing grid
 
@@ -2103,7 +2103,7 @@ StriVe is a family of open everything SoCs
 	
 ![image](https://user-images.githubusercontent.com/123365818/215960300-7c212c71-8332-41b0-ab3c-82ecd7c58db8.png)
 	
-	![image](https://user-images.githubusercontent.com/123365818/215960416-08c4ee0b-5e27-4f6a-9826-8554a6ed6612.png)
+![image](https://user-images.githubusercontent.com/123365818/215960416-08c4ee0b-5e27-4f6a-9826-8554a6ed6612.png)
 	
 **Main Goal:**
 
@@ -2126,7 +2126,7 @@ StriVe is a family of open everything SoCs
 	* Instructions to build and run natively will follow
 ###  Introduction to OpenLANE detailed ASIC design flow
 	
-	![image](https://user-images.githubusercontent.com/123365818/216004054-b8001334-ed60-47d9-909f-41c504fcd6e1.png)
+![image](https://user-images.githubusercontent.com/123365818/216004054-b8001334-ed60-47d9-909f-41c504fcd6e1.png)
 
 	
 
@@ -2139,7 +2139,7 @@ StriVe is a family of open everything SoCs
 	
 	ls -ltr
 	
-	![image](https://user-images.githubusercontent.com/123365818/216004162-93652469-0c44-461d-9f10-25f6e571ffc9.png)
+![image](https://user-images.githubusercontent.com/123365818/216004162-93652469-0c44-461d-9f10-25f6e571ffc9.png)
 
 
 	cd openlane_working dir
@@ -2148,38 +2148,38 @@ StriVe is a family of open everything SoCs
 	
 	ls -ltr
 	
-	![image](https://user-images.githubusercontent.com/123365818/215980582-68a8c5ce-706d-49ca-876c-4b22506b4e12.png)
+![image](https://user-images.githubusercontent.com/123365818/215980582-68a8c5ce-706d-49ca-876c-4b22506b4e12.png)
 	
 	cd sky130A
 	
 	ls -ltr
 	
-	![image](https://user-images.githubusercontent.com/123365818/215981089-2748cca8-587e-42b2-b757-dc38c41a6cd3.png)
+![image](https://user-images.githubusercontent.com/123365818/215981089-2748cca8-587e-42b2-b757-dc38c41a6cd3.png)
 	
 	libs.ref ---specific to technology
 	
-	![image](https://user-images.githubusercontent.com/123365818/215981550-62b3f4e7-30ea-4ba5-9160-57b581a0bf09.png)
+![image](https://user-images.githubusercontent.com/123365818/215981550-62b3f4e7-30ea-4ba5-9160-57b581a0bf09.png)
 
 	
 	libs.tech --specific to tool
 	
-	![image](https://user-images.githubusercontent.com/123365818/215981821-4e0b9509-4176-4e33-8162-c6b79688a140.png)
+![image](https://user-images.githubusercontent.com/123365818/215981821-4e0b9509-4176-4e33-8162-c6b79688a140.png)
 	
 	cd sky130_fd_sc_hd
 	ls -ltr
 	
-	![image](https://user-images.githubusercontent.com/123365818/215982319-ac1fd81f-f3a6-49a7-846f-27137e891b80.png)
+![image](https://user-images.githubusercontent.com/123365818/215982319-ac1fd81f-f3a6-49a7-846f-27137e891b80.png)
 	
 	cd lib
 	
 	ls -ltr
-	![image](https://user-images.githubusercontent.com/123365818/215982743-2b7a50e3-9ea2-4790-8855-04ed412672e8.png)
+![image](https://user-images.githubusercontent.com/123365818/215982743-2b7a50e3-9ea2-4790-8855-04ed412672e8.png)
 	
 	cd ..
 	cd lef
 	ls -ltr
 	
-	![image](https://user-images.githubusercontent.com/123365818/215983086-ffa8e288-6eee-4750-9fc0-a1b771b9bae5.png)
+![image](https://user-images.githubusercontent.com/123365818/215983086-ffa8e288-6eee-4750-9fc0-a1b771b9bae5.png)
 	tlef is technology lef
 	
 	cd ..
@@ -2187,7 +2187,7 @@ StriVe is a family of open everything SoCs
 	cd ..
 	cd  openlane
 	
-	![image](https://user-images.githubusercontent.com/123365818/215983750-7e7f54b9-8a8e-4df8-99b9-16e23a1b0291.png)
+![image](https://user-images.githubusercontent.com/123365818/215983750-7e7f54b9-8a8e-4df8-99b9-16e23a1b0291.png)
 	
 #### SKY_L2 - Design Preparation Step
 	
@@ -2195,26 +2195,26 @@ go to bash shell
 
 	docker
 	
-	![image](https://user-images.githubusercontent.com/123365818/215984216-cde75248-5d1a-4759-a179-e5b8db9a5307.png)
+![image](https://user-images.githubusercontent.com/123365818/215984216-cde75248-5d1a-4759-a179-e5b8db9a5307.png)
 	
 	ls -ltr
 	
-	![image](https://user-images.githubusercontent.com/123365818/215984582-80da5808-1a5f-479d-9ed8-8fa38ff19f44.png)
+![image](https://user-images.githubusercontent.com/123365818/215984582-80da5808-1a5f-479d-9ed8-8fa38ff19f44.png)
 	
 	./flow.tcl -interactive
 	
-	![image](https://user-images.githubusercontent.com/123365818/215985044-1da04e4a-5648-45a4-80b1-90e91c9ed66e.png)
+![image](https://user-images.githubusercontent.com/123365818/215985044-1da04e4a-5648-45a4-80b1-90e91c9ed66e.png)
 changing promt to percentage symbol %
 	
 Required to input the package
 	**package require openlane 0.9**
 	
-	![image](https://user-images.githubusercontent.com/123365818/215985890-b8198df9-15b2-4805-b095-ed48b914c143.png)
+![image](https://user-images.githubusercontent.com/123365818/215985890-b8198df9-15b2-4805-b095-ed48b914c143.png)
 Look into the design flolder
-	![image](https://user-images.githubusercontent.com/123365818/215986426-3662ae6d-bc47-49c9-a6ac-e9e10558cfdc.png)
+![image](https://user-images.githubusercontent.com/123365818/215986426-3662ae6d-bc47-49c9-a6ac-e9e10558cfdc.png)
 	cd picorva32a
 	ls -ltr
-	![image](https://user-images.githubusercontent.com/123365818/215986711-71426a30-2217-43e2-b9e0-bd0cc5079f5e.png)
+![image](https://user-images.githubusercontent.com/123365818/215986711-71426a30-2217-43e2-b9e0-bd0cc5079f5e.png)
 	src file : source file
 	tcl file
 	config.tcl
@@ -2222,14 +2222,14 @@ Look into the design flolder
 	
 looking into configuration file
 	less config.tcl
-	![image](https://user-images.githubusercontent.com/123365818/215987238-86dd541c-8fc1-4abe-997b-255bbc1732b0.png)
+![image](https://user-images.githubusercontent.com/123365818/215987238-86dd541c-8fc1-4abe-997b-255bbc1732b0.png)
 	20 ns clock period, etc are in the config file 
 
 	And then go to bash shell
 	
 	prep -design picorv32a
 mergelef.py: Merging LEFs
-	![image](https://user-images.githubusercontent.com/123365818/215988574-f4d3c42e-4694-40a5-935f-674b74763c56.png)
+![image](https://user-images.githubusercontent.com/123365818/215988574-f4d3c42e-4694-40a5-935f-674b74763c56.png)
 	
 #### SKY_L3 - Review files after design prep and run synthesis
 	
@@ -2237,41 +2237,41 @@ mergelef.py: Merging LEFs
 	
 	ls -ltr
 	
-	![image](https://user-images.githubusercontent.com/123365818/215989065-d72c517c-d9a0-4bd5-995a-72c44f4955e9.png)
+![image](https://user-images.githubusercontent.com/123365818/215989065-d72c517c-d9a0-4bd5-995a-72c44f4955e9.png)
 	
 	cd 01.02_08.19 ( today)
 	ls -ltr
-	![image](https://user-images.githubusercontent.com/123365818/215989310-fbc9ff9a-0b61-4c3f-a7bf-dba3796d83ce.png)
+![image](https://user-images.githubusercontent.com/123365818/215989310-fbc9ff9a-0b61-4c3f-a7bf-dba3796d83ce.png)
 	
 	cd tmp
 	
 	ls -ltr
 	
-	![image](https://user-images.githubusercontent.com/123365818/215989833-26d87d1a-a54e-422a-be2d-f38d69920777.png)
+![image](https://user-images.githubusercontent.com/123365818/215989833-26d87d1a-a54e-422a-be2d-f38d69920777.png)
 	
 	less merged.ref
 	
-	![image](https://user-images.githubusercontent.com/123365818/215990017-c15e3022-ae2c-4aa0-b08d-ec4b542f04e8.png)
+![image](https://user-images.githubusercontent.com/123365818/215990017-c15e3022-ae2c-4aa0-b08d-ec4b542f04e8.png)
 	
 	cd results
 	ls -ltr
 	
-	![image](https://user-images.githubusercontent.com/123365818/215992243-11c80cc4-782f-48a8-b6d7-61e3df11411e.png)
+![image](https://user-images.githubusercontent.com/123365818/215992243-11c80cc4-782f-48a8-b6d7-61e3df11411e.png)
 	
 	cd reports
 	ls -ltr
 
-	![image](https://user-images.githubusercontent.com/123365818/215990668-2b7bbf25-5b98-4acc-9503-7bf0ce64958a.png)
+![image](https://user-images.githubusercontent.com/123365818/215990668-2b7bbf25-5b98-4acc-9503-7bf0ce64958a.png)
 	
 	less config.tcl
 	
-	![image](https://user-images.githubusercontent.com/123365818/215997708-dbabaea5-6eaf-4127-8e69-3a591e34634e.png)
+![image](https://user-images.githubusercontent.com/123365818/215997708-dbabaea5-6eaf-4127-8e69-3a591e34634e.png)
 	pdk information
 	min max library info
 	
 	to look the command file
 	less cmds.log
-	![image](https://user-images.githubusercontent.com/123365818/216001600-3127261c-b967-4ec2-ac8e-d1d3edba8d7d.png)
+![image](https://user-images.githubusercontent.com/123365818/216001600-3127261c-b967-4ec2-ac8e-d1d3edba8d7d.png)
 	
 	Coming back to the openlane
 	after preparation complete
@@ -2280,10 +2280,10 @@ mergelef.py: Merging LEFs
 	run_synthesis
 	It take 2 to 3 minutes
 	
-	![image](https://user-images.githubusercontent.com/123365818/216002594-af4cc725-e46c-4d6e-abb1-17ca2fcfab08.png)
+![image](https://user-images.githubusercontent.com/123365818/216002594-af4cc725-e46c-4d6e-abb1-17ca2fcfab08.png)
 	
 	Successfully synthesis
-	![image](https://user-images.githubusercontent.com/123365818/216004700-cf966074-05c8-4cfd-a4bc-5cf4dc285a73.png)
+![image](https://user-images.githubusercontent.com/123365818/216004700-cf966074-05c8-4cfd-a4bc-5cf4dc285a73.png)
 
 
 	
