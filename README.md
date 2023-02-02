@@ -2360,44 +2360,61 @@ Now we have to input all the packages which required to run the flow. here we ar
 	
 ![image](https://user-images.githubusercontent.com/123365818/215986426-3662ae6d-bc47-49c9-a6ac-e9e10558cfdc.png)
 	
-	Now, if we are going into the design folder in openlane, there are nearly 30-40 designs are already builted. Out of them we can open any of the design. for example, here we are opening the picorv32a.v design. In this design we can see many files are available. i.e., scr, config.tcl, etc. This config.tlc file contains every details about the design. for example, details about enrollment, clock period, clock period port etc.
-	
 	cd picorva32a
+	
 	ls -ltr
 	
 ![image](https://user-images.githubusercontent.com/123365818/215986711-71426a30-2217-43e2-b9e0-bd0cc5079f5e.png)
+	
 	src file : source file
+	
 	tcl file
+	
 	config.tcl
 	
+	Now, if we are going into the design folder in openlane, there are nearly 30-40 designs are already builted. Out of them we can open any of the design. for example, here we are opening the picorv32a.v design. In this design we can see many files are available. i.e., scr, config.tcl, etc. This config.tlc file contains every details about the design. for example, details about enrollment, clock period, clock period port etc.
 	
 looking into configuration file
-	less config.tcl
+	**less config.tcl**
 	
 ![image](https://user-images.githubusercontent.com/123365818/215987238-86dd541c-8fc1-4abe-997b-255bbc1732b0.png)
+	
+	Here we can see that the time period is set to the 5.00 nsec. but is we see in the openlane sky130_fd_sc_hd folder, the period is set about 24 nsec. so it is not override to the main file. If it override then give first priority to the main folder.
+	
 	20 ns clock period, etc are in the config file 
 
 	And then go to bash shell
+	Now, in openlane, we are going to run the synthesis, but before synthesis, we have to prepare design setup stage. for that command is " prep -design picorv32a".
 	
-	prep -design picorv32a
+	**prep -design picorv32a**
+	
 mergelef.py: Merging LEFs
 	
 ![image](https://user-images.githubusercontent.com/123365818/215988574-f4d3c42e-4694-40a5-935f-674b74763c56.png)
 	
+so, here it is shown that preparation is completed.
+	
 #### SKY_L3 - Review files after design prep and run synthesis
 	
-	cd runs
+After completing the preparation, in the picorv32a file, the run terictory is created. 
+	
+	**cd runs**
 	
 	ls -ltr
 	
 ![image](https://user-images.githubusercontent.com/123365818/215989065-d72c517c-d9a0-4bd5-995a-72c44f4955e9.png)
 	
-	cd 01.02_08.19 ( today)
+Inside the folder, Today's date is created. so in this terictory some folders are available which is required for openlane.
+	
+	**cd 01.02_08.19 ( today)**
+	
 	ls -ltr
 	
 ![image](https://user-images.githubusercontent.com/123365818/215989310-fbc9ff9a-0b61-4c3f-a7bf-dba3796d83ce.png)
 	
-	cd tmp
+In the temp file, merged.lef file is available which was created in preparation time. if we open this merged.lef file, we get all the wire or layer level and cell level information.
+	
+	**cd tmp**
 	
 	ls -ltr
 	
@@ -2406,33 +2423,46 @@ mergelef.py: Merging LEFs
 	less merged.ref
 	
 ![image](https://user-images.githubusercontent.com/123365818/215990017-c15e3022-ae2c-4aa0-b08d-ec4b542f04e8.png)
+
+While, in the result folder is empty because till we have not run anything and in the report folder all the folders are there about synthesis, placement, floorplanning,cts,routing,magic,lvs.
 	
-	cd results
+	**cd results**
+	
 	ls -ltr
 	
 ![image](https://user-images.githubusercontent.com/123365818/215992243-11c80cc4-782f-48a8-b6d7-61e3df11411e.png)
 	
-	cd reports
+	**cd reports**
+	
 	ls -ltr
 
 ![image](https://user-images.githubusercontent.com/123365818/215990668-2b7bbf25-5b98-4acc-9503-7bf0ce64958a.png)
 	
-	less config.tcl
+Now here also one config.tcl file is available similar like design folder. But this config.tcl file contains all default parameter taken by the run.
+	
+	**less config.tcl**
 	
 ![image](https://user-images.githubusercontent.com/123365818/215997708-dbabaea5-6eaf-4127-8e69-3a591e34634e.png)
+	
+when we make some change in the origional configuration and then we run, for example if we make a change in core utilization in the floorplanning and then we run the floorplanning, at this time in the congig.tcl file, the core utility will change and by cross checking it we can check that the modification is reflected in the exicution or not.
+
+Now, cmds.log file takes all the record of the commands, what we have fab.
+	
 	pdk information
 	min max library info
 	
 	to look the command file
-	less cmds.log
+	**less cmds.log**
 	
 ![image](https://user-images.githubusercontent.com/123365818/216001600-3127261c-b967-4ec2-ac8e-d1d3edba8d7d.png)
 	
 	Coming back to the openlane
 	after preparation complete
 	we can run the synthesis
+Now coming to the openlane, we are going to run the synthesis. It will take some 3-4 mnts to run the synthesis and finally synthesis will complited.
 	
-	run_synthesis
+	**run_synthesis**
+	
 	It take 2 to 3 minutes
 	
 ![image](https://user-images.githubusercontent.com/123365818/216002594-af4cc725-e46c-4d6e-abb1-17ca2fcfab08.png)
