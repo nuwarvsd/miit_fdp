@@ -2766,20 +2766,392 @@ And then after pressing the enter, Magic file will open. here we can see the lay
 ![image](https://user-images.githubusercontent.com/123365818/216392213-63760ed7-0822-4f84-98bc-6f4a8c6334ad.png)
 
 
+### SKY130_D2_SK2 - Library Binding and Placement
 	
-	### SKY130_D2_SK2 - Library Binding and Placement
+#### SKY_L1 - Netlist binding and initial place design
 	
+** Bind netlist with physical cells
+
+	Taking netlist as what we taken before,
 	
+![image](https://user-images.githubusercontent.com/123365818/216430251-9d5de493-558e-4f2b-9a2e-d437aa828dad.png)
 	
+Here, we can see that every gate or flip-flops have a shape to understand the functionality of the element.
+	
+![image](https://user-images.githubusercontent.com/123365818/216430900-875080a7-9dc1-43ee-a94e-52c72a298476.png)
+
+But practically, this cells are square or rectangular boxes which has internally some logic to perform. 
+	
+![image](https://user-images.githubusercontent.com/123365818/216430966-efbd0fa5-2493-4d9a-af1b-8e8d94be7e72.png)
+
+So, here we are taking all the elements from netlist and giving them a perfact height and width with perticular dimention. 
+	
+![image](https://user-images.githubusercontent.com/123365818/216431343-b65068e2-4c4b-4907-82d0-39b0a8c278a5.png)
+
+These all cells together are called 'self'. And this self are stored in the lybrary. Library have all the innformation about all the blocks, like height, width , time delay, conditional innformation, etc. 
+
+![image](https://user-images.githubusercontent.com/123365818/216431544-b775044e-ed51-4d2e-86f0-11b870637363.png)
+
+library also have a option for the similar cells (with same functionality) like this with different height and width. According to our space available at floorplanning we can choose out of them.
+	
+![image](https://user-images.githubusercontent.com/123365818/216431646-d76b7f31-17e1-45f8-9769-87a7724cbfe1.png)
+
+After giving size and shape to each and every box, next step is to take the boxes or element from library and placed in the floorplan. 
+This is called placements of the cells.
+	
+According to the design of the netlist, we have to put physical blocks in the floorplan which we have design before.
+	
+![image](https://user-images.githubusercontent.com/123365818/216431958-db66c6eb-9908-4bce-86ea-9be4926fd371.png)
 
 
 	
+![image](https://user-images.githubusercontent.com/123365818/216432090-589e7dc8-4bdb-470d-b80e-d510189ab310.png)
+
+Put all the blocks according to the input and output of that perticular blocks.
+	
+![image](https://user-images.githubusercontent.com/123365818/216432284-a90fc34c-7411-4eec-85e3-ad98e3a20fb4.png)
+	
+Data input 1 and output 1
+	
+![image](https://user-images.githubusercontent.com/123365818/216432636-a019c4ba-84fb-46f4-b1ee-cbddf98c9380.png)
+
+Data input 2 and output 2
+	
+![image](https://user-images.githubusercontent.com/123365818/216432830-b16f88bd-c8d2-4b39-adb0-597acafac97a.png)
+	
+up to here we have done stage one and stage two placement. Now we will going for stage 3 and 4. here we have to place FF1 of stage 3 nearer to the Din3 and FF2 of stage 3 nearer to the Dout3. But Din3 and Dout3 are at somme distance from eachother. 
+
+data out 3
+	
+![image](https://user-images.githubusercontent.com/123365818/216433017-ec0835cc-6be7-4e35-96b8-b44c2d28ae81.png)
+
+Same thing is there for FF1 and FF2 of stage 4. Let's we placed these all element in such manner that all elements are closed to it's input and output pins.
+Data out 4
+	
+![image](https://user-images.githubusercontent.com/123365818/216433197-c9876c41-2fce-4b5a-a0c2-b92eb18e5e65.png)
+
+But, the distance of FF1 of Stage 4 and Din4 is still far them others. By optimizing the placement, we can solve this problem.
+	
+#### SKY_L2 - Optimize placement using estimated wire-length and capacitance
+
+** Optimize Placement
+	
+As we seen that the distance from Din2 to FF1 of stage 2 is higher. 
+	
+![image](https://user-images.githubusercontent.com/123365818/216433966-358a7bdf-8447-4bac-98a7-6ac2cfaa85ce.png)
+
+so if we connect the wire between them then resistance and capacitance of the wire comes in to the picture. and due to this the signal integrity can not maintain.
+
+To maintain the integrity of the signal out from Din2 to FF1, we have to put some repeaters like buffers on between Din2 and FF1. But it will cause of loss of area.
+	
+![image](https://user-images.githubusercontent.com/123365818/216434242-95e66a4b-e0da-4a9c-acce-954e9e37aca0.png)
+
+In the stage 1, there is no need of any repeater to transmit the signal. 
+	
+![image](https://user-images.githubusercontent.com/123365818/216434395-ed47b3b6-fc16-49c8-bf23-230fa39ff9e5.png)
+
+But in stage 2, due to high distance, the lenth of wire is high and signal is not transmitted in perticular range. so we required repeater. sender to buffer.
+	
+#### SKY_L3 - Final placement optimization
+	
+Similar as stage 2, in Stage 3 also we required the buffer between gate 2 and FF2.
+	
+![image](https://user-images.githubusercontent.com/123365818/216434596-3e22a8ad-507a-4f32-b43a-1fda7691acdc.png)
+	
+Reproduce the same signal . Stage 4 is bit tricky as compared to other stages.
+	
+![image](https://user-images.githubusercontent.com/123365818/216435466-523c103d-0e83-49cd-b25f-d49e561aef31.png)
+	
+	Now we have to check that, what we have done is correct or not. For that we need to do Timing analysis by considering the ideal clocks and according to the data of analysis, we will understand that, the placement is correct or not.
+
+#### SKY_L4 - Need for libraries and characterization
+	
+**Library charactorization and modelling**
+
+	In whole IC design, we have to go through synthesis, floor/power planning, placement, routing , STA. 
+	
+Logic Synthesis
+	
+![image](https://user-images.githubusercontent.com/123365818/216436066-cdedd1a3-dfa5-4120-b0af-3b908f629480.png)
+
+Floor Planning
+	
+![image](https://user-images.githubusercontent.com/123365818/216436209-e207f234-21cc-4708-a164-0680da2e2ef0.png)
+
+Placement & CTS
+	
+![image](https://user-images.githubusercontent.com/123365818/216436389-c765f982-318f-44bb-84e0-cd5df050b468.png)
+
+Routing
+	
+![image](https://user-images.githubusercontent.com/123365818/216436523-1b983bd3-7156-4028-9e4a-d3ceaea7b005.png)
+
+STA
+
+![image](https://user-images.githubusercontent.com/123365818/216436717-daa8b4ca-940d-49bb-a17b-c829dcf1e9f6.png)
+
+In all this steps one thing remain common, which is "Gates or Cells". That is where the library charactorization becomes very important.
+	
+Gates or Cells
+	
+![image](https://user-images.githubusercontent.com/123365818/216436871-52cda67f-fbcb-4b73-b4d8-f225297875be.png)
+
+Library
+	
+![image](https://user-images.githubusercontent.com/123365818/216437017-be45a140-23ca-4baf-b463-63f1601e1099.png)
+	
+#### SKY_L5 - Congestion aware placement using RePlAce
+	
+	
+	
+### SKY130_D2_SK3 - Cell design and characterization flows
+
+#### SKY_L1 - Inputs for cell design flow
+	
+**Cell design flow**
+
+![image](https://user-images.githubusercontent.com/123365818/216437791-36271765-c301-4b0c-b033-1e6a3b440f89.png)
+	
+As we know that standerd cells are placed in the library.  
+	
+![image](https://user-images.githubusercontent.com/123365818/216437937-becde403-32da-47e0-80ef-d2a3faea2777.png)
+	
+And in the library many other cells are available which have same functionality but the size is different.
+	
+![image](https://user-images.githubusercontent.com/123365818/216438540-edd89d95-34fc-4615-bf1a-cd1e08617449.png)
+
+As size is different the parameters like hVt, Ivt also different for each standerd cells.
+	
+![image](https://user-images.githubusercontent.com/123365818/216438628-f187da5d-60c8-44d2-9885-e4de2ed2a29c.png)
+
+
+If we take one of the standerd cells called inverter, it has their own design flow by this it can be understandable to EDA tool.
+	
+![image](https://user-images.githubusercontent.com/123365818/216438846-3ff83088-bfb2-41e0-8e4b-8de4cb77948a.png)
+
+The cell design flow is devided into three part.
+
+	* Inputs
+	
+	* Design steps
+	
+	* Outputs
+**Inputs**
+inputs required for cell design is PDKs, DRC and LVS rules SPICE models, library and user defined specs.
+	
+![image](https://user-images.githubusercontent.com/123365818/216439061-848302b8-461c-496f-8445-16cf32725757.png)
+	
+![image](https://user-images.githubusercontent.com/123365818/216439266-0661e012-3044-4247-a3fd-5b0f3eca933f.png)
+
+![image](https://user-images.githubusercontent.com/123365818/216439514-221bf5e7-626c-4581-8a7c-ec8dcd27aadf.png)
+
+![image](https://user-images.githubusercontent.com/123365818/216439552-a7e0aeb5-f232-459c-ba33-93a1154bac0f.png)
+
+#### SKY_L2 - Circuit design step
+
+
+**Design steps**
+
+Steps are circuit design, layout design, characterization
+
+User defined specification
+
+	Supply Voltage, Cell height
+	
+![image](https://user-images.githubusercontent.com/123365818/216440183-95d8a299-9917-4dc6-9527-86ef6e8dacea.png)
+
+	Metal Layers
+	
+![image](https://user-images.githubusercontent.com/123365818/216440238-c1df2d15-fd6e-4f4e-832d-489756b30540.png)
+
+**Outputs**
+
+	The typical output what we get from the circuit design is CDL(circuit description language) file,GDSII,LEF,extracted spice netlist(.cir).
+
+Layout design steps
+	
+implement function
+	
+Circuit design
+	
+![image](https://user-images.githubusercontent.com/123365818/216441132-c449697f-7668-41fd-9e80-dc7f05abc0fe.png)
+	
+Derive the NMOS and PMOS network graph
+	
+![image](https://user-images.githubusercontent.com/123365818/216441760-74a03fcb-a602-43dc-ae6e-97e28e3e65db.png)
+
+
+Layout Design
+	
+Obtain the Euler's path
+	
+![image](https://user-images.githubusercontent.com/123365818/216441935-6f17e121-f424-485a-ad7b-f4b24d43d613.png)
+
+Stick diagram
+	
+![image](https://user-images.githubusercontent.com/123365818/216442040-b1b9a2e9-8d37-440d-8a36-09891d9ba630.png)
+
+Convert stick diagram into proper layout
+	
+![image](https://user-images.githubusercontent.com/123365818/216442173-26a7ba89-c8dc-42ae-87ec-04018915724f.png)
+
+After layout design, we have to ecxtract the layout and characterize it. In characterization step, we can get the information about Timing, Noice,power.libs and function.
+	
+![image](https://user-images.githubusercontent.com/123365818/216442534-35a87900-3789-4feb-a13b-10c76b5da1cc.png)
+
+#### SKY_L4 - Typical characterization flow
+**Characterization Flow**
 
 	
+![image](https://user-images.githubusercontent.com/123365818/216442962-6b4a80d2-9b06-405e-8e92-2303e3ef58a7.png)
 	
+As of now, from the circuit design and layout design, we have final layout of buffer cell. where two buffers are connected in series with each other.
+
+![image](https://user-images.githubusercontent.com/123365818/216443033-2cfdd0fc-59d5-4c2e-ae72-123f1f609ad9.png)
+
+	Buffer
+	
+![image](https://user-images.githubusercontent.com/123365818/216443235-25f1f1f3-3a1e-4b48-a65e-a088fe00edf9.png)
 
 	
+Now steps of flow is:
+
+1.Read the model file
 	
+2. read the extracted spice netlist
+	
+3. reconize the behavior of buffer
+	
+4. Read the subcircuit of the inverter
+	
+5. Ateched the neccessory power source
+	
+6. Apply the stimulus
+	
+7. Provide the necessory of output capacitance
+	
+8. Provide the necessory simulatin command
+	
+This all steps we have to give in "GUNA" software. and this software will give the timing, noise, power.libs and functions.
+	
+![image](https://user-images.githubusercontent.com/123365818/216443405-67ebe0a1-36ec-4005-812a-299bb0b76526.png)
+
+![image](https://user-images.githubusercontent.com/123365818/216443795-025ba6b4-86e3-41cf-96b2-1471c480cd39.png)
+
+![image](https://user-images.githubusercontent.com/123365818/216443825-b57ad95a-6485-4fdb-9bf2-a79060458eb2.png)
+
+![image](https://user-images.githubusercontent.com/123365818/216443909-2e5da8e0-bd61-4e25-ad07-2552655b3bc9.png)
+
+![image](https://user-images.githubusercontent.com/123365818/216443983-430daf61-7f2c-4dd3-aa3d-0914fd98c6e2.png)
+	
+### SKY130_D2_SK4 - General timing characterization parameters
+
+#### SKY_L1 - Timing threshold definitions
+	
+**Timing threshold defination**
+	
+![image](https://user-images.githubusercontent.com/123365818/216444784-97b6997e-ca41-42d7-ae8e-cc84ca52f113.png)
+
+	
+Let we take the waveform from the output of the first buffer and it will be input of the second buffer and taking output of the second buffer also.
+	
+![image](https://user-images.githubusercontent.com/123365818/216445037-f2c139b1-b526-4fb2-b23a-b9284068557c.png)
+
+**slew_low_rise_threshold**
+	
+here low means nearer to the ground, and rise tresold means we want to measer the slope of the increasing graph. typical value of slew low rise thr is around 20-30%.
+
+![image](https://user-images.githubusercontent.com/123365818/216445219-39ad7cf2-c297-4457-9bf9-574d038e7ec5.png)
+
+**slew_high_rise_thr**
+	
+same as above, high means nearer to high value.
+	
+![image](https://user-images.githubusercontent.com/123365818/216445303-3e27b403-7ca1-44b9-b76c-e3dd1760648c.png)
+
+whenever we want to calculate the slew, take the point at 20% from the low and take the point at 20% from the high. according to these point, take the time data and the time difference between them will helps to calculate the slew.
+
+**slew_low_fall_thr**
+	
+![image](https://user-images.githubusercontent.com/123365818/216445929-5bd71110-ccf6-45ed-a4c0-a469155682dc.png)
+	
+**slew_high_fall_thr**
+
+![image](https://user-images.githubusercontent.com/123365818/216446056-041058ac-d2d4-4db9-b851-c985c6fff778.png)
+
+NOw, taking the waveform of input stimulus which is input of the first buffer and with that taking output of the first buffer.
+
+Similar as a slew, thresolds are for delay also available. for that same as slew, we have to take some rise and fall points from the waveforms. this tresolds are almost 50%.
+
+**in_rise_thr**
+	
+![image](https://user-images.githubusercontent.com/123365818/216446187-3bde77f6-6baa-4319-a20d-509bbce3aa39.png)
+
+**out_rise_thr**
+
+![image](https://user-images.githubusercontent.com/123365818/216446406-24c28667-9811-4fdc-a8ce-b3a1f7b0d4f0.png)
+	
+**in_fall_thr**	
+	
+![image](https://user-images.githubusercontent.com/123365818/216446863-5292d604-9faa-4b93-a998-1af0e18cd941.png)
+
+	
+**out_fall_thr**
+	
+![image](https://user-images.githubusercontent.com/123365818/216446622-72cb82b9-eb3f-4175-9511-93ac9478d8ea.png)
+
+#### SKY_L2 - Propagation delay and transition time
+	
+propogation delay
+	
+![image](https://user-images.githubusercontent.com/123365818/216447363-c60f65ec-bdc9-4133-bdbe-98c055067606.png)
+
+let's take the same setup for understand the propogation delay. **Time delay = Time(out_thr)-time(in_thr)**
+	
+![image](https://user-images.githubusercontent.com/123365818/216447556-0f8d0348-8653-41dc-91c0-e525f2f8ff24.png)
+
+
+Let's take waveform on which we can apply above formula.
+	
+![image](https://user-images.githubusercontent.com/123365818/216447744-aeb92af6-60c7-47d7-885a-9660cb25fdec.png)
+
+	
+In any case if thresold point move at the top, at that time we get negative delay because output comes before input. so reason behind the negative delay is the poor choice of the tresold points. which is not acceptable. so, choosing the thresold point is very important.
+	
+![image](https://user-images.githubusercontent.com/123365818/216448479-bcdd75bc-f46f-44d8-8fd1-66f1d5a7e0c5.png)
+	
+negative delay
+
+Taking another example where the wire delay is very high because of high distance between two elements. so, here by choosing correct thresold point then also we get the negative delay.	
+
+![image](https://user-images.githubusercontent.com/123365818/216448075-c3138912-b768-4ac2-a155-3936d2348b24.png)
+	
+**Transition time**
+	
+transition time = time(slew_high_rise_thr)- time(slew_low_rise_thr)
+
+or
+
+transition time = time(slew_high_fall_thr)- time(slew_low_fall_thr)
+
+let's take waveform for understand the slew calculation.
+	
+slew rise
+	
+![image](https://user-images.githubusercontent.com/123365818/216449357-863c4fea-0ed0-416c-956e-61b846366a87.png)
+	
+slew fall
+	
+![image](https://user-images.githubusercontent.com/123365818/216449386-18f21cba-c912-4ba5-94f4-d58970f2164c.png)
+	
+Threshold Definition
+	
+![image](https://user-images.githubusercontent.com/123365818/216449702-e16fc22c-8561-4190-8bd4-eaeb3529b140.png)
+
+
+Input slew /Output Slew	
+	
+![image](https://user-images.githubusercontent.com/123365818/216449200-0a497609-b085-464a-9cf8-1ffed5530169.png)
 
 
 
