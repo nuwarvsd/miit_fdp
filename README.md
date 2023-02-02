@@ -2534,16 +2534,83 @@ Utilization is 0.5 and the aspect ratio is also 0.5.
 
 **Define locations of preplaced cells**
 	
-to define the preplaced cells, let's take a combinational logic i.e., mux, multiplier, clock devider, etc. and assuming that the output of the circuit is huge and assuming that the circuit has some 100k gates. so let devides in two blocks of 50k gates.
-
-	
-	
-	
+to define the preplaced cells, let's take a combinational logic i.e., mux, multiplier, clock devider, etc. and assuming that the output of the circuit is huge and assuming that the circuit has some 100k gates. so let devides in two blocks of 50k gates. 	
 	This both blocks are implimented separatly. Now, extending the input and output pins from the both blocks. now, let's detached these box. we will black box the boxes and detached them. After black boxing, the upper portion is invisible from the top or invisible to the one , who is looking into the main netlist. now we make separate them out.
 	
+![image](https://user-images.githubusercontent.com/123365818/216355603-d60fe28f-622a-4a74-9cca-7c70f14ab8db.png)
 	
+This blocks are implemented in netlist once and then we can reuse it multiple time. Similarly, there are other modules or IPs also readily available.i.e.,memory, clock gating cell, comparater, mux. these all are part of the top level netlist.They recieve some signals, they perform some functions, they deliver the outputs but the functionality of the cell is implemented only once. That what we called as preplaced cells.
+
+The arrangement of these ip's in a chip is refferd as floorplanning.These IP's have user-defined locations, and hence are placed in chip before automated placement and routing are called "preplacement cells".These cells are place din such fashion that, the placement and routing tool not touch the location of the cell.
+
+![image](https://user-images.githubusercontent.com/123365818/216355861-f352dcdb-88b3-42d1-82e7-0d8cc0abb69d.png)
+
+Let consider memory as a preplaced cells as a block 'a', block 'b' and block 'c'. Memory of any device is implemented once and reused multiple times. these preplaced cells are located as per the design bacckground. the location of the cells are never touched.
+
+#### SKY_L3 - De-coupling capacitors
+surround pre-placed cells with Decoupling capacitors
+Let consider some circuit, which is part of the blocks which were defined above. When some gate (let consider AND gate) switched from 0 to 1 ot 1 to 0, considered amount of the switching current required because of small capacitance is available there. this capacitor should be completely charged to represent logic 1 and completly discharged to represent logic 0. the required amount of the charge is suplied from the Vdd and absorb from the Vss. during supplying the current, wire has some drop of voltage due to resistence and inductunce of the physical wire.	
 	
+![image](https://user-images.githubusercontent.com/123365818/216356320-bd877901-f750-4b39-b14b-e6ae1415a37f.png)
+
+So, due to this if ideal logic 1 = 1 volt then here practically it can be less then 1 volt i.e., 0.97 volts (Vdd').
 	
+![image](https://user-images.githubusercontent.com/123365818/216356690-ea76b1c4-dfab-4c95-b845-f5ab28398eb4.png)
+
+So, for any signal to be considered as Logic '0' and '1' in the NM low and NM high range. It is danger case.
+	Noise Margin
+
+![image](https://user-images.githubusercontent.com/123365818/216358817-cec293eb-ae17-4888-92c8-e3b9480772a6.png)
+	
+To solve this problem,, we have to put De-coupling capacitor in parallel with the circuit. 
+Decoupling capacitor
+	
+![image](https://user-images.githubusercontent.com/123365818/216358224-9142e58c-3a0a-4d35-b440-a15fcfb7169a.png)
+
+Every time the circuit switches, it draws current from Cd, whereas, the RL network is used to replacenish the charge into Cd.
+	
+![image](https://user-images.githubusercontent.com/123365818/216358911-59af7516-ee2e-4b49-935a-052cb69f458a.png)
+	
+#### SKY_L3 - Power Planning
+
+	Demanding current in four macro
+	Driver to Load	
+![image](https://user-images.githubusercontent.com/123365818/216360287-2407a300-1576-4b2c-8b50-2c5afa267339.png)
+	
+	How to do power planning?
+
+	Up to here, we have taken care of local communication. Now let consider that local circuitory as a black box and it can be repeat multiple times and power supply is also connected to all of them as shown below,
+
+![image](https://user-images.githubusercontent.com/123365818/216361087-b591625d-fbf5-433b-a948-7b50c005748e.png)
+
+
+Now 16 bit bus has to retain the same signal from driver to the load. so it should get the sufficient power from the supply. But at this bus, there is no de-coupling capacitor is available because it is not physible to put capacitor at all over the place. now, power supply is far away from the bus, that is why some drop between them will definalty occurs.
+	
+Let consider this 16 bit bus connected to inverter.
+	
+![image](https://user-images.githubusercontent.com/123365818/216361444-f44c7bbf-5275-4474-a755-5999f13ddd78.png)
+
+ So, all capacitor are initially charged will get discharged and vice-versa due to inverter.
+But the problem is occurs due to all capacitor is connected to the single ground. This will cause a bump in 'ground' tap point during discharging.
+	
+![image](https://user-images.githubusercontent.com/123365818/216362068-f449bd42-21ae-4fad-a080-cc8ed3fb0c87.png)
+	
+Same problem will occurse during the charging time also. at that time lowering of voltage occurse at 'Vdd' tap point.
+
+![image](https://user-images.githubusercontent.com/123365818/216362301-ffe05ff1-f8f8-41f2-8523-6f77db01235d.png)
+
+The solution of the problem is use multiple power supply. So, every block will take charge from neartest power supply and similarly dump the charge to the nearer ground. this type of power supply is called mesh.
+	
+![image](https://user-images.githubusercontent.com/123365818/216362834-2e3c0c63-be67-4b2d-8130-831ec4b5e4af.png)
+
+	
+	And the power planning is shown below,
+![image](https://user-images.githubusercontent.com/123365818/216363015-fecad710-7058-4cba-8cd8-3eb2e1fb96ed.png)
+	
+![Uploading image.png…]()
+
+	
+
 	
 	### SKY130_D2_SK2 - Library Binding and Placement
 	
