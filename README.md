@@ -1878,19 +1878,25 @@ Appear warning message
 
 FPGA Board in Embedded System, etc.
 Example Board is 
+	
 ![image](https://user-images.githubusercontent.com/123365818/215948656-82e2d02f-4aba-406b-a0eb-ddb0d8809bc6.png)
 	
 VCC, GND , SDRAM . etc. are inside the chip on the board
 	
+	
 	![image](https://user-images.githubusercontent.com/123365818/215948851-ba3d7131-0abd-407b-b9da-33a3215ea900.png)
+	
 **Basic Terms:**
 	**Packages **
 	Pin location
+	
 	![image](https://user-images.githubusercontent.com/123365818/215949144-5a38b2bd-da86-46d7-b84b-3f853a223aa8.png)
 
 	Chip in the center of package
    **Wire bonding**
+	
 	![image](https://user-images.githubusercontent.com/123365818/215949321-d154e9a1-777e-4d07-b4ab-7e55a2c25dc9.png)
+	
 
 	Look Inside the chip , pads, die and core can be found
 	
@@ -1899,13 +1905,15 @@ VCC, GND , SDRAM . etc. are inside the chip on the board
 **Core:** digital logics are placed in the area
 	
 **Die:** manufacturing on the silicon wafer 
+	
 	![image](https://user-images.githubusercontent.com/123365818/215949668-8fac0de7-12b8-475e-a70e-1e422be89d75.png)
 	
 	ADC, DAC, SRAM,PLL are called as Foundry IP’s.
 	
 Digital Block such as SPI and SOC are called as **Macro** (pure digial logic)
 	
-	![image](https://user-images.githubusercontent.com/123365818/215949823-29c07595-007c-42dc-a7c1-a601807b9b28.png)
+	![image](https://user-images.githubusercontent.com/123365818/216298608-a90c8e97-e133-40f7-a587-958828be20bd.png)
+	
 	
 **Foundry IP**: all Intellectual Property, whether Background IP or Foreground IP, regardless of when or for what purpose it is developed, pertaining to genetic components, pathways, and strains; and methods and tools for design, genetic engineering, testing and/or small-scale fermentation of microbial strains. Notwithstanding the foregoing, this category shall exclude Ginkgo Background IP, Collaboration Strain and Process IP, and Foreground Application IP.
 
