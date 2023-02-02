@@ -2031,9 +2031,11 @@ Standard Cell have regular layout
 ![image](https://user-images.githubusercontent.com/123365818/215957005-9d814e3c-3911-4e8a-b2d5-31cbcabee6a6.png)
 	
 	Macro floor Panning: Dimensions, pin locations, row definition
+	
 ![image](https://user-images.githubusercontent.com/123365818/215957152-91fbbdc8-b710-4b17-9e6e-f3f4583734b6.png)
   
 	Power Planning
+	
 ![image](https://user-images.githubusercontent.com/123365818/215957377-3b962e4a-052c-4170-ae43-7fae90e60719.png)
 	
 	Placement: Place the cells on the floorplan rows, aligned with the sites
@@ -2166,6 +2168,7 @@ StriVe is a family of open everything SoCs
 ![image](https://user-images.githubusercontent.com/123365818/215981821-4e0b9509-4176-4e33-8162-c6b79688a140.png)
 	
 	cd sky130_fd_sc_hd
+	
 	ls -ltr
 	
 ![image](https://user-images.githubusercontent.com/123365818/215982319-ac1fd81f-f3a6-49a7-846f-27137e891b80.png)
@@ -2173,6 +2176,7 @@ StriVe is a family of open everything SoCs
 	cd lib
 	
 	ls -ltr
+	
 ![image](https://user-images.githubusercontent.com/123365818/215982743-2b7a50e3-9ea2-4790-8855-04ed412672e8.png)
 	
 	cd ..
@@ -2180,6 +2184,7 @@ StriVe is a family of open everything SoCs
 	ls -ltr
 	
 ![image](https://user-images.githubusercontent.com/123365818/215983086-ffa8e288-6eee-4750-9fc0-a1b771b9bae5.png)
+	
 	tlef is technology lef
 	
 	cd ..
@@ -2204,16 +2209,20 @@ go to bash shell
 	./flow.tcl -interactive
 	
 ![image](https://user-images.githubusercontent.com/123365818/215985044-1da04e4a-5648-45a4-80b1-90e91c9ed66e.png)
-changing promt to percentage symbol %
+
+	changing promt to percentage symbol %
 	
 Required to input the package
 	**package require openlane 0.9**
 	
 ![image](https://user-images.githubusercontent.com/123365818/215985890-b8198df9-15b2-4805-b095-ed48b914c143.png)
-Look into the design flolder
+
+	Look into the design flolder
+	
 ![image](https://user-images.githubusercontent.com/123365818/215986426-3662ae6d-bc47-49c9-a6ac-e9e10558cfdc.png)
 	cd picorva32a
 	ls -ltr
+	
 ![image](https://user-images.githubusercontent.com/123365818/215986711-71426a30-2217-43e2-b9e0-bd0cc5079f5e.png)
 	src file : source file
 	tcl file
@@ -2222,6 +2231,7 @@ Look into the design flolder
 	
 looking into configuration file
 	less config.tcl
+	
 ![image](https://user-images.githubusercontent.com/123365818/215987238-86dd541c-8fc1-4abe-997b-255bbc1732b0.png)
 	20 ns clock period, etc are in the config file 
 
@@ -2229,6 +2239,7 @@ looking into configuration file
 	
 	prep -design picorv32a
 mergelef.py: Merging LEFs
+	
 ![image](https://user-images.githubusercontent.com/123365818/215988574-f4d3c42e-4694-40a5-935f-674b74763c56.png)
 	
 #### SKY_L3 - Review files after design prep and run synthesis
@@ -2241,6 +2252,7 @@ mergelef.py: Merging LEFs
 	
 	cd 01.02_08.19 ( today)
 	ls -ltr
+	
 ![image](https://user-images.githubusercontent.com/123365818/215989310-fbc9ff9a-0b61-4c3f-a7bf-dba3796d83ce.png)
 	
 	cd tmp
@@ -2271,6 +2283,7 @@ mergelef.py: Merging LEFs
 	
 	to look the command file
 	less cmds.log
+	
 ![image](https://user-images.githubusercontent.com/123365818/216001600-3127261c-b967-4ec2-ac8e-d1d3edba8d7d.png)
 	
 	Coming back to the openlane
@@ -2283,6 +2296,7 @@ mergelef.py: Merging LEFs
 ![image](https://user-images.githubusercontent.com/123365818/216002594-af4cc725-e46c-4d6e-abb1-17ca2fcfab08.png)
 	
 	Successfully synthesis
+	
 ![image](https://user-images.githubusercontent.com/123365818/216004700-cf966074-05c8-4cfd-a4bc-5cf4dc285a73.png)
 
 
