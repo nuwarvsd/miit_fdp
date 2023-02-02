@@ -1877,12 +1877,16 @@ Appear warning message
 ## Day 7
 ### SKY130_D1_SK1 - How to talk to computers
 
+The computers can perform the intruction, which are given externaly and some hardware is there which convert the external instruction into understandable language of computers. For example FPGA board, Arduino board etc. are provides the medium for external inputs and outputs.
 FPGA Board in Embedded System, etc.
 Example Board is 
 	
 ![image](https://user-images.githubusercontent.com/123365818/215948656-82e2d02f-4aba-406b-a0eb-ddb0d8809bc6.png)
 	
-VCC, GND , SDRAM . etc. are inside the chip on the board
+Arduino consists of both a physical programmable circuit board (often referred to as a microcontroller) and a piece of software, or IDE (Integrated Development Environment) that runs on the computer, used to write and upload computer code to the physical board.
+Basically microcontroller is made from package, inside the package chip is there.Chip is made by pads, core, die and foundary IP's.
+	
+	VCC, GND , SDRAM . etc. are inside the chip on the board
 	
 ![image](https://user-images.githubusercontent.com/123365818/216331554-9bd595aa-d794-4691-b242-72beca0c87d6.png)
 
@@ -1890,12 +1894,17 @@ VCC, GND , SDRAM . etc. are inside the chip on the board
 	
 **Basic Terms:**
 	**Packages **
+	The package is a case that surrounds the circuit material to protect it from corrosion or physical damage and allow mounting of the electrical contacts connecting it to the printed circuit board (PCB). here what we are seeing in the black color is the Package of the microcontroller.
+	
 	Pin location
 	
 ![image](https://user-images.githubusercontent.com/123365818/216331498-49a65676-4412-4069-b4ee-566942d7b290.png)
 
 
 	Chip in the center of package
+	Inside the Package, chip is available which contains, foundary IP's (for example, RISC-V Soc, PLL, ADC, DAC, SRAM, SPD), core (core contains AND, OR etc. all gates and digital logics), pads (through which input and output signals are communicates).
+
+
    **Wire bonding**
 	
 ![image](https://user-images.githubusercontent.com/123365818/216331386-57f4ff1e-0d82-4b39-a2ab-e6b03b5dd6ac.png)
@@ -1924,7 +1933,10 @@ Digital Block such as SPI and SOC are called as **Macro** (pure digial logic)
 
 	Talk to computer
 
-	ISA (instruction set architecture)
+**ISA (instruction set architecture)**
+RISC-V, where five refers to the number of generations of RISC architecture that were developed at the University of California, Berkeley. RISC is an open standard instruction set architecture (ISA) based on established RISC principles. Unlike most other ISA designs, RISC-V is provided under open source licenses that do not require fees to use. A number of companies are offering or have announced RISC-V hardware, open source operating systems with RISC-V support are available, and the instruction set is supported in several popular software toolchains.
+
+The instruction set is designed for a wide range of uses. The base instruction set has a fixed length of 32-bit naturally aligned instructions, and the ISA supports variable length extensions where each instruction can be any number of 16-bit parcels in length. The instruction set specification defines 32-bit and 64-bit address space variants. The specification includes a description of a 128-bit flat address space variant, as an extrapolation of 32 and 64 bit variants, but the 128-bit ISA remains "not frozen" intentionally, because there is yet so little practical experience with such large memory systems.
 	
 ![image](https://user-images.githubusercontent.com/123365818/215950361-185a069d-950b-4874-aec6-5da7c2dcad54.png)
 
@@ -1936,7 +1948,9 @@ Digital Block such as SPI and SOC are called as **Macro** (pure digial logic)
 
 ### SKY_L3 - From Software Applications to Hardware
 
-	Application software to Hardware by using ISA
+**Application software to Hardware by using ISA**
+	
+	Between apps or software (in our mobilephones and computers or laptops) and Hardware (in our mobilephones and computers or laptops), One full channel is there, which contains O.S. (operating system), compiler and assembler. This channel proccesses the inputs from the apps and gives the outputs to the Hardware. And according to the output of assembler, the hardware will perform.
 
 ![image](https://user-images.githubusercontent.com/123365818/215951076-eccf91cf-8180-49e8-bb44-4a0598340eda.png)
 
@@ -1946,15 +1960,25 @@ Digital Block such as SPI and SOC are called as **Macro** (pure digial logic)
 	    Allocate memory
             Low level system functions
 	
+When the inputs is given from the software, inputs is in the C,C++,JAVA etc. languages. Hardware not understand this language. So, this inputs goes throuth the system software cahnnel, where O.S. handles the input/output operations, it allocates the memory to for the codes and low level systems functions are there in O.S. Then program goes to the compiler, where program will compile and generate the HDL program.This HDL program is basically the sets of Instructions which can hardware is able to understand. The instructions are basically depends on what kind of hardware we are using. For example if we are using Mips processor then instruction formaate will be according to the Mips processor, if Hardware is RISC-V then the instruction formate will be according to the RISC-V and similerly for Arm and intel processors also.
+
+This sets of instrusctions is now given to the Assembler. here according to the instruction set, assembler will generate the Binary code (contains only 0s and 1s). this binary code can be understandable for hardware. And according to this code, hardware will gives the output.
+	
 ![image](https://user-images.githubusercontent.com/123365818/215951335-c3f0bf51-6179-4837-82c5-3001d2c509a9.png)
 	
 ![image](https://user-images.githubusercontent.com/123365818/215951393-748d0a2f-877e-4aed-b101-be493de83d06.png)
 	
 #### SoC Design using Openlane
 	
+To design Digital ASIC, few tools or things which are required from the day one. These are
+
+RTL Design
+EDA tools
+PDK data
+	
 ![image](https://user-images.githubusercontent.com/123365818/215955732-7c2649e9-3005-44ae-ad5a-114ed08c0b29.png)
 
-1. RTL Designs
+1. RTL Designs: In digital circuit design, register-transfer level (RTL) is a design abstraction which models a synchronous digital circuit in terms of the flow of digital signals (data) between hardware registers, and the logical operations performed on those signals.for this designs many open sorces are available. like, librecores.org, opencores.org, github.com, etc...
 	
 	Librecores.org
 	
@@ -1962,16 +1986,17 @@ Digital Block such as SPI and SOC are called as **Macro** (pure digial logic)
 	
 	Github.com
 	
-2. EDA Tools
+2. EDA Tools : The term Electronic Design Automation (EDA) refers to the tools that are used to design and verify integrated circuits (ICs), printed circuit boards (PCBs), and electronic systems, in general. many open sorces tools are available like Qflow, OpenROAD, OpenLANE, etc...
 	
 	Qflow
 	
 	OpenROAD
 	
 	OpenLANE
-3. PDK
+3. PDK :PDK is process design kit. It is interface between FAB and design. 
 	
 See Pure Play Fabs and Fabless design companies
+	
 ![image](https://user-images.githubusercontent.com/123365818/215955099-250dd64f-c082-4e92-9053-f1b107559892.png)
 
 	
@@ -1980,16 +2005,23 @@ PDK = the interface between the FAB and the designers
 PDK=Process Design Kit
 	
 	Collection of files used to model a fabrication process for the EDA tools used to design an IC
+This data is collections of files like,
 	
-	Process Design Rules: DRC, LVS, PEX
+	* Process Design Rules: DRC, LVS, PEX
 	
-	Device Models
+	* Device Models
 	
-	Digital standard Cell Libraries
+	* Digital standard Cell Libraries
 	
-	I/O Libraries
+	* I/O Libraries
+	which are used to model a fabrication process for the EDA tools used to design an ICs. for example, in 2020, google release the open source PDK for FOSS 130nm production with the skywater technology. But right now it is at cutting age of the 5 nm also. But in many applications, the advance node is not required, and the cost of advanced node is also high as compared to 130nm processors. This 130nm processors are also fast processor. for example,
+intel: P4EE @3.46 GHz(Q4'o4)
+sky130_OSU (single cycle RV32i CPU) pipeline version can achieve more than 1 GHz clock
+	
 	
 #### SKY_L2 - Simplified RTL2GDS flow
+	
+	
 
 **Simplified RTL to GDSII Flow**
 	
@@ -2011,6 +2043,14 @@ PDK=Process Design Kit
 **Synthesis**
 	
 Converts RTL to a circuit out of components from the standard cell library (SCL)
+
+	Synthesis In the synthesis, the design RTL is translated to a circuit out from the SCL. 
+
+	The resultant circuit is describes in HDL and usualy refered to the gate level netlist. 
+	
+	The gate level netlist is functionaly equivelent to the RTL.
+	
+	"standard Cells" have regular layouts.
 	
 ![image](https://user-images.githubusercontent.com/123365818/215956556-26e16513-ffed-4932-9634-1df362fa3af4.png)
 
@@ -2026,25 +2066,35 @@ Standard Cell have regular layout
 	
 **Floor and Power Planning**
 
-	Chip Floor Planning: Partition the chip die between different system building blocks and place the I/O Pads
+The main objective here is that to plan silicon area and distribute the power to the whole circuit. In the chip floor planning, the partition chip die between different system building blocks and place the i/o pads. In micro floor planning, we define the dimensions, pin locations, rows.
+	
+	**Chip Floor Planning:** Partition the chip die between different system building blocks and place the I/O Pads
 	
 ![image](https://user-images.githubusercontent.com/123365818/215957005-9d814e3c-3911-4e8a-b2d5-31cbcabee6a6.png)
 	
-	Macro floor Panning: Dimensions, pin locations, row definition
+	**Macro floor Panning:** Dimensions, pin locations, row definition
 	
 ![image](https://user-images.githubusercontent.com/123365818/215957152-91fbbdc8-b710-4b17-9e6e-f3f4583734b6.png)
   
-	Power Planning
+	**Power Planning**
+	
+	In power planning, the power network is connstructed. tipically, the chip is power by multiple VDD and GND. so, total components are connected to power supply horizontaly and vertically by metal streps. here parallel structures are used to reduce the resistance. To address the electromagnetization problem, power distribution network uses upper metal leyers, which are thicker than lower metal layers. Hence have less resistance.
 	
 ![image](https://user-images.githubusercontent.com/123365818/215957377-3b962e4a-052c-4170-ae43-7fae90e60719.png)
 	
-	Placement: Place the cells on the floorplan rows, aligned with the sites
+	**Placement:** Place the cells on the floorplan rows, aligned with the sites
 	
 ![image](https://user-images.githubusercontent.com/123365818/215957542-2131deca-7ae1-4647-a43b-dfa04478e423.png)
+	
+	In this process, we place the gate level netlist on the floor planning rows, alligned with the sites. cells should be placed very closed to eachother to reduce the interconnnect delay. 
 	
 	Usually done in two steps: Global and Detailed
 	
 ![image](https://user-images.githubusercontent.com/123365818/215958746-8db624eb-4887-4c06-8b96-4b8557548038.png)
+
+	**Global placement** is very first stage of the placement where cells are placed inside the core area for the first time looking at the timing and congestion. Global Placement aims at generating a rough placement solution that may violate some placement constraints while maintaining a global view of the whole Netlist.
+	
+	In **detailed placements**,  the exact route and layers are determined for each netlist. the objective of detailed placement is valid routing, minimize area and meet timing constrains. Additional objective is minimum via and less power.
 
 **Clock tree Synthesis**
 
@@ -2060,30 +2110,46 @@ Create a clock distribution network
 	
 ![image](https://user-images.githubusercontent.com/123365818/215958873-0ddec3a8-f6aa-45dd-b579-31ca65289f72.png)
 	
+Before routing the signals, we have to route the clock. In the process of clock synthesis, we have distribute the clock to the every sequential elements. for example flipflops, registers, ADC, DAC ete. basically clock netwroks looks likes a tree. where the clock source is roots and the clock elements are end leaves. Synthesization should be done in a manner that with minimum skew and in a good shape.To minimize the clock skew by using the low-skew global routing resources for clock signals.Microsemi devices provide various types of global routing resources that significantly reduce skew.Usually a tree is a H tree, X tree etc.
+	
 **Routing : ** Implement the interconnect using the available metal layers.
+	
+	After routing the clock, the signal routing comes. Making physical connections between signal pins using metal layers are called Routing. Routing is the stage after CTS and optimization where exact paths for the interconnection of standard cells and macros and I/O pins are determined. There are two types of nets in VLSI systems that need special attention in routing:
+
+
+	Clock nets
+
+	Power/Ground nets
+
+The sky130 PDK defines the 6 routing leyers. the lowest leyer is called local interconnect layer (titanium nitride layer). Other five layers are alluminium layers.
 	
 ![image](https://user-images.githubusercontent.com/123365818/215958966-0d1ca977-c966-428b-bce3-c097cdf2871a.png)
 
-	Metal tracks from a routing grid
+	* Metal tracks from a routing grid
 
-	Routing grid is huge
+	* Routing grid is huge
 
-	Divide and Conquer
+	* Divide and Conquer
 
 		Global Routing: Generates routing guides
 
 		Detailed Routing: Uses the routing guides to implement the actual wiring
+In the proccess of routing, metal trackes forms a routing grids and these grids are huge. So, devide and conquer approach is use for routing. 
+	
 **Sign Off**
-
-	* Physical Verifications
+Once the routing is done, we can construct the final layout. This final layout will goes under the verification. Two types of verifications are there:
+	
+	* Physical Verifications : Here design rule checking will done and it will check the final layout and owners layout
 
 		* Design Rules Checking (DRC)
 
 		* Layout vs. Schematic (LVS)
 
-	* Timing Verification
+	* Timing Verification : Here Static Timing Analysis will done
 
 		* Static Timing Analysis (STA)
+	
+
 ### SKY_L3 - Introduction to OpenLANE and Strive chipsets
 
 **Problem**
@@ -2103,13 +2169,28 @@ StriVe is a family of open everything SoCs
 	
 	Open PDK, Open EDA, Open RTL
 	
+	OPENLANE is an automated RTL to GDSII flow that is composed of several tools such as OpenROAD, Yosys, Magic, Netgen, Fault, CVC SPEF-Extractor, CU-GR, Klayout and a number of scripts used for design exploration and optimization. It is started as an Open-source flow for a true Open Source tape-out Experiment. 
+	striVe is a family of open everything SoCs:
+
+
+	* Open PDK
+
+	* Open EDA
+
+	* Open RTL
+
+	
 ![image](https://user-images.githubusercontent.com/123365818/215960300-7c212c71-8332-41b0-ab3c-82ecd7c58db8.png)
+	
+striVe SoC Family
 	
 ![image](https://user-images.githubusercontent.com/123365818/215960416-08c4ee0b-5e27-4f6a-9826-8554a6ed6612.png)
 	
 **Main Goal:**
 
-	Produce a clean GDSII with no human intervention (no-human-in-the-loop)
+The main goal of OPENLANE is to produce a clean GDSII with no human intervation (no-human-in-the-loop). 
+	
+	**Produce a clean GDSII with no human intervention (no-human-in-the-loop)**
 
 	Clean means:
 
@@ -2126,15 +2207,55 @@ StriVe is a family of open everything SoCs
 	* Functionl out of the box
 
 	* Instructions to build and run natively will follow
+	
+OPENLANE is tuned for skyWter130nm open PDK. it can be used to harden Macros and chips.there is two mode of operation
+
+	**Autonomus :** it is the push botton flow. with the push botton , it is a some time base design and due to this push botton, we get final GDSII
+
+	**interactive :** here we can run comamds and steps one by one.
+
+It has large number of design examples(43 designs with their best configurations).
+	
 ###  Introduction to OpenLANE detailed ASIC design flow
 	
 ![image](https://user-images.githubusercontent.com/123365818/216004054-b8001334-ed60-47d9-909f-41c504fcd6e1.png)
 
+The design exploration utility is also used for regression testing(CI). we run OpenLANE on ~ 70 designs and compare the results to the best known ones.
 	
+	DFT(Design for Test)
+it perform scan inserption, automatic test pattern generation, Test patterns compaction, Fault coverage, Fault simulation.
+	After that physical implementation is done by OpenROAD app. physical implementation involves the several steps:
+
+
+	Floor/Power Planning
+
+	End Decoupling Capacitors and Tap cells insertion
+
+	Placements: Global and Detailed
+
+	Post Placement Optimization
+
+	Clock Tree synthesis (CTS)
+
+	Routing: Global and Detailed
+
+	Every time the netlist is modified.(CTS modifies the netlist and Post Placements optimization also modifies the netlist).so for that verification must be performed. The LCE(yosys) is used to formally confirm that the function did not change after modifying the netlist. ### Dealing with antenna rules Violation: when a metal wire segment is fabricated, it can act as antenna.as an antenna, it collect charges which can demaged the transister gates during the fabrication.
+	
+	Static Timing analysis(STA)
+	
+It involves the interconnect RC Extraction(DEF2SPEF) from the routed layout, followed by STA on OpenSTA(OpenROAD) tool. resulting report will shows the timing violations if any violations is there.
+
+Physical Verification (DRC and LVS)
+	
+Magic is used for design Rules checking and SPICE Extraction from Layout. Magic and Netgen are used for LVS.
 
 ### SKY130_D1_SK3 - Get familiar to open-source EDA tools
 
 #### SKY_L1 - OpenLANE Directory structure in detail
+
+--cd command--
+cd means change directory. this command will help us to go inside the directory.
+	
        cd Desktop
 	
 	cd work/tools
