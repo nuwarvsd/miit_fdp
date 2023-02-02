@@ -2571,7 +2571,7 @@ Every time the circuit switches, it draws current from Cd, whereas, the RL netwo
 	
 ![image](https://user-images.githubusercontent.com/123365818/216358911-59af7516-ee2e-4b49-935a-052cb69f458a.png)
 	
-#### SKY_L3 - Power Planning
+#### SKY_L4 - Power Planning
 
 	Demanding current in four macro
 	Driver to Load	
@@ -2607,9 +2607,38 @@ The solution of the problem is use multiple power supply. So, every block will t
 	And the power planning is shown below,
 ![image](https://user-images.githubusercontent.com/123365818/216363015-fecad710-7058-4cba-8cd8-3eb2e1fb96ed.png)
 	
-![Uploading image.png…]()
 
+#### SKY_L5 - Pin placement and logical cell placement blockage	
+Pin Placement
+Lets take below designs for example that needs to implemented.	
+
+![image](https://user-images.githubusercontent.com/123365818/216365564-b38bdefd-c5a9-4c91-83e8-633fcdc4985f.png)
+
+Both the sections has different inputs like Din1 and Din2 and operated from different clocks like clock 1 and clock 2. along with that we have preplaced cells as well. So, basically now we have 4 input ports and 3 output ports.
 	
+
+let's have one more design that needs to be implemented. this types of circuits are very much helpful to understand the timing analysis of inter clocks.
+
+![image](https://user-images.githubusercontent.com/123365818/216366421-6aa48ebb-c80f-4f8e-a535-73447044a0c3.png)
+
+	preplaced cell Block C
+	
+![image](https://user-images.githubusercontent.com/123365818/216366749-7335f6c9-7c00-4069-839f-c27f55d7bab9.png)
+
+
+Now complete design becomes like given below which has 6 input ports and 5 output ports. it is called the 'Netlist'.
+	
+
+Let's put this netlist in the core which we have designed before and let's try to fill this empty area between core and die with the pin information. The frontend team who decides the netlist input and output and the backend team who done the pin placements. So according to the pin placements, we have to locate the preplaced blocks nearer to the inputs of the preplaced blocks.
+	
+	
+Here one thing that we noticed is that clock-in and clock-out pins are bigger in size as compared to input and output pins. reason behind this is that, input clocks are conntinuously provides the signal to the every elements of the chip and output clock should out the signal as fast as possible. So, we need least resistance path for the clocks inputs and clocks outputs. So, bigger the size, lower the resistance.
+
+One more thing is need to take care about is that, this pin placement area is blocked for routing and cell placements. so we nned to do logical cell placement blockage. this blockage is shoown in above image in between pins.
+
+So, floor plan is ready for Placement and Routing step.	
+
+#### SKY_L6 - Steps to run floorplan using OpenLANE
 
 	
 	### SKY130_D2_SK2 - Library Binding and Placement
