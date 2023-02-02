@@ -2471,7 +2471,29 @@ Now coming to the openlane, we are going to run the synthesis. It will take some
 	
 ![image](https://user-images.githubusercontent.com/123365818/216004700-cf966074-05c8-4cfd-a4bc-5cf4dc285a73.png)
 
+Before run, we saw that the result folder is empty. but now, after running the synthesis, we can see that all the mapping have been done by ABC.
+	
+![image](https://user-images.githubusercontent.com/123365818/216371442-f953af10-a68c-466d-bcc9-3bcaef94501c.png)
 
+	And in the report, we can see when the actual synthesis has done. and the actual statistics synthesis report is showing below, which is same as what we have seen before.
+	
+	cd results
+	
+	cd synthesis
+	
+	ls
+	
+less picorv32a.synthesis.v
+	
+![image](https://user-images.githubusercontent.com/123365818/216372361-bcac3c83-ecad-4e92-9f8e-e6491cf5ed9d.png)
+	
+less merged_unpadded.lef
+	
+![image](https://user-images.githubusercontent.com/123365818/216375660-da546ce9-70b2-42e6-8a62-6b1be13ee28b.png)
+
+
+
+	
 ##Day 8
 	
 ##Sky130 Day 2 - Good floorplan vs bad floorplan and introduction to library cells
@@ -2628,9 +2650,13 @@ let's have one more design that needs to be implemented. this types of circuits 
 
 Now complete design becomes like given below which has 6 input ports and 5 output ports. it is called the 'Netlist'.
 	
+![image](https://user-images.githubusercontent.com/123365818/216369269-881effe3-b473-4489-818c-508af465910b.png)
+
 
 Let's put this netlist in the core which we have designed before and let's try to fill this empty area between core and die with the pin information. The frontend team who decides the netlist input and output and the backend team who done the pin placements. So according to the pin placements, we have to locate the preplaced blocks nearer to the inputs of the preplaced blocks.
-	
+
+![image](https://user-images.githubusercontent.com/123365818/216368847-262e22d9-0f5a-4184-8992-e1607cc67836.png)
+
 	
 Here one thing that we noticed is that clock-in and clock-out pins are bigger in size as compared to input and output pins. reason behind this is that, input clocks are conntinuously provides the signal to the every elements of the chip and output clock should out the signal as fast as possible. So, we need least resistance path for the clocks inputs and clocks outputs. So, bigger the size, lower the resistance.
 
@@ -2639,6 +2665,106 @@ One more thing is need to take care about is that, this pin placement area is bl
 So, floor plan is ready for Placement and Routing step.	
 
 #### SKY_L6 - Steps to run floorplan using OpenLANE
+	
+	in the openlane, 
+	run_floorplan
+Before doing floor plann, we required some switches for the floorplanning. these we can get from the configuration from openlane.
+	
+	cd configuration
+	ls -ltr
+![image](https://user-images.githubusercontent.com/123365818/216378049-d7e68d8f-99a1-4ed9-8087-ac5d0bfed702.png)
+	
+	less README.md
+	
+![image](https://user-images.githubusercontent.com/123365818/216379083-e42efe3a-d0e3-4fc4-baaf-8bda19bd3175.png)
+
+	
+less floorplan.tcl
+	
+![image](https://user-images.githubusercontent.com/123365818/216380173-44fe6497-fb60-41a7-831a-87f4b620974a.png)
+	
+Here we can see that the core utilization ratio is 50% (bydefault) and aspect ratio is 1 (bydefault). similarly other information is also given. But it is not neccessory to take these values. we need to change these value as per the given requirments also.
+
+Here FP_PDN files are set the power distribution network. These switches are set in the floorplane stage bydefault in OpenLANE.
+
+	Go to the design file, and open config.tcl
+	cd ..
+	cd Designs
+	cd picorv32a
+	ls -ltr
+	
+![image](https://user-images.githubusercontent.com/123365818/216381314-4d4c3427-62de-49fb-9c88-d2b29292b428.png)
+	
+less config.tcl
+	
+![image](https://user-images.githubusercontent.com/123365818/216381635-5a0fb196-b7ea-425c-8701-ac9a01ae48d7.png)
+	cd runs
+	cd 01-02_08-19/ .....Dates
+	less config.tcl
+	
+![image](https://user-images.githubusercontent.com/123365818/216383023-1a57794e-d30e-4b24-9eea-22ad68b27716.png)
+	
+![image](https://user-images.githubusercontent.com/123365818/216383153-2ec8354d-cce2-4a00-a7c7-59f6dac4fa25.png)
+
+
+Here, (FP_IO MODE) 1, 0 means pin positioning is random but it is on equal distance.
+
+In the OpenLANE lower priority is given to system default (floorplanning.tcl), the next priority is given to config.tcl and then priority is given to PDK varient.tcl (sky130A_sky130_fd_sc_hd_congig.tcl).
+
+Now we see, with this settings how floorplan run.
+	
+In the bash window
+	
+	run_floorplan
+	
+![image](https://user-images.githubusercontent.com/123365818/216384452-7be3938f-d784-48a6-8a58-9c14d4bd4a54.png)
+
+	
+#### SKY_L7 - Review floorplan files and steps to view floorplan
+      
+	In the run folder, we can see the connfig.tcl file. this file contains all the configuration that are taken by the flow. if we open the config.tcl file, then we can see that which are the parameters are accepted in the current flow.
+	
+	cd runs
+	
+	cd 01-02_08-19/ 
+	
+	ls -ltr
+	
+	cd logs/floorplan
+	
+![image](https://user-images.githubusercontent.com/123365818/216385616-2c8ba300-45fd-49ce-b23b-cc4b4f3668bc.png)
+	
+	less 4-ioPlacer.log
+	
+![image](https://user-images.githubusercontent.com/123365818/216388273-30be6c44-ef19-481f-8341-40716621fa4a.png
+	
+	cd ../../
+	ls
+	less config.tcl
+	
+![image](https://user-images.githubusercontent.com/123365818/216388933-cec297c7-b626-4fb6-94c2-d421a6af681f.png)
+
+here we can see that, the core utilization is 35%, aspect ratio is 1 and core margin is taken as 0. while in default the core utilization is 50%. this is the issue. because this design is override the system. but it is the taken from PDK varient.tcl file. so priority vise it is true.
+
+To watch how floorplane looks, we have to go in the results. in the result, one def( design exchange formate) file is available. if we open this file, we can see all information about die area (0 0) (660685 671405), unit distance in micron (1000). it means 1 micron means 1000 databased units. so 660685 and 671405 are databased units. and if we devide this by 1000 then we can get the dimensions of chips in micrometer.
+	
+	cd ..
+	cd ..
+	cd results/floorplan
+	ls -ltr
+	less picorvs2a_floorplan.def
+	
+![image](https://user-images.githubusercontent.com/123365818/216387768-5521d282-5862-4c0c-af2f-0d138290876d.png)
+	
+	To see the actual layout after the flow, we have to open the **magic** file by adding the command 
+**magic -T /home/nikson/Desktop/work/tools/openlane_working_dir/pdks/sky130A/libs.tech/magic/sky130A.tech lef read ../../tmp/merged.lef def read picorv32a.floorplan.def**
+
+![image](https://user-images.githubusercontent.com/123365818/216392389-84c4ee7e-7ec4-4b3f-98b2-43d8d2c6707f.png)
+
+And then after pressing the enter, Magic file will open. here we can see the layout.	
+	
+![image](https://user-images.githubusercontent.com/123365818/216392213-63760ed7-0822-4f84-98bc-6f4a8c6334ad.png)
+
 
 	
 	### SKY130_D2_SK2 - Library Binding and Placement
