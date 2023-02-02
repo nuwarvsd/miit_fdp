@@ -2253,8 +2253,17 @@ Magic is used for design Rules checking and SPICE Extraction from Layout. Magic 
 
 #### SKY_L1 - OpenLANE Directory structure in detail
 
---cd command--
+**cd command**
+	
 cd means change directory. this command will help us to go inside the directory.
+	
+**ls command**
+	
+ls means listing the directory. It is used to find the list of total details of directory.
+	
+**ls --ltr**
+	
+This command will help to list the details in cronological order.
 	
        cd Desktop
 	
@@ -2294,6 +2303,8 @@ cd means change directory. this command will help us to go inside the directory.
 	
 ![image](https://user-images.githubusercontent.com/123365818/215982319-ac1fd81f-f3a6-49a7-846f-27137e891b80.png)
 	
+Here we are working in Sky130_fd_sc_hd PDK varient. where, "sky130" is process name or node name."fd" is a foundary name (skyWater foundary)."sc" means standerd cell librery files and the last one "hd" stands for high density(basically one type of varient).
+	
 	cd lib
 	
 	ls -ltr
@@ -2315,11 +2326,15 @@ cd means change directory. this command will help us to go inside the directory.
 	
 ![image](https://user-images.githubusercontent.com/123365818/215983750-7e7f54b9-8a8e-4df8-99b9-16e23a1b0291.png)
 	
+Sky130_fd_sc_hd varient contains many technology files like verilog, spice, techlef, meglef,mag,gds,cdl,lib,lef,etc. (techlef file contains the layer information).
+	
 #### SKY_L2 - Design Preparation Step
+	
+when we enter in the OpenLANE, we have to use flow.tcl because as a name says, it will goes with the flow using the script. And by using interactive switch, we will do step by step process. without interactive switch, it will run complete flow from RTL to GDSII. 
 	
 go to bash shell
 
-	docker
+	**docker**
 	
 ![image](https://user-images.githubusercontent.com/123365818/215984216-cde75248-5d1a-4759-a179-e5b8db9a5307.png)
 	
@@ -2327,20 +2342,26 @@ go to bash shell
 	
 ![image](https://user-images.githubusercontent.com/123365818/215984582-80da5808-1a5f-479d-9ed8-8fa38ff19f44.png)
 	
-	./flow.tcl -interactive
+	**./flow.tcl -interactive**
 	
 ![image](https://user-images.githubusercontent.com/123365818/215985044-1da04e4a-5648-45a4-80b1-90e91c9ed66e.png)
 
-	changing promt to percentage symbol %
+Now OpenLANE is open and we can see that prompt will change now.
+	**changing promt to percentage symbol %**
 	
 Required to input the package
 	**package require openlane 0.9**
+
+Now we have to input all the packages which required to run the flow. here we are ready to execute the command.
 	
 ![image](https://user-images.githubusercontent.com/123365818/215985890-b8198df9-15b2-4805-b095-ed48b914c143.png)
-
+	
 	Look into the design flolder
 	
 ![image](https://user-images.githubusercontent.com/123365818/215986426-3662ae6d-bc47-49c9-a6ac-e9e10558cfdc.png)
+	
+	Now, if we are going into the design folder in openlane, there are nearly 30-40 designs are already builted. Out of them we can open any of the design. for example, here we are opening the picorv32a.v design. In this design we can see many files are available. i.e., scr, config.tcl, etc. This config.tlc file contains every details about the design. for example, details about enrollment, clock period, clock period port etc.
+	
 	cd picorva32a
 	ls -ltr
 	
