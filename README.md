@@ -1840,11 +1840,10 @@ Time waveform
 Schematic is also not correct
 	![image](https://user-images.githubusercontent.com/123365818/215945042-04089e49-2a2c-4129-926d-f0c75280d343.png)
 	
-	![image](https://user-images.githubusercontent.com/123365818/215946850-460391bc-ce09-4963-924a-6e6b47552aac.png)
-	
-	![image](https://user-images.githubusercontent.com/123365818/215946931-c5db926d-6cfe-4bfd-b0c1-5c3ed4d20ff3.png)
+	![image](https://user-images.githubusercontent.com/123365818/216298014-1f342617-912a-46e6-90ba-ae1ee92d124f.png)
 
-	![image](https://user-images.githubusercontent.com/123365818/215947044-392c7b50-a8b1-4ab5-8ed9-a20c640021be.png)
+	
+	
 	
 	
 6. Generate Bit Stream
@@ -1870,7 +1869,9 @@ Appear warning message
 	
 	Error is occured
 	![image](https://user-images.githubusercontent.com/123365818/215948042-fbdf4bd7-e965-4e07-9d09-da6d6fb8e89f.png)
-![image](https://user-images.githubusercontent.com/123365818/215948111-6027d66a-2325-48cd-b228-71cce13bcc2c.png)
+	
+![image](https://user-images.githubusercontent.com/123365818/216298131-735085c9-2f02-40de-951a-f222e402d03d.png)
+
 
 ## Day 7
 ### SKY130_D1_SK1 - How to talk to computers
