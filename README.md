@@ -2472,6 +2472,85 @@ Now coming to the openlane, we are going to run the synthesis. It will take some
 ![image](https://user-images.githubusercontent.com/123365818/216004700-cf966074-05c8-4cfd-a4bc-5cf4dc285a73.png)
 
 
+##Day 8
+	
+##Sky130 Day 2 - Good floorplan vs bad floorplan and introduction to library cells
+	
+### SKY130_D2_SK2 -Chip floorplanning considerations
+	
+####SKY_L1 - Utilization factor and aspect ratio
+	
+	**Defining the width and height of core and Die**
+	
+![image](https://user-images.githubusercontent.com/123365818/216350712-db0ddcf2-dd6f-4b32-9cb1-94f7e94716f2.png)
+
+	let's begin with netlist( Netlist describes the connectivity of an electronic designs). Considering a netlist with 2 flops and 2 gates.
+	
+![image](https://user-images.githubusercontent.com/123365818/216350880-9917062c-aaa0-43f7-9626-616da276249c.png)
+	
+![image](https://user-images.githubusercontent.com/123365818/216351471-ffa5b0ce-63c9-47a8-8f8b-a06e7d20b4b4.png)
+
+	
+	lets giving the height and width of standerd cell is 1 unit. So, area of standerd cell is 1 square unit.
+	And assuming the same area for the flip flops also.
+	
+![image](https://user-images.githubusercontent.com/123365818/216351584-009604df-56e0-4400-aea2-ef758dbbe2ce.png)
+
+
+Now lets calculate the area occupied by the netlist on a silicon wafer by arranging them together. The total area occupied by netlist in silicon wafer is 4 square units.
+	
+![image](https://user-images.githubusercontent.com/123365818/216352266-56e4a9e6-7b6a-4b9f-b776-ccb434be3331.png)
+
+	
+A 'core' is the section of the chip where the fundamental logic of the design is placed.
+
+A 'Die', which is consist of core, is small semiconductor material specimen on which the fundamental circuits is fabricated.
+
+![image](https://user-images.githubusercontent.com/123365818/216352607-c39020ba-df7a-435c-9bca-66978a3a7a10.png)
+
+If we put the 'arranged netlist' in the core, then whole core is occupied by netlist. that means utilization of core is 100%.
+	
+![image](https://user-images.githubusercontent.com/123365818/216353279-1925f7db-b8d3-42e7-afcf-ec5e588ecbf5.png)
+
+**Utilization factor**
+	
+it is defined as, 'the area occupied by netlist' devided by the 'total area of core'.
+
+so, in above case, the utilization factor is 1.
+
+practically, we don't go with 100% uti;ization. practically utilization factor is about 50%-60% to add other extra cells (like buffer) in the core after netlist is placed.
+
+**Aspect Ratio**
+	
+it is defined as (height)/ (width). here in above example the aspect ratio is 1.
+	
+Another Example,
+	
+![image](https://user-images.githubusercontent.com/123365818/216353574-3f9db10a-cf55-4623-b20a-d49b1474893c.png)
+	
+Utilization is 0.5 and the aspect ratio is also 0.5.
+
+#### SKY_L2 - Concept of pre-placed cells
+
+**Define locations of preplaced cells**
+	
+to define the preplaced cells, let's take a combinational logic i.e., mux, multiplier, clock devider, etc. and assuming that the output of the circuit is huge and assuming that the circuit has some 100k gates. so let devides in two blocks of 50k gates.
+
+	
+	
+	
+	This both blocks are implimented separatly. Now, extending the input and output pins from the both blocks. now, let's detached these box. we will black box the boxes and detached them. After black boxing, the upper portion is invisible from the top or invisible to the one , who is looking into the main netlist. now we make separate them out.
+	
+	
+	
+	
+	
+	### SKY130_D2_SK2 - Library Binding and Placement
+	
+	
+	
+
+
 	
 
 	
