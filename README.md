@@ -3235,6 +3235,124 @@ Input slew /Output Slew
 	
 ![image](https://user-images.githubusercontent.com/123365818/216449200-0a497609-b085-464a-9cf8-1ffed5530169.png)
 
+##Day 9
+
+## Sky130 Day 3 - Design library cell using Magic Layout and ngspice characterization
+
+### SKY130_D3_SK1 - Labs for CMOS inverter ngspice simulations
+
+
+Labs for CMOS inverter ngspice simulations
+SPICE deck creation for CMOS innverter
+IO placer revison
+Till now, we have done floor planning and run placement also. But if we want to change the floorplanning, for example, in our floor planning, pins are at equal distance and if we want to change it then we can also make it by "Set" command.
+
+For that first we have to check the swithes in the configuration and from that we have to take the syntax "env(FP_IO_MODE) 1". and make it to the "env(FP_IO_MODE) 2". then again run the floorplanning.
+
+Then check the changes in the pins location through magic -T.
+
+![image](https://user-images.githubusercontent.com/123365818/216567764-88aed983-d425-4a45-92a0-24c85648d018.png)
+
+
+Mode Matching 0 , 1 
+
+![image](https://user-images.githubusercontent.com/123365818/216567070-a68c3aa2-1dee-48e5-b96c-b13b67fc1e7d.png)
+
+set ::env(FP_IO_MODE) 2
+
+![image](https://user-images.githubusercontent.com/123365818/216568176-6eb10fc4-dc9f-4f19-9d53-a7f515311bfc.png)
+
+Then check the changes in the pins location through magic -T.
+
+![image](https://user-images.githubusercontent.com/123365818/216569326-5c7ecb9a-3717-486d-a08d-bf1ca26fc5f2.png)
+
+So, here we can see that there are no pins in the upper half side. all pins are in the lower half of the core.
+
+#### SKY_L1 - SPICE deck creation for CMOS inverter
+
+VTC- SPICE simulations.
+
+Before entering into the simulation, we have to creat the spice deck. The spice deck is nothing but netlist. so, we have to creat the spice deck for CMOS.
+
+Component connectivity
+
+![image](https://user-images.githubusercontent.com/123365818/216570772-52d7f4a2-6e26-485d-9260-05588b21a7c7.png)
+
+Define the components values
+
+![image](https://user-images.githubusercontent.com/123365818/216570968-aa3db863-3712-4fc5-9c8e-615df5d53974.png)
+
+Identyfy the nodes
+
+![image](https://user-images.githubusercontent.com/123365818/216571171-b6f22358-58fe-4010-a073-9f93a0edd06d.png)
+
+Name 'Nodes'
+
+![image](https://user-images.githubusercontent.com/123365818/216571543-9d20f2c2-914e-45b2-94e6-b7e95ba3ab7f.png)
+
+Now, let's strat the writing the SPICE deck
+
+
+
+Here, in the syntex, It is like Name of the mosfet, drain , gate, substrait , source. so, the meaning of the syntex is that, name of the mosfet is M1, Drain is connected to OUT node, Gate is connected to IN node, Substrait is connected to Vdd and the Source is connected to Vdd node. PMOS says the type of mosfet and the Width and lenth of channel is defined. similarly, For M2, syntex were written.
+
+#### SKY_L2 - SPICE simulation lab for CMOS inverter
+
+SPICE simulation lab for CMOS
+
+![image](https://user-images.githubusercontent.com/123365818/216572149-1edb56b6-9709-43cc-961c-35c9cc07f93e.png)
+
+Tile we discribe the connectivity information about CMOS inverter only. Now we have to discribe connectivity information about other components also like source, capacitor etc. so, lets look into the other components.
+
+First we discribe the load capacitor and then about the Vdd and Vin.
+
+![image](https://user-images.githubusercontent.com/123365818/216572745-788981e1-9319-4581-87e9-871cd232a17d.png)
+
+Now, we have to give simulation command. which is about swiping the Vin from 0 to 2.5 with the steps of 0.05. Because we want Vout while changing the Vin.
+
+![image](https://user-images.githubusercontent.com/123365818/216572925-d569e8c3-4f18-45d5-bd3b-e5eeff03c4c0.png)
+
+The final step is to discribe the Model file.Model file contains all the details about PMOS and NMOS. from this file only we get the information about PMOS and NMOS.
+
+![image](https://user-images.githubusercontent.com/123365818/216573114-d7491ab6-ddcd-4cae-8447-6c6440aad7ea.png)
+
+
+
+![image](https://user-images.githubusercontent.com/123365818/216573290-5e49f920-a51c-47be-b7fe-f2dacb417b03.png)
+
+So, the total program is given below,
+
+![image](https://user-images.githubusercontent.com/123365818/216573627-a6bc5ff3-c99c-4e20-af24-f75a343ab981.png)
+
+![image](https://user-images.githubusercontent.com/123365818/216574093-7988ac66-ba75-49be-99ac-81b0542eac17.png)
+
+
+Now, doing the simulation and get the graph like this,
+
+![image](https://user-images.githubusercontent.com/123365818/216574551-4f87c276-2759-4bf5-9cb1-d8b48ad41dce.png)
+
+Now, doing other simulation in which we change the PMOS width to 3 times of NMOS width. and after diong the simulation, we get the graph like this,
+
+
+#### SKY_L3 - Switching Threshold Vm
+
+CMOS is robust device
+![image](https://user-images.githubusercontent.com/123365818/216575023-34c340a4-4532-45db-be96-42a9699aacde.png)
+
+CMOS inverter 's switching threshold
+Vin=Vout
+![image](https://user-images.githubusercontent.com/123365818/216575328-58408ae5-9479-47aa-ab59-86e2ca20a11a.png)
+
+![image](https://user-images.githubusercontent.com/123365818/216575773-c1ebfb4f-2c5b-4d6b-b095-dd30cb0db760.png)
+
+
+![image](https://user-images.githubusercontent.com/123365818/216576051-ab931dd8-f150-479b-903b-7d35b7a772f2.png)
+
+Idsp=-IdsN
+![image](https://user-images.githubusercontent.com/123365818/216576067-83e5fab4-04ca-4d99-ba14-86ca628b4cd6.png)
+
+
+
 
 
 	
