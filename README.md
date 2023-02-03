@@ -3363,6 +3363,26 @@ By comparing this both the graph we can understang the concept of switching thre
 Idsp=-IdsN
 ![image](https://user-images.githubusercontent.com/123365818/216576067-83e5fab4-04ca-4d99-ba14-86ca628b4cd6.png)
 
+#### SKY_L4 - Static and dynamic simulation of CMOS inverter
+	
+![image](https://user-images.githubusercontent.com/123365818/216577076-fa335518-a47c-4b3c-a92a-fae788b3dd52.png)
+	
+Rise time ,Fall Time
+	
+![image](https://user-images.githubusercontent.com/123365818/216577284-452e7e84-117c-4aff-ac9e-81469e80e285.png)
+	
+![image](https://user-images.githubusercontent.com/123365818/216578047-d7edebc1-8756-42d2-b6c7-0223db00067a.png)
+
+Rise Delay
+![image](https://user-images.githubusercontent.com/123365818/216578500-d2156324-fb19-4a5c-80ce-cf54c5457f09.png)
+
+Fall Delay
+![image](https://user-images.githubusercontent.com/123365818/216579073-c0cb2872-7acf-4330-8f63-c70e5619ad20.png)
+
+Rise vs Fall Delay
+	
+![image](https://user-images.githubusercontent.com/123365818/216579269-f85c0f64-fc4b-4966-a9f8-4f78eedd05af.png)
+
 
 Lab steps to git clone vsdstdcelldesign
 To get the clone, copy the clone address from reporetery and paste in openlane terminal after the command "git clone". this will create the folder called "vsdstdcelldesign" in openlane directory.
