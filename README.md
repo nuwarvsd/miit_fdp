@@ -2678,10 +2678,14 @@ Before doing floor plann, we required some switches for the floorplanning. these
 	
 ![image](https://user-images.githubusercontent.com/123365818/216379083-e42efe3a-d0e3-4fc4-baaf-8bda19bd3175.png)
 
+![image](https://user-images.githubusercontent.com/123365818/216523876-1db12fa9-d68d-489c-88eb-4b8580d38afb.png)
 	
 less floorplan.tcl
 	
 ![image](https://user-images.githubusercontent.com/123365818/216380173-44fe6497-fb60-41a7-831a-87f4b620974a.png)
+
+![image](https://user-images.githubusercontent.com/123365818/216523916-cf028634-96a3-40d3-a0ac-e02321450e82.png)
+
 	
 Here we can see that the core utilization ratio is 50% (bydefault) and aspect ratio is 1 (bydefault). similarly other information is also given. But it is not neccessory to take these values. we need to change these value as per the given requirments also.
 
@@ -2737,6 +2741,9 @@ In the bash window
 	less 4-ioPlacer.log
 	
 ![image](https://user-images.githubusercontent.com/123365818/216388273-30be6c44-ef19-481f-8341-40716621fa4a.png
+
+![image](https://user-images.githubusercontent.com/123365818/216524003-b8779795-e03d-4c24-a862-68c790f1055b.png)
+
 	
 	cd ../../
 	ls
@@ -2755,6 +2762,9 @@ To watch how floorplane looks, we have to go in the results. in the result, one 
 	less picorvs2a_floorplan.def
 	
 ![image](https://user-images.githubusercontent.com/123365818/216387768-5521d282-5862-4c0c-af2f-0d138290876d.png)
+
+![image](https://user-images.githubusercontent.com/123365818/216524042-0468c57e-1cf5-4205-bc4c-2f2249842416.png)
+
 	
 	To see the actual layout after the flow, we have to open the **magic** file by adding the command 
 **magic -T /home/nikson/Desktop/work/tools/openlane_working_dir/pdks/sky130A/libs.tech/magic/sky130A.tech lef read ../../tmp/merged.lef def read picorv32a.floorplan.def**
@@ -2765,6 +2775,37 @@ And then after pressing the enter, Magic file will open. here we can see the lay
 	
 ![image](https://user-images.githubusercontent.com/123365818/216392213-63760ed7-0822-4f84-98bc-6f4a8c6334ad.png)
 
+**magic -T /home/nu_war/Desktop/work/tools/openlane_working_dir/pdks/sky130A/libs.tech/magic/sky130A.tech lef read ../../tmp/merged.lef def read picorv32a.floorplan.def**
+
+![image](https://user-images.githubusercontent.com/123365818/216523655-81e69ed3-4bca-48c5-a785-188c1efd4f92.png)
+
+**Reviewing floorplan layot with magic**
+
+In the layout we can see that, input output pins are at equal distance.
+
+![image](https://user-images.githubusercontent.com/123365818/216524083-bf917f22-d99d-40c8-afd3-58ebc2402cfc.png)
+
+![image](https://user-images.githubusercontent.com/123365818/216524208-0b2e04f3-bec6-4317-b30d-1bc30a8a867d.png)
+
+after selecting (To select object, first click on the object and then press 's' from keyboard. the object will hight lited. to zoom in the object, click on the object and then press 'z' and for zoom out press 'sft+z') one input pin, if we want to check the location or to know at on which layer it is available, we have to open tkcon window and type "what". it will shows all the details about that perticular pin.
+
+![image](https://user-images.githubusercontent.com/123365818/216524315-8ff87a42-c868-4c29-b6f8-5e5cf3a870be.png)
+
+![image](https://user-images.githubusercontent.com/123365818/216524429-33d04e83-9097-4433-ba94-483e53cfc854.png)
+
+![image](https://user-images.githubusercontent.com/123365818/216524483-2aff8e5f-cff6-4c5a-a39a-72dc20441e5d.png)
+
+![image](https://user-images.githubusercontent.com/123365818/216524566-d73f7c48-b489-451d-9cd6-aea638ad7323.png)
+
+![image](https://user-images.githubusercontent.com/123365818/216524596-2972728d-1099-4df8-aed7-e1ffefd8a86a.png)
+
+![image](https://user-images.githubusercontent.com/123365818/216524623-563a385c-c441-43dd-aaef-7cecf8cc055b.png)
+
+
+so, it show that the pin is in the metal 3.similarly doing for the vertical pins, we find that this pin is at metal 2.
+
+![image](https://user-images.githubusercontent.com/123365818/216524650-06e79cd2-78ca-489c-83c0-23e49d9067d9.png)
+here we can see that first standerd cells is for buffer 1. similarly other cells are for buffer 2, AND gate etc.
 
 ### SKY130_D2_SK2 - Library Binding and Placement
 	
@@ -2902,7 +2943,46 @@ Library
 	
 #### SKY_L5 - Congestion aware placement using RePlAce
 	
-	
+Right now we are not constrain about timing, but constrain about the congestion. so, we are making the congrstion is less.
+
+cd /Desktop/work/tools/openlane_working_dir/openlane/
+
+docker
+
+./flow-tcl -interactive
+
+/package require openlane 0.9
+
+prep -design picorv32a
+
+run_synthesis
+
+run_floorplan
+
+run_placement
+
+The placement is donne in two stages. Global and detailed. In global placement, legalization is not happened but after detailed placement legalization will be done.
+
+When we run the placement, first Global placement is happens. main objective of glibal placement is to reducing the length of wires.
+
+In the other terminal,
+cd /Desktop/work/tools/openlane_working_dir/openlane/designs/picorv32a/runs/03-02_05-15/results/placement
+ls
+
+**magic -T /home/nu_war/Desktop/work/tools/openlane_working_dir/pdks/sky130A/libs.tech/magic/sky130A.tech lef read ../../tmp/merged.lef def read picorv32a.placement.def&**
+
+
+Now opening the Magic file to see actual view of standerd cells placement.And the actual view in the magic file is given below,
+
+![image](https://user-images.githubusercontent.com/123365818/216523256-c6b4811c-b439-462d-afc7-a6bc57dfda69.png)
+
+If we zooom into this, we find the buffers, gates, flip flops in this.
+
+![image](https://user-images.githubusercontent.com/123365818/216523378-580e33b0-5444-4f2f-81ac-cb59810445d0.png)
+
+![image](https://user-images.githubusercontent.com/123365818/216523427-9ab7c259-3c52-41d0-a326-619d22478b9b.png)
+
+
 	
 ### SKY130_D2_SK3 - Cell design and characterization flows
 
