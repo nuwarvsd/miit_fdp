@@ -3339,10 +3339,22 @@ Now, doing other simulation in which we change the PMOS width to 3 times of NMOS
 CMOS is robust device
 ![image](https://user-images.githubusercontent.com/123365818/216575023-34c340a4-4532-45db-be96-42a9699aacde.png)
 
+	The difference between this two graph is that in the second graph the transfer charactoristic is lies in the ecxact middle of the graph where in the first graph it is lies left from the middle of the graph.
+
+Switching Thresold Vm
+These both model of different width has their own application. By comparing this both waveform, we can see that the shape of the both waveform is same irrespective of the voltage level.
+
+This thing tell us that when Vin is at low, output is at high and when Vin is at high, the output is at low. so the charactoristic is maintain at all kind of CMOS with different size of NMOS or PMOS. That is why CMOS logic is very widely used in the design of the gates.
+
+Switching thresold, Vm (the point at which the device switches the level) is the one of the parameter that defined the robustness of the Inverter. Switching thresold is a point at which Vin=Vout.
 CMOS inverter 's switching threshold
 Vin=Vout
+	
 ![image](https://user-images.githubusercontent.com/123365818/216575328-58408ae5-9479-47aa-ab59-86e2ca20a11a.png)
 
+In this figure, we can see that at Vm~0.9v, Vin=Vout. This point is very critical point for the CMOS because at this point there is chance that both PMOS and NMOS are turned on. If both are turned on then there is chances of leakage current(Means current flow direcly from power to ground).
+
+By comparing this both the graph we can understang the concept of switching thresold voltage.
 ![image](https://user-images.githubusercontent.com/123365818/216575773-c1ebfb4f-2c5b-4d6b-b095-dd30cb0db760.png)
 
 
@@ -3352,7 +3364,8 @@ Idsp=-IdsN
 ![image](https://user-images.githubusercontent.com/123365818/216576067-83e5fab4-04ca-4d99-ba14-86ca628b4cd6.png)
 
 
-
+Lab steps to git clone vsdstdcelldesign
+To get the clone, copy the clone address from reporetery and paste in openlane terminal after the command "git clone". this will create the folder called "vsdstdcelldesign" in openlane directory.
 
 
 	
