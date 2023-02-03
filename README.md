@@ -2788,10 +2788,12 @@ In the layout we can see that, input output pins are at equal distance.
 ![image](https://user-images.githubusercontent.com/123365818/216524208-0b2e04f3-bec6-4317-b30d-1bc30a8a867d.png)
 
 after selecting (To select object, first click on the object and then press 's' from keyboard. the object will hight lited. to zoom in the object, click on the object and then press 'z' and for zoom out press 'sft+z') one input pin, if we want to check the location or to know at on which layer it is available, we have to open tkcon window and type "what". it will shows all the details about that perticular pin.
-
-![image](https://user-images.githubusercontent.com/123365818/216524315-8ff87a42-c868-4c29-b6f8-5e5cf3a870be.png)
-
+	
 ![image](https://user-images.githubusercontent.com/123365818/216524429-33d04e83-9097-4433-ba94-483e53cfc854.png)
+	
+Along with the side rows,the Decap cells are arranged at the border of the side rows.
+	
+![image](https://user-images.githubusercontent.com/123365818/216524315-8ff87a42-c868-4c29-b6f8-5e5cf3a870be.png)
 
 ![image](https://user-images.githubusercontent.com/123365818/216524483-2aff8e5f-cff6-4c5a-a39a-72dc20441e5d.png)
 
