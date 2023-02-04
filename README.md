@@ -3815,4 +3815,40 @@ Thus, the first step in magic layout tool is to create a bounding box with a wid
 This is followed by defining the ground and power segments (in metal 1), the respective contacts and finally the layout of the logic part. Same procedure can be followed for any standard cell layout.
 	
 ![image](https://user-images.githubusercontent.com/123365818/216768917-e0b82f0a-0652-42df-b9cf-c5f6f18b91bc.png)
+	
+To extract the file from here, we have to write the command in tckon window. and the comand is "extract all".
+	
+![image](https://user-images.githubusercontent.com/123365818/216769533-bbfed17d-8f52-4a62-953b-19fc50ef7193.png)
 
+Now let's go to this location from the terminal. it is exctracted.	
+![image](https://user-images.githubusercontent.com/123365818/216769603-4d65d3ad-ce62-4193-8561-47b92ce37e03.png)
+	
+we will use this .ext file to create the spice file to be use with our ngspice tool. 
+For that we have apply the comand "ext2spice cthresh 0 rthresh 0". this will not create anything new. now again we have to type "ext2spice" comand in tckon window.
+**ext2spice cthresh 0 rthresh 0**
+**ext2spice**
+	
+![image](https://user-images.githubusercontent.com/123365818/216769990-33cf0e89-2107-46b8-a044-2f8c7f2683bd.png)
+
+Then we are checking the location and at there spice file has been created.
+	
+![image](https://user-images.githubusercontent.com/123365818/216770057-e14a42bb-483d-4b1b-8975-1d1914b8594e.png)
+
+let's see what inside the spice file by "vim sky130_inv.spice".
+
+![image](https://user-images.githubusercontent.com/123365818/216770128-c651a1c6-c32b-434f-b2f9-230040f163da.png)
+
+### SKY130_D3_SK3 - Sky130 Tech File Labs
+	
+#### SKY_L1 - Lab steps to create final SPICE deck using Sky130 tech
+	
+![image](https://user-images.githubusercontent.com/123365818/216770265-b0157853-e65f-4724-95dd-4c47f119ab3c.png)
+	
+here, we can see the all details about the connectivity of the NMOS and PMOS and about the power supply also.
+
+X0 is NMOS and X1 is PMOS and both's connectivity is shown as GATE DRAIN SUBSTATE SOURCE.
+
+But here the scale is 10000 um. but in Magic simulation, it is 0.01.
+
+
+	
