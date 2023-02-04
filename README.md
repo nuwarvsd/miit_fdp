@@ -3663,31 +3663,156 @@ Next step is to create the reaction between Ti layer and source, gate, drain of 
 ![image](https://user-images.githubusercontent.com/123365818/216766348-594ea96f-8d09-44b9-939b-e4af2ab1c401.png)
 
 	
-	and after reaction, we can see the titanium siliside over the wafer. One more reaction is heppend there between Ti and N. and it results the TIN which is used for local communication.
+and after reaction, we can see the titanium siliside over the wafer. One more reaction is heppend there between Ti and N. 
+
 
 ![image](https://user-images.githubusercontent.com/123365818/216766375-629668d1-3ee2-4779-bb08-3974c0feee62.png)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+and it results the TIN which is used for local communication.
+	
+![image](https://user-images.githubusercontent.com/123365818/216766515-6e2f4198-1ad5-49a7-b55b-12d05a544299.png)
 	
 
+Now by using mask 11 and photoresist, we will etched out the TIN and make perticular contacts. 
+	
+![image](https://user-images.githubusercontent.com/123365818/216766566-8c9ec937-6312-4eca-a76a-8914f0dfb3d3.png)
+	
+TIN is etched out by using RCA cleaning.
+	
+
+![image](https://user-images.githubusercontent.com/123365818/216766622-cd4f6a09-449d-496a-8f92-1f719209d351.png)
+
+RCA cleaning
+	
+![image](https://user-images.githubusercontent.com/123365818/216766698-34730c70-c9ab-495d-964d-83d0cd340761.png)
+
+Now, local interconnects are formed after etching and removing the photoresist.
+
+![image](https://user-images.githubusercontent.com/123365818/216766728-f0fb9aac-dcb4-41ce-bfc6-2134df625a46.png)
+
+#### SKY_L7 - Higher level metal formation
+	
+
+8. Higher level metal formation
+	
+These steps are very semilar like previous steps. First thing that we are noticing is that the surface is non planner. 
+It is not good to use this type of non planner serface for matel interconnects because of the problems regarding the metal disconinuty.
+So, we have to plannerize the surface by depositing the thick layer of sio2 with some impurity to make less resistive layer. 
+	
+![image](https://user-images.githubusercontent.com/123365818/216766802-355d22ca-3d5c-4892-bc69-a3ed7448327f.png)
+And then we used CMP (chemical mechanical polishing) technique to plannerise the surface.
+	
+![image](https://user-images.githubusercontent.com/123365818/216766862-f530a8eb-0da5-4da6-a25b-b69c5f969b13.png)
+
+Now using mask 12 and photorsist we etched the sio2 layer to diposite the metal in it.
+	
+![image](https://user-images.githubusercontent.com/123365818/216766916-3a033007-3df1-4cb4-bf9c-ee64d293cf30.png)
+
+Now remove the photoresist
+	
+![image](https://user-images.githubusercontent.com/123365818/216766966-6bb48083-b834-4216-925f-a19a616a0bb0.png)
 
 
+and seposite the thin later of TIN (~10nm) over the wafer. 
+	
+![image](https://user-images.githubusercontent.com/123365818/216767062-73e983e6-0a01-43d2-87aa-037481f72004.png)
+
+Because TiN is act as very good adession layer for sio2 and also act as a barrier between bottom layer and top layer of metal interconnects.
+
+![image](https://user-images.githubusercontent.com/123365818/216767117-1e3f7746-370b-46ad-9df6-ff91ed1ff148.png)
 
 
+Next step is to deposite the blanket tungsten (W) layer over the wafer.
+	
+![image](https://user-images.githubusercontent.com/123365818/216767185-84853aac-0803-4251-9655-4ada158be341.png)
+
+	
+and then do the CMP here to plannerize the surface.
+	
+![image](https://user-images.githubusercontent.com/123365818/216767203-4f2aad0e-36b2-49e4-9459-82d58a11bb18.png)
+	
+This W is act as a contact holes and this holes needs to connect to the Higher metal layer. so we will deposite the Al (aluminium) layer.
+
+![image](https://user-images.githubusercontent.com/123365818/216767260-dd852993-3153-458c-95ca-ed6d1b139910.png)
 
 
+Then by using the mask 13 and photoresist, 
+	
+![image](https://user-images.githubusercontent.com/123365818/216767336-1dd84c02-d388-4a5d-8a2d-53fdcc2ebc06.png)
+	
+we etched the W layer out to form the contact at perticular place by Plasma etching.
+	
+![image](https://user-images.githubusercontent.com/123365818/216767364-df1b6431-9546-4f91-bd72-b3dd1fe10352.png)
+
+This is our first level of metal interconnets. 
+	
+![image](https://user-images.githubusercontent.com/123365818/216767396-0c3fb341-e595-4b9a-b0b4-ee184e3e7de9.png)
+	
+Metal 14 used
+
+![image](https://user-images.githubusercontent.com/123365818/216767438-9389ae51-60d0-470c-9dfb-061cd664a28e.png)
+
+Again TiN
+![image](https://user-images.githubusercontent.com/123365818/216767488-e4e7b3c1-1509-418e-a7b6-ec9fae6cbe07.png)
+
+W as contact	
+![image](https://user-images.githubusercontent.com/123365818/216767526-f83149ae-cb05-4380-8a6d-23ddbd069cae.png)
+
+	
+now we again do the same process as above to deposite the second level of metal interconnect by using mask 14 for etched out the sio2 and using mask 15 for etched out Al leyer.
+![image](https://user-images.githubusercontent.com/123365818/216767572-6db78df4-241c-440c-978c-ec2beed527ca.png)
 
 
+The upper layer of Al is bit thicker as compared to lower layer of Al.Now, again deposite the layer of sio2 or si3N4 to protect the chip.
+	
+![image](https://user-images.githubusercontent.com/123365818/216767618-d5a088b2-8846-4d1f-9895-b7d7816d9f61.png)
+
+	
+And finally our CMOS is looks like this after the fabrication.
+	
+![image](https://user-images.githubusercontent.com/123365818/216767651-787ba189-1183-4199-8f83-eafcac4005eb.png)
+
+#### SKY_L8 - Lab introduction to Sky130 basic layers layout and LEF using inverter
+	
+Lab introduction to Sky130 basic layer layout and LEF using inverter
+In software point of view.
+![image](https://user-images.githubusercontent.com/123365818/216767827-f9c1aab9-3d08-4111-aef6-08e703a83eda.png)
+
+
+In sky130, every color is showing the different layer. here the firsst layer is for local interconnect shown by blue_perpel color, then second layer is metal 1 which is showm by light perple color, and the metal 2 is shown by pink color. N-well is showm by solide das line. green is N-diffusion region. and red is for polysilicon gate. similarly the brown color is for P-diffusion.
+	
+nwell
+![image](https://user-images.githubusercontent.com/123365818/216768234-cd75501d-12cd-4000-9d43-fdcdfa28cf42.png)
+
+In tckon window, we can see that the selected area is NMOS and similarly we can chech PMOS also. and that is how we can check that the CMOS is working or not.	
+nmos	
+![image](https://user-images.githubusercontent.com/123365818/216768081-deb3cef3-cf7b-4204-bbda-b320be15bba8.png)
+
+pmos
+![image](https://user-images.githubusercontent.com/123365818/216768269-2e0b3f08-6845-4a7e-9df5-ef6c0bb993f1.png)
+	
+n diffusion
+![image](https://user-images.githubusercontent.com/123365818/216768137-9a503b42-2aac-4fde-9d08-78ab6124b088.png)
+so, we can see that "Y" is attached to locali in cell def sky130_inv.
+
+
+output Y
+![image](https://user-images.githubusercontent.com/123365818/216768424-2472d57a-2477-4915-aa57-d87008a64faa.png)
+	
+we can check the source of the PMOS is connected to the ground or not. and similarly we can check it for NMOS also.
+![image](https://user-images.githubusercontent.com/123365818/216768536-79044589-d264-4087-9dac-fee61691a0c9.png)
+
+![image](https://user-images.githubusercontent.com/123365818/216768703-73af9951-ca62-4fa1-8164-2f504f166226.png)
+
+#### SKY_L9 - Lab steps to create std cell layout and extract spice netlist	
+
+The proposed inverter for the design is a single height standard cell, so the dimensions needs to be a multiple of the single height place site; which for sky130 node has a nomenclature of unithd with dimensions(in microns): 0.46 x 2.72 (width x height) for sky130_fd_sc_hd PDK variant. The magic tool is invoked with sky130 tech file as magic -T sky130A.tech & (the magic tech file (sky130A.tech) has also been included in this repo under /libs as reference).
+
+Thus, the first step in magic layout tool is to create a bounding box with a width of 1.38 (3 x width(unithd)) and height of 2.72. This can be done by using command property FIXED_BBOX {0 0 138 272} in magic tkcon window.
+	
+![image](https://user-images.githubusercontent.com/123365818/216768877-54254def-d6c0-4b54-a388-f705ece7d332.png)
+	
+This is followed by defining the ground and power segments (in metal 1), the respective contacts and finally the layout of the logic part. Same procedure can be followed for any standard cell layout.
+	
+![image](https://user-images.githubusercontent.com/123365818/216768917-e0b82f0a-0652-42df-b9cf-c5f6f18b91bc.png)
 
