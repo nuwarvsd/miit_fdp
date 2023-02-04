@@ -3639,15 +3639,33 @@ Now we put this Half made CMOS into the high temparature (1000 degree)anneling. 
 #### SKY_L6 - Local interconnect formation
 	
 Local interconnect formation
-7)steps tp form contacts and local interconnects
-First step is remove the thin screen oxide layer by etching. Then deposite the titanium (Ti) using sputtering. here Ti is used because Ti has very low resistivity.
+	
+7. steps tp form contacts and local interconnects
+	
+First step is remove the thin screen oxide layer by etching. 
 
 ![image](https://user-images.githubusercontent.com/123365818/216765191-f5ee343c-a891-478c-af65-95bff705e2ba.png)
 
+Then deposite the titanium (Ti) using sputtering. 
+	
+![image](https://user-images.githubusercontent.com/123365818/216766265-b1706483-da15-45ab-8337-0839af461014.png)
 
+Ti
+	
+![image](https://user-images.githubusercontent.com/123365818/216766286-0e7e9fbc-8892-4145-95ee-f12ef2380e13.png)
 
-Next step is to create the reaction between Ti layer and source, gate, drain of CMOS. For that wafer is heated at about 650-700 degree temparature in N2 ambient for about 60 seconds. and after reaction, we can see the titanium siliside over the wafer. One more reaction is heppend there between Ti and N. and it results the TIN which is used for local communication.
+here Ti is used because Ti has very low resistivity.
+	
+![image](https://user-images.githubusercontent.com/123365818/216766312-fe71c227-7b0a-4656-be02-3fe63b7c4440.png)
 
+Next step is to create the reaction between Ti layer and source, gate, drain of CMOS. For that wafer is heated at about 650-700 degree temparature in N2 ambient for about 60 seconds. 
+	
+![image](https://user-images.githubusercontent.com/123365818/216766348-594ea96f-8d09-44b9-939b-e4af2ab1c401.png)
+
+	
+	and after reaction, we can see the titanium siliside over the wafer. One more reaction is heppend there between Ti and N. and it results the TIN which is used for local communication.
+
+![image](https://user-images.githubusercontent.com/123365818/216766375-629668d1-3ee2-4779-bb08-3974c0feee62.png)
 
 
 
