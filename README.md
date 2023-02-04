@@ -3383,47 +3383,270 @@ Rise vs Fall Delay
 	
 ![image](https://user-images.githubusercontent.com/123365818/216579269-f85c0f64-fc4b-4966-a9f8-4f78eedd05af.png)
 
+#### SKY_L5 - Lab steps to git clone vsdstdcelldesign
 
-Lab steps to git clone vsdstdcelldesign
-To get the clone, copy the clone address from reporetery and paste in openlane terminal after the command "git clone". this will create the folder called "vsdstdcelldesign" in openlane directory.
+	Lab steps to git clone vsdstdcelldesign
 
+	To get the clone, copy the clone address from reporetery and paste in openlane terminal after the command "git clone". this will create the folder called "vsdstdcelldesign" in openlane directory.
+	
+	git clone https://github.com/nickson-jose/vsdstdcelldesign.git
+	
+![image](https://user-images.githubusercontent.com/123365818/216760834-0bbab357-90d9-4d36-b4ea-370c998c6ac1.png)
+
+	now, if we open the openlane directory, we find the vsdstdcelldesing folder in the openlane directory.
+ls -ltr
+	
+![image](https://user-images.githubusercontent.com/123365818/216760848-9460fcb1-49e4-4899-917d-ad6caabbe62a.png)
+
+	Now if we goes in the vsdstdcelldesign folder and open it, we get the .mag file,libs file etc.
+	
+![image](https://user-images.githubusercontent.com/123365818/216760912-5f2dbe4d-62ef-4148-9810-568c805285aa.png)
+
+	now, let's open the .mag file and see that which layers are used to build the inverter. But before opening the mag file, we need tech file. so we will copy this file from this given below address,
+go to the pdk folder, copy tech file
+	
+![image](https://user-images.githubusercontent.com/123365818/216761175-53b29c91-733b-4617-b8f6-8e951ee855f8.png)
 
 	
+cp sky130A.tech /home/nu_war/Desktop/work/tools/openlane_working_dir/openlane/vsdstdcelldesign
 
+then go back to our vsdstdcelldesign folder,
 
+![image](https://user-images.githubusercontent.com/123365818/216761217-a492f5b4-3a04-45cc-9018-a6e55722f716.png)
+
+Now we can see tech file under vsdstdcelldesign folder
+
+magic -T sky130A.tech sky130_inv.mag &
+
+![image](https://user-images.githubusercontent.com/123365818/216761603-6fb19ec2-ffbc-4f0b-9312-aa8c905e5faa.png)
+Now, we can see the layout of CMOS inverter in the magic like this, in the center
+press S and P
+
+### SKY130_D3_SK2 - Inception of Layout Â CMOS fabrication process
+
+####  SKY_L1 - Create Active regions
+	
+1. selecting a substrate
+we select P-type silicon substrate with high resistivity(5~50 ohms) with moderate dopping and orientation is (100).
+	dopping level 
+
+![image](https://user-images.githubusercontent.com/123365818/216761702-6f3a4961-caf9-453c-a62a-eea38b18337a.png)
+
+2. creating active region for transister
+	Active region (pocket) identify the region of the pocket
+![image](https://user-images.githubusercontent.com/123365818/216761742-3607825e-4ee0-460c-9f2b-52b76e993d6e.png)
+	
+	First, we create the isolation layer by depositing the Sio2 layer (~40nm) on the substrate.
+
+very good insulator
+![image](https://user-images.githubusercontent.com/123365818/216761809-40dcfdf1-a7cb-4073-8e52-e38d4070cb41.png)
+	
+Now, we are depisiting the Si3N4 layer (~80 nm) on the Sio2 layer.
+	
+![image](https://user-images.githubusercontent.com/123365818/216761853-02604ea3-8b25-43da-815a-6dfa5372a284.png)
+	
+Mask1: Photoresist layer (positive film or negative film of older camera)
+![image](https://user-images.githubusercontent.com/123365818/216761916-d40d68c5-67db-47f0-a43b-a502e41b0768.png)
 
 	
+Now we do patterning by using depositing photoresist and using Mask 1 through UV light.
+red is protecting region
+![image](https://user-images.githubusercontent.com/123365818/216762021-6b3f9d70-7d4b-47d1-b7a2-1bcef9fd113c.png)
 
+no chemical reaction under the protection region
+![image](https://user-images.githubusercontent.com/123365818/216762134-f3dee340-4ee0-494d-9ca4-5fce0e4ec496.png)
 
+Now, first we remove the mask and doing etching of Si3N4 layer on the exposed area.
 
+![image](https://user-images.githubusercontent.com/123365818/216762188-57f26edb-19f0-443b-9fc5-59176ac66a17.png)
 
-
-
-
-
+	Now, next step is to remove photoresist by chamical reaction, because now to Si3N4 layer itslef behaves like good protecting layer for Sio2 layer.
+	
+![image](https://user-images.githubusercontent.com/123365818/216762336-d58cedc0-ab02-43a8-bc30-1887e4289d4b.png)
 
 	
-
 	
+![image](https://user-images.githubusercontent.com/123365818/216762308-40c6372d-d61e-452f-9555-ada3dd37ef5a.png)
 
+	oxidation furnance
+![image](https://user-images.githubusercontent.com/123365818/216762419-fc628ca2-6776-42fa-9e51-ee155e1911d4.png)
+
+	now, if we do LOCOS (local oxidation of silicon) process, the exposed sio2 part will gown and bird break also form. This grown sio2 will provide the perfect isolation between two PMOS and NMOS.
 	
-
-   
-
-
-
-
+![image](https://user-images.githubusercontent.com/123365818/216762570-2437f233-aa71-42ff-bd65-6451976648df.png)
 	
+Next step is to etchout the Si3N4 layer by hot phosphoric acid.
+	
+![image](https://user-images.githubusercontent.com/123365818/216762634-0e29e21a-a421-459e-a137-9939a64a9f3f.png)
+
+#### SKY_L2 - Formation of N-well and P-well	
+N-well and P-well formation
+
+	Cover photoresist layer again
+	
+![image](https://user-images.githubusercontent.com/123365818/216762688-7d7e1e86-2913-4cf0-8371-3f7099f8fbd7.png)
+
+we can not form P-well and N-well at a same time. we have to protect a region while forming one of the region by photoresist. And then using mask 2 and UV light, we will do patterning of photoresist to form P-well.
+
+Cross sectional view
+![image](https://user-images.githubusercontent.com/123365818/216762763-47b58ef8-1aa9-4e64-8bde-9f5f89351cc5.png)
+
+Topview
+![image](https://user-images.githubusercontent.com/123365818/216762810-3da7290e-7797-42d0-abe2-ddd8e4c6f0bb.png)
+
+UV Expose
+	
+![image](https://user-images.githubusercontent.com/123365818/216762897-08e6f912-c751-44b7-8d5d-2e72450a7bf2.png)
+	
+Now, the area where we want to form the P-well is exposed. now we remove the mask and by applying the ion implantaton method (~200kev)to form P-well using Boron. But still it is P implant. After performing the high temparature anneling, it will become P-well.
+
+diffuse the boron
+![image](https://user-images.githubusercontent.com/123365818/216763000-0f7f05b2-674f-4cdd-ab9d-3d3d2ce58e21.png)
+
+	We wiil do a similar process to form N-well by using mask 3 and using Phosphorus ions.
+	
+![image](https://user-images.githubusercontent.com/123365818/216763059-55942893-1354-4f25-b423-fd8046b652e4.png)
+	
+	Phosphorus implantation (Phosphorus atom is heavier than boron)
+	
+![image](https://user-images.githubusercontent.com/123365818/216763118-d8c0bfdb-bc99-42b9-91d8-66f52a910769.png)
+
+
+	till now depth of wells are not define. so, by putting into the high temparature furnace (drive-in diffusion), we will define the depth of wells.
+
+![image](https://user-images.githubusercontent.com/123365818/216763167-482909be-c345-42b2-ad02-b579b0853f7c.png)
+
+	Twin well
+	
+![image](https://user-images.githubusercontent.com/123365818/216763205-3cfd31ef-9c34-4c58-815d-ea656b23e134.png)
+
+#### SKY_L3 - Formation of gate terminal
+	
+Gate formation
+	
+Threshold voltage is very much depend on body effect (doping concentration)
+	
+![image](https://user-images.githubusercontent.com/123365818/216763398-99eeb84f-ba95-4d20-843f-dfda029302d2.png)
+
+![image](https://user-images.githubusercontent.com/123365818/216763451-481dc0a2-7c7c-47d1-b6b0-33515ae34de1.png)
+
+Gate terminal is the most important terminal of the PMOS and NMOS because from the gate terminal only we can control the thresold voltage. doping concentration and oxide capacitance will control the thresold voltage.
+	
+![image](https://user-images.githubusercontent.com/123365818/216763480-7860ab52-773a-4145-aa96-0ca787a3205c.png)
+
+so, first we are maintain the doping concentration here. for that we use mask 4 and again doing the ion implantation of boron ion at lower energy (~60kev).
+![image](https://user-images.githubusercontent.com/123365818/216763782-ae03dda8-7d90-44c6-9de0-7d03f89c1d6c.png)
+
+same process we will repeat for N-well also by using mask 5 and Arsenic ion.
+Mask 5
+![image](https://user-images.githubusercontent.com/123365818/216763834-43985e20-106b-4e75-a220-1dfa53467d81.png)
+
+Arsenic ion
+![image](https://user-images.githubusercontent.com/123365818/216763871-9e7477ba-c350-4216-a33f-243032e8d303.png)
+	
+Next step is that we have to fix the oxide layer. but before that we have to remove the oxide layer because this layer is got dammeged because of the privious processes. so,first we remove the layer using HF solution 
+	
+![image](https://user-images.githubusercontent.com/123365818/216763952-f2e23856-2502-4105-b18f-0b85693feba4.png)
+
+	and again re-grown the high quality oxide layer with same thickness.
+
+![image](https://user-images.githubusercontent.com/123365818/216763974-2291e471-fafe-4491-bc43-6f0ecbe71105.png)
+
+The final step is the deposition of polysilicon layer over oxide layer with more impurities for low resistance gate terminal.Then etched out this polysilicon layer by using mask 6 and photoresist.
+	
+![image](https://user-images.githubusercontent.com/123365818/216763993-9c0e9b31-74bd-4d56-a0ee-3f2e3376c02c.png)
+	
+	then more impurities
+![image](https://user-images.githubusercontent.com/123365818/216764042-6343ffb8-1f36-4a0a-982b-d1c61178f306.png)
+
+mask 6
+![image](https://user-images.githubusercontent.com/123365818/216764070-0e9f9fc9-3e79-46bd-8628-4ddce73c4262.png)
+
+Gate Mask top view
+	
+![image](https://user-images.githubusercontent.com/123365818/216764108-2b8e5843-a06b-4199-9727-b243cbf96cf5.png)
+
+After etching, remove the photoresist and gate terminal looks like,
+![image](https://user-images.githubusercontent.com/123365818/216764231-6b4faa16-9f8d-4492-8071-3f8379686594.png)
+	
+![image](https://user-images.githubusercontent.com/123365818/216764241-74be113d-6205-44c2-bc69-cc58a0bee9a9.png)
+
+![image](https://user-images.githubusercontent.com/123365818/216764146-82b3ba0a-46e9-47c4-a3f2-ae725d0d639d.png)
+
+#### SKY_L4 - Lightly doped drain (LDD) formation
+
+LDD formation
+source and drain doping profile
+	
+![image](https://user-images.githubusercontent.com/123365818/216764308-95b8425b-07ef-487b-9bbb-8b1f176ad4fd.png)
+
+Here, we actully want P+,P-,N doping profile in the PMOS and N+,N-,P doping profile for NMOS. Reason for that is
+
+* Hot electron effect
+* short channel effect
+	
+Hot electron effect
+![image](https://user-images.githubusercontent.com/123365818/216764430-26215d5e-2adf-4131-9bb7-edbad0ee9a3f.png)
+Short Channel effect
+![image](https://user-images.githubusercontent.com/123365818/216764473-beb3b715-9f72-497c-aa70-9f58a805becc.png)
+
+For the formation of LDD, we again do ion implantation in P-well by using mask 7 and here we use phosphoros as a ion for light doping.
+![image](https://user-images.githubusercontent.com/123365818/216764495-6738cec6-f247-4992-bf39-b117e5849157.png)
+
+	Lightly Dope
+	
+![image](https://user-images.githubusercontent.com/123365818/216764560-1c39fc49-db32-44de-a689-5cb0fedfd74b.png)
+
+Same process we will repeat for N-well. there we use mask 8 and BOron Ion.
+	
+![image](https://user-images.githubusercontent.com/123365818/216764589-1fe95568-e978-4716-9855-beee333b92a2.png)
+
+Now, by creating the spacers, we can protect the actual structre remain constant of P-implantt and N-implant. For that we deposite a thick Sio2 or Si3N4 layer over the gate tereminal.
+	
+![image](https://user-images.githubusercontent.com/123365818/216764717-9b6d599c-03cc-464f-bbd1-051de1f6313e.png)
+
+Now, we do Plasma anisotropic etching. By that side-wall spacers are formed.
+	
+![image](https://user-images.githubusercontent.com/123365818/216764733-633bc77a-6810-45db-b625-702325705537.png)
+side well space when create source and drain (N+, remaining N-)
+	
+![image](https://user-images.githubusercontent.com/123365818/216764785-6f7954ab-3c2b-47d5-90dc-4d00357695d7.png)
+
+#### SKY_L5 - Source Ând drain formation
+	
+source-drain formation
+Next step is deposite the very thin screen oxide layer to avoid the effect of channeling.
+![image](https://user-images.githubusercontent.com/123365818/216764931-be305e31-505f-465b-8757-4a5d16e820a9.png)
+masking layer 9
+	
+![image](https://user-images.githubusercontent.com/123365818/216764962-ed91e0d4-9ccd-4282-acf6-39b7351dee80.png)
+
+Now to form the drain and source, again we do the ion implantation of arsenic at 75kev to create the N+ implant by using mask 9 in the P-well to form PMOS.
+![image](https://user-images.githubusercontent.com/123365818/216764994-bad0acba-6b98-4278-b84d-a93b9812d6b2.png)
+N+, N-
+![image](https://user-images.githubusercontent.com/123365818/216765035-830dae2c-2bd4-4cc2-9c42-abbf953b1d5b.png)
+Mask 10
+![image](https://user-images.githubusercontent.com/123365818/216765063-87043fe9-f90a-4dae-9011-c928eb15a18f.png)
+
+Same process we will repeat for NMOS by using the mask 10 and boron ion in the N-well at 50kev to creat P- implant.
+	
+![image](https://user-images.githubusercontent.com/123365818/216765092-469ed3de-8b2a-4a9f-89eb-f838e687733a.png)
+
+Now we put this Half made CMOS into the high temparature (1000 degree)anneling. So P+ implant and N+ implant now become the source and drain.
+
+![image](https://user-images.githubusercontent.com/123365818/216765133-9864bba0-a692-4d69-9208-cd090157029d.png)
+	
+#### SKY_L6 - Local interconnect formation
+	
+Local interconnect formation
+7)steps tp form contacts and local interconnects
+First step is remove the thin screen oxide layer by etching. Then deposite the titanium (Ti) using sputtering. here Ti is used because Ti has very low resistivity.
+
+![image](https://user-images.githubusercontent.com/123365818/216765191-f5ee343c-a891-478c-af65-95bff705e2ba.png)
 
 
 
-
-
-
-
-
-
-
+Next step is to create the reaction between Ti layer and source, gate, drain of CMOS. For that wafer is heated at about 650-700 degree temparature in N2 ambient for about 60 seconds. and after reaction, we can see the titanium siliside over the wafer. One more reaction is heppend there between Ti and N. and it results the TIN which is used for local communication.
 
 
 
