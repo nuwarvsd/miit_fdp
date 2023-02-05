@@ -3970,6 +3970,8 @@ Before we do anything, we have to modified our congig.tcl file. so opening this 
 
 
 Now, start the new terminal and open the openlane by docker, make flow interactive and then add the package and then prep design with the privios run by the comand " prep -design pecorv32a -tag [last running time i.e.27-01_17-53] -overwrite".
+	
+![image](https://user-images.githubusercontent.com/123365818/216796173-16ea2c01-3be9-4902-9f38-a417a95f38d6.png)
 
 Now comes the deciding part. we have to see that the synthesis run and its maps our custom vsd inveter into this flow. so, run the synthesis.
 
