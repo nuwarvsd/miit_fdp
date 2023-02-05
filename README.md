@@ -3973,6 +3973,93 @@ Now, start the new terminal and open the openlane by docker, make flow interacti
 	
 ![image](https://user-images.githubusercontent.com/123365818/216796173-16ea2c01-3be9-4902-9f38-a417a95f38d6.png)
 
+In the design's config.tcl file add the below line to point to the lef location which is required during spice extraction.
+
+    set ::env(EXTRA_LEFS) [glob $::env(OPENLANE_ROOT)/designs/$::env(DESIGN_NAME)/src/*.lef]
+![image](https://user-images.githubusercontent.com/123365818/216798460-fd0bc95d-8ffa-4804-96ee-3bca9a91ccdc.png)
+
+Include the below command to include the additional lef into the flow:
+
+    set lefs [glob $::env(DESIGN_DIR)/src/*.lef]
+  
+    add_lefs -src $lefs
+	
+![image](https://user-images.githubusercontent.com/123365818/216798419-bcd25939-8e46-4889-9747-d785eb2c4dd3.png)
+
+
 Now comes the deciding part. we have to see that the synthesis run and its maps our custom vsd inveter into this flow. so, run the synthesis.
+	
+
 
 Introduction to delay tables
+	
+Power Aware CTS
+If we make enable pin at logic '1' in the AND gate, the clock will propogatee to the AND gate. similarly, if we make enable pin at logic '0' in the OR gate, here also clock propogate to the OR gate.
+
+Similarly if we make enable pin at logic 'o' in the AND gate, gate will block the clock and same this will happend with the OR gate if we make enable pin at logic '1'.
+
+The advantage of this scenario is that, during this time period of the blocking the clocks, we can save lots of power in the clock tree. now the question is that how can we use this scenario in the clock tree.
+
+let say we have a clocktree like this given below,
+
+image1
+Here we spitted the load of the 4 FF into the 2 buffers and the load of the 2 buffers is given to the level 1 buffer. here assumptions are,
+
+Assume c1=c2=c3=c4=25fF
+Assume Cbuf1=Cbuf2=30fF
+Total Cap at node 'A'=> 60fF
+Total Cap at node 'B'=> 50fF
+Total Cap at node 'C'=> 50fF
+We have done some observations here,
+
+2 levels of buffering
+At every level,each node driving same load
+Identical buffer at same level
+so, here capacitance at the every node of the clock tree is not the same. it is varying. Now load is varying then input transition is also verying because the output load at the level 1 buffer is the input of the other buffers of level 2. so, we have variety of the delays. To capture it, we have delay tables.
+	
+How delay tables are prepared?
+To prepare the delay table, the perticukar element is taken out of the circuit and saparetly verying the input transition and output load and according to the variation, we will charactorize the delay of the element and make the delay table frpm it.
+	
+img2
+	
+Delay table usage part 1
+Let's looks into the sample examples and making the table for Cbuf'1' and Cbuf'2',
+let's take practical example on the circuit. we take 40psec as input transition on the level 1 buffer and as per assumption load is around 60fF. and delay is comes between x9 and x10. lets take x9' as the delay of the buffer of level 1.
+
+Delay table usage part 2
+Next step is to calculate the delay of the buffers of level 2. And after that we can find the letancy at the 4 clock end points.
+
+now input transition is common for both the buffers. now assuming that the transition is around the 60psec and load at both the buffers is 50fF. so it will give the delay of y15.
+
+The total delay from input to the output is= x9' + y15.(here we are ignoring the delay of the wires). that means the skew at the any output point is zero.
+
+If load is not same at the every nodes, the skew will not be the zero.
+	
+Lab steps to configure synthesis settings to fix slack and include vsdinv
+After synthesis, we observed that the slack is nagative here. wns(worst negative slack)= -24.89 and tns(total negative slack)= -759.
+	
+Lab img
+	
+let's do some modification here. for that opening the READme file from the /openlane/configuration/ less READme.md
+
+Now lets try to make balance between area and the delay of the synthesis by changing the stratagy. comand for checking the current strategy is "echo $::env(SYNTH_STRATEGY)", and comand for changing the stategy is "set ::env(SYMTH_STRATEGY) 1". by doing this area will increase the little but but timing will improve.
+
+Then checking the synth_bufferung and synth_sizing. if any one them is off then make it on by set the value of it by 1.
+
+Till here we not get slack 0. to make slack 0, we ahve to write comand "set ::env(SYMTH_STRATEGY) DELAY 0"
+
+After running synthesis we will get improved timing.
+	
+Next command for run is :
+
+set lefs [glob $::env(DESIGN_DIR)/src/*.lef]
+
+add_lefs -src $lefs
+
+Then again run the synthesis.
+
+Timing analysis with ideal clocks using openSTA
+	
+Lab img 2
+	
+	
