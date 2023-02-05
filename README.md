@@ -4138,3 +4138,358 @@ Then check the file which is created. Go to the placements folder under results 
 ![image](https://user-images.githubusercontent.com/123365818/216814926-07d202f9-6f9d-4d9a-ba44-ddcdf598e8c2.png)
 
 	
+### SKY130_D4_SK2 - Timing analysis with ideal clocks using openSTA
+#### SKY_L1 - Setup timing analysis and introduction to flip-flop setup time
+	
+iming analysis (with ideal clock)
+we start with taking the ideal clock and we will do timing analysis for the ideal clock first.
+
+Let's start the setup analysis with the ideal clock(single clock). specifications of the clock is
+
+clock frequency =1 GHz
+clock period =1 nsec
+
+![image](https://user-images.githubusercontent.com/123365818/216823954-dd513d4e-37ab-4a7f-8b95-ab867ccdc4ae.png)
+Let's take lainch Flop and Capture flop with clock. here clock tree is not built yet. so it is ideal scenario. here we have to do analysis between '0' and 'T'. with that assume that the delay of logic is 'θ'.
+	
+![image](https://user-images.githubusercontent.com/123365818/216824004-8f826c76-1cb8-49d2-b276-204e19adff5e.png)
+Setup timing analysis says that θ<T. this condition should be neccessory for the the comninational logic work.
+
+Now let's introduce the practical scenario here. Opening the capture flop and it has two mux inside it.
+![image](https://user-images.githubusercontent.com/123365818/216824077-473012b9-fe46-44f7-bd32-d2c93edf818e.png)
+The way flop work, it will shown by the timing graph like this,
+o, here mux 1 and mux 2 both have their own delay. these delay will restrict the combination delay to the requirment.
+
+Hence finite time 's' required before clk edge for 'D' to reach Qm.
+
+So, we can write that the internal delay of the MUX1 = set up time(S).
+![image](https://user-images.githubusercontent.com/123365818/216824155-f7020e92-908f-4875-babf-ba6b1f4603d2.png)
+
+So, now θ<T becomes θ<(T-S).
+	
+#### SKY_L2 - Introduction to clock jitter and uncertainty
+	
+Let's bring one more practical scenario here. clock is taking from the some clock source or PLL. 
+	
+![image](https://user-images.githubusercontent.com/123365818/216824241-dab97153-5c5f-43f1-b4f9-8c109b6b2cf2.png)
+
+So, because of some delay from the practical source of clock or PLL, clock pulse will not comes exacly at t=0 or at t=T. that in built variation of the clock is called jitter.
+				     
+![image](https://user-images.githubusercontent.com/123365818/216824338-917e15f9-5a68-47a6-b69e-a796ce275fce.png)
+
+lets consider this uncertantity time(US) in consideration. So, now equation becomes like, θ<(T-S-US). Now assuming that 'S'=0.01ns and 'US'=0.09ns. by taking that, lets identify the timing path for our existing scenario. in our circuit stage 1 and stage 3 logic path has single clock.
+![image](https://user-images.githubusercontent.com/123365818/216824397-27b05bea-b0f8-4433-ba53-eb6de03e25ad.png)
+setup time
+![image](https://user-images.githubusercontent.com/123365818/216824437-45a9f33a-9fba-4e61-8bcf-ce004ab67d58.png)
+
+NOw, what we have to do is identify the combinational path delay for the given both logics.
+![image](https://user-images.githubusercontent.com/123365818/216824580-40580308-94b4-4a4e-8aa1-ef170259ddc6.png)
+![image](https://user-images.githubusercontent.com/123365818/216824594-4f80e5aa-44a2-474f-a14c-83ddc93b7847.png)
+![image](https://user-images.githubusercontent.com/123365818/216824617-3691df3f-6a56-4929-b503-c10abf7b5ccd.png)
+combinational logic delay should less than 0.9 ns
+![image](https://user-images.githubusercontent.com/123365818/216824630-caa249d6-c00e-4253-8583-0af928588058.png)
+
+#### SKY_L3 - Lab steps to configure OpenSTA for post-synth timing analysis
+vim pre_sta.conf
+![image](https://user-images.githubusercontent.com/123365818/216828893-4b9c129b-ec63-40e6-abef-3742daa253ba.png)
+
+Create file with the following commands under openlane folder
+set_cmd_units -time ns -capacitance pF -current mA -voltage V -resistance kOhm -distance um
+read_liberty -min </location/to/min_lib>
+read_liberty -max </location/to/max_lib>
+read_verilog </location/to/verilog_file>
+link_design <Top-Module-name>
+read_sdc </location/to/sdc_file>
+report_checks -path_delay min_max -fields {slew trans net cap input_pin}
+report_tns
+report_wns
+
+when we do CTS, CTS is a stage where, we add clock buffers along with clockpath and build the clock tree. so, actually we are changing the netlist. Along the running CTS, actually the netlist file also created. so, after running the CTS, we will see the new Verilog file here.
+
+Now, we see what is in the my_base.sdc file.	
+vim my_base.sdc
+![image](https://user-images.githubusercontent.com/123365818/216829067-a5394fef-f5dc-4b99-af2a-ea0b92fb562c.png)
+
+Create file with the following commands under src folder
+set ::env(CLOCK_PORT) clk
+set ::env(CLOCK_PERIOD) 12.000
+set ::env(SYNTH_DRIVING_CELL) sky130_fd_sc_hd__inv_8
+set ::env(SYNTH_DRIVING_CELL_PIN) Y
+set ::env(SYNTH_CAP_LOAD) 17.65
+create_clock [get_ports $::env(CLOCK_PORT)]  -name $::env(CLOCK_PORT)  -period $::env(CLOCK_PERIOD)
+set IO_PCT  0.2
+set input_delay_value [expr $::env(CLOCK_PERIOD) * $IO_PCT]
+set output_delay_value [expr $::env(CLOCK_PERIOD) * $IO_PCT]
+puts "\[INFO\]: Setting output delay to: $output_delay_value"
+puts "\[INFO\]: Setting input delay to: $input_delay_value"
+
+
+set clk_indx [lsearch [all_inputs] [get_port $::env(CLOCK_PORT)]]
+#set rst_indx [lsearch [all_inputs] [get_port resetn]]
+set all_inputs_wo_clk [lreplace [all_inputs] $clk_indx $clk_indx]
+#set all_inputs_wo_clk_rst [lreplace $all_inputs_wo_clk $rst_indx $rst_indx]
+set all_inputs_wo_clk_rst $all_inputs_wo_clk
+
+
+# correct resetn
+set_input_delay $input_delay_value  -clock [get_clocks $::env(CLOCK_PORT)] $all_inputs_wo_clk_rst
+#set_input_delay 0.0 -clock [get_clocks $::env(CLOCK_PORT)] {resetn}
+set_output_delay $output_delay_value  -clock [get_clocks $::env(CLOCK_PORT)] [all_outputs]
+
+# TODO set this as parameter
+set_driving_cell -lib_cell $::env(SYNTH_DRIVING_CELL) -pin $::env(SYNTH_DRIVING_CELL_PIN) [all_inputs]
+set cap_load [expr $::env(SYNTH_CAP_LOAD) / 1000.0]
+puts "\[INFO\]: Setting load to: $cap_load"
+set_load  $cap_load [all_outputs]
+by running the command
+sta pre_sta.conf
+![image](https://user-images.githubusercontent.com/123365818/216828971-c1b3ba56-5fcb-42f4-bca3-fdcf1bcdc23f.png)
+
+![image](https://user-images.githubusercontent.com/123365818/216828315-4da7bd6b-e390-4141-9f71-d5f436585a1f.png)
+
+![image](https://user-images.githubusercontent.com/123365818/216828716-bc686636-6542-423a-93e9-c9db65b232f2.png)
+
+![image](https://user-images.githubusercontent.com/123365818/216828785-2cb74498-9446-471c-9b11-ca8318cf01ef.png)
+
+### SKY130_D4_SK3 - Clock tree synthesis TritonCTS and signal integrity
+#### SKY_L1 - Clock tree routing and buffering using H-Tree algorithm
+what is clock tree synthesis?
+As shown in below, figure, let's connect clk1 to FF1 & FF2 of stage 1 and FF1 of stage 3 and FF2 of stage 4 with out any rules.
+![image](https://user-images.githubusercontent.com/123365818/216829217-ee9cfdb0-db08-4be5-92d2-34651042877e.png)
+
+Now, let's see the problem with this clock Rout. let us say time required to reach the FF1 and FF2 of stage 1 are t1 and t2 for clock1. so, we can say that t2-t1= skew (ideally skew=o).
+![image](https://user-images.githubusercontent.com/123365818/216829259-fc07d82a-5282-4f75-8dd6-32343286d54b.png)
+
+To make, skew to be 0, this rout definatly not help. so, we can say that what we built the tree is "BAD TREE". so, the concept of H-tree comes out. with the Mid point strategy, H-tree form.
+
+![image](https://user-images.githubusercontent.com/123365818/216829450-080dc321-51c6-465a-a7f6-16d579fa52c5.png)
+
+
+Next thing is clock tree synthesis (buffering).as we see in the clockk tree and we observed that clock has to travel through all wires and it will charge all capacitor which are comming in the path of this wire.
+
+![image](https://user-images.githubusercontent.com/123365818/216829485-84220b0b-52de-497e-a1bf-2fa2136b7210.png)
+
+The problem occurse due to the charging the capacitor is signal inntigrity problem because of transition of signals. solution of this problem is add the repeaters here. the repaters are the similar as what we use in the data path but the main difference is, here repeater has equal rise and fall time.
+![image](https://user-images.githubusercontent.com/123365818/216829556-7c329796-93c9-4ece-be4c-927874e7fe16.png)
+
+#### SKY_L2 - Crosstalk and clock net shielding
+
+Sheild the clock net
+![image](https://user-images.githubusercontent.com/123365818/216829725-2efc19e6-aa57-4667-a543-7a78e28dff04.png)
+
+We build the clock tree in a manners that the skew becomes zero between launch Flop and capture flop. but if accedently any crosstalk heppense then everything what we had design is detoriated.
+
+![image](https://user-images.githubusercontent.com/123365818/216829758-332dd8ee-227c-4b2c-9b4f-29ba2b55a9c0.png)
+
+Let take the first clock net and protect it by shielding. here we protect the clock network from outside world. if the protection is not there then problems like glitch and delta delay is heppens.
+
+![image](https://user-images.githubusercontent.com/123365818/216829804-c8e37a2f-1137-4422-805f-91ec7a6d7e3a.png)
+
+
+The glitch is heppence because of Coupling capacitance between the wires.
+
+
+The shielding is the technique, by which we can protect the net from these problems. In a shielding, we put wire between the other teo wire where coupling capacitance is generate. This extra wire is grounded or connected to VDD.
+
+![image](https://user-images.githubusercontent.com/123365818/216829848-6f96a1d7-c174-44a1-bf20-abe4df25ab49.png)
+
+Now, let's see about the delta delay.
+
+### SKY130_D4_SK4 - Timing analysis with real clocks using openSTA
+
+#### SKY_L1 - Setup timing analysis using real clocks
+
+With real clock, circuit looks littel bit different then ideal clock. Here the bufferes and wires are added to the circuts.
+
+Here, due to buffer, clock signals are not reaching the flop at t=0. it will reach at t=0+(delay of buffer 1 and 2).Now equation change to (θ+1+2)<(T+1+3+4).
+![image](https://user-images.githubusercontent.com/123365818/216830179-ee0a3804-7716-42f0-86a0-2f9d2416afda.png)
+Let's called "1+2"=∆1 and "1+3+4"=∆2 and (∆1-∆2)=skew
+![image](https://user-images.githubusercontent.com/123365818/216830280-304d0a8d-f16d-4710-94fb-0c6007114e9e.png)
+![image](https://user-images.githubusercontent.com/123365818/216830311-89535d5e-ef53-4448-89c6-42456eccd5fe.png)
+
+And here also, we have to consider the propogation skew (s) and uncertainty delay (US). so final equaltion becomes like, (θ+∆1)<(T+∆2-S-US).
+![image](https://user-images.githubusercontent.com/123365818/216830362-59d98bec-e79f-423d-af89-7af839e0d67d.png)
+
+we can also say that (θ+∆1)= data arrival time and (T+∆2-S-US)=data required time.
+If (Data required time)- (Data arrival time) = +ve then it is fine. If it is -Ve then it is called 'slack'.
+![image](https://user-images.githubusercontent.com/123365818/216830429-b936dff7-c9ea-40df-a827-ab01a8952c81.png)
+
+Hold timing analysis
+It is littel bit different then setup timing analysis. here we are sending the first pulse to the both launch FLop and capture flop.
+![image](https://user-images.githubusercontent.com/123365818/216830490-0e392be0-fd88-45ad-b2a0-5e44af854a98.png)
+
+Hold condition state that, Hold time (H)< combinational delay (θ). So, (θ>H).
+![image](https://user-images.githubusercontent.com/123365818/216830617-5b8b4b0a-a018-4126-9f83-be0fd043ece4.png)
+
+Hence, finite time 'H' required for 'Qm' to reach Q i.e., internal delay of mux2= hold time.
+![image](https://user-images.githubusercontent.com/123365818/216830654-6a2534cb-111a-4fd6-b5e1-74681a4b062f.png)
+
+#### SKY_L2 - Hold timing analysis using real clocks
+
+Now here also adding the Unsetainty delay(UH) value due to jitter. so, equation becomes like, (θ+∆1)>(H+∆2+UH).
+![image](https://user-images.githubusercontent.com/123365818/216830759-576915c4-b19e-48f1-9dfa-d5a8f28c9007.png)
+
+we can also say that (θ+∆1)= data arrival time and (H+∆2+UH)=data required time.
+![image](https://user-images.githubusercontent.com/123365818/216830812-1bedc32a-00ea-47c2-af86-6fdb2031e162.png)
+
+If (Data arrival time) -(Data required time)= +ve then it is fine. If it is -Ve then it is called 'slack'.
+![image](https://user-images.githubusercontent.com/123365818/216830856-fc27c95e-b6d6-44e2-85af-0f87aeb837d2.png)
+
+Now, applying all these things in out network.
+
+Now, if we add the real time clock, the equation will be change. now equation becomes (θ+∆1)>(H+∆2).
+![image](https://user-images.githubusercontent.com/123365818/216830883-10266c2c-4021-4790-b456-04ea8db03a7b.png)
+
+delta 1
+![image](https://user-images.githubusercontent.com/123365818/216830955-5cea66c6-9f0b-4f12-878a-b7b1d0a56361.png)
+delta 2
+![image](https://user-images.githubusercontent.com/123365818/216830968-5d99a069-be2b-49ab-8d16-31920acd7f26.png)
+skew
+![image](https://user-images.githubusercontent.com/123365818/216831065-b8f418b2-21ee-4a76-aeb6-1ab07bf3c2ae.png)
+
+setup time
+![image](https://user-images.githubusercontent.com/123365818/216831075-158c888b-9317-4235-b32b-6c443df54bd5.png)
+Hold time
+![image](https://user-images.githubusercontent.com/123365818/216831091-41551be3-89d9-4dcf-82f9-2e05d6a23822.png)
+
+#### SKY_L3 - Lab steps to analyze timing with real clocks using OpenSTA
+
+let's open the OPENROAD tool in the flow by "openroad" command.
+
+our objective is to do analysis of the clock tree.
+
+we are analysin this in the OpenROAD because OpenSTA is already built in the OpenROAD. In OpenROAD the timing analysis is done in a different way. first we have to create "db" and "db" is created in a "lef" and "def" file.
+
+Now let's create the DB. To create the DB, first we have to read the lrf file by comand "% read_lef /openLANE_flow/designs/picorv32a/runs/29-01_22-23/tmp/merged.lef".
+
+Then we read the "def" file by command: "read_def /openLANE_flow/designs/picorv32a/runs/29-01_22-23/results/cts/picorv32a.cts.def".
+
+NOw to create the DB write the command "write_db pico_cts.db"
+
+NOW read this db file by command "read_db pico_cts.db"
+
+then read the verilog file by applying the command "read_verilog /openLANE_flow/designs/picorv32a/runs/29-01_22-23/results/synthesis/picorv32a.synthesis_cts.v"
+
+then read the library (max) by this command:"read_liberty -max $::env(LIB_FASTEST)".
+
+similarly read the library (min) by this command: "read_liberty -min $::env(LIB_SLOWEST)".
+
+Now read the sdc file by this command: "read_sdc /openLANE_flow/designs/picorv32a/src/my_base.sdc"
+
+now set the clocks by this command:"set_propagated_clock [all_clocks]"
+
+there reports the checks by this command: "report_checks -path_delay min_max -format full_clock_expanded -digits 4".
+
+so after running this we can see that the slack is positive for hold and setup both. and also we can notice the data required time and data arroval time also.
+
+So, the Hold slack = 1.6982nsec because here we can see that (arrivel time) >(required time).
+
+
+#### SKY_L4 - Lab steps to execute OpenSTA with right timing libraries and CTS assignment
+TritonCTS is right now built according to optimize fully according to one corner and we had bulid the clock tree for typical corner. and library also min and max. so we made tree according to typical corner but we analize it according to one corner. so, analysis become incorrect.
+
+so, first we exits from the openroad by using "exit" command and we have to include the typical library for typical analysis. for that we have to open the "openroad" again and add this typical library. now we don't need to add lef and def file here. now commands for the adding a file is:
+
+read_db pico_cts.db
+
+read_verilog /openLANE_flow/designs/picorv32a/runs/29-01_22-23/results/synthesis/picorv32a.synthesis_cts.v
+
+read_liberty $::env(LIB_SYNTH_COMPLETE)
+
+link_design picorv32a
+
+read_sdc /openLANE_flow/designs/picorv32a/src/my_base.sdc
+
+set_propagated_clock [all_clocks]
+
+report_checks -path_delay min_max -format full_clock_expanded -digits 4
+
+slack for typical coirner= 0.2429nsec
+
+
+Now checking the branch buffer cells by command :"echo $::env(CTS_CLK_BUFFER_LIST)". and these are the buffer cells are listed there "sky130_fd_sc_hd__clkbuf_1 sky130_fd_sc_hd__clkbuf_2 sky130_fd_sc_hd__clkbuf_4 sky130_fd_sc_hd__clkbuf_8".
+
+when openlane are making the CTS, at that time this buffers are place in the clock path to meet the skew value. and we always want skew value is maximum to the 10% of clock period.
+## Day 11
+## Sky130 Day 5 - Final steps for RTL2GDS using tritonRoute and openSTA
+### SKY130_D5_SK1 - Routing and design rule check (DRC)
+#### SKY_L1 - Introduction to Maze Routing Â LeeÂs algorithm
+
+Next stage in the physical design is the routing and DRC stage.
+
+Routing. by the name it is says that rout means make physical contact between Din1 and FF1 od stage 1. but algorithm wise,it understand that Din1 is the source and FF1 input pin is the target. so, algorthm has to find the best possible solution to connect the Din1 and FF1.
+
+For that we use Maze Routing and Lee's algorithm. let's try to connect Block 1 and block 2 of stage 3. there are varies mathod to connect these blocks but we need best solution for the rout or connection. To understand that, we remove all other things.
+
+![image](https://user-images.githubusercontent.com/123365818/216831395-34040819-42fe-46be-ad2d-036449eba843.png)
+
+Algorithm create the routing gird at backend. here algirithm create two points. one is source and other is target. 
+
+![image](https://user-images.githubusercontent.com/123365818/216831496-7c799318-43e9-4fe3-b602-56f351033dd5.png)
+Now by using this routing grid, algorithm find the best way of routing. algorithm marks the adgecent grids of source. similarly again it will find the adgecent grids of the previos grids.similarly this process will runs continuosly.
+
+![image](https://user-images.githubusercontent.com/123365818/216831598-c9f09ada-9be2-4d2c-a3d6-852c1d0bdfb3.png)
+
+![image](https://user-images.githubusercontent.com/123365818/216831682-ede32aeb-d502-4647-b0b5-5f4c67ab8239.png)
+
+#### lSKY_L2 - LeeÂs Algorithm conclusion
+
+The extanding process of adgecent grids are contionuous till it reaches to the target.
+![image](https://user-images.githubusercontent.com/123365818/216831814-f85bec3d-a084-465c-9e66-b90ba8344ef1.png)
+
+there is many ways to reach the target. 
+![image](https://user-images.githubusercontent.com/123365818/216831848-ca57aeb4-d83e-4fc5-b540-6d9dad1c910b.png)
+
+![image](https://user-images.githubusercontent.com/123365818/216831885-56bdaa1d-7a8d-4684-b593-963caa8fc2ea.png)
+Single bend is more prefered
+![image](https://user-images.githubusercontent.com/123365818/216831937-5e3d74b1-08eb-42df-a90d-26578c870eba.png)
+
+but the best possible way is 'L' shaped way.
+
+![image](https://user-images.githubusercontent.com/123365818/216831944-646f4f97-7c0f-4e1f-9952-f5b7e35f7bba.png)
+
+lets take another example for this routing.
+![image](https://user-images.githubusercontent.com/123365818/216832088-8a94cf17-4313-4237-8199-0ea61b4f8914.png)
+![image](https://user-images.githubusercontent.com/123365818/216832119-7f88f82e-bb43-4654-9b03-624d3511be1c.png)
+
+![image](https://user-images.githubusercontent.com/123365818/216832024-8c53d7f2-1dcd-4611-b07f-9ca457fe411b.png)
+
+![image](https://user-images.githubusercontent.com/123365818/216832139-f240bce7-98ac-4d26-9a91-42bab8e5d38e.png)
+Now, we reouted all the blocks and the circuits looks like this,
+![image](https://user-images.githubusercontent.com/123365818/216832161-c41f5692-0d51-4236-b2bc-7d5465d918d6.png)
+
+#### SKY_L3 - Design Rule Check
+While doing the routing, we need to follow certain rules for that. this is called DRC cleaning.
+![image](https://user-images.githubusercontent.com/123365818/216832622-7d0c4817-a5fa-4d0c-ba03-a1077a9b92d7.png)
+
+Lets take two parallel wires from the circuit for example,
+Rule 1
+Width of the wire should be minimum that derived from the optical wavelenth of lithography technique applied.
+
+![image](https://user-images.githubusercontent.com/123365818/216832236-8e869eba-ea45-402f-bf1a-e88fcd5bb0dc.png)
+
+Rule 2
+The minimum pitch between two wire shold be this much.
+![image](https://user-images.githubusercontent.com/123365818/216832489-ba057333-1287-4618-aa97-bdc75ae27316.png)
+
+Rule 3
+The wire spacing between two wires should be this much.
+![image](https://user-images.githubusercontent.com/123365818/216832535-73ff844e-2b7b-4c99-b969-bd8bf9507c36.png)
+
+Let's take other part for understand the rules. basic problem in this types of wire is the signal short.
+![image](https://user-images.githubusercontent.com/123365818/216832340-cae529f6-495a-4e10-b8ee-914b9cef59b1.png)
+
+Solution of this signal short problem is take one of the wire and put it on the other metal layer. usually upper metal is wider than the lower metal.
+
+After this solution, we add two new DRC rules should be check.
+
+Rule 1
+via width should be some minimum value.
+![image](https://user-images.githubusercontent.com/123365818/216832705-638b7863-43ca-4121-b717-38b9902f7a89.png)
+
+Rule 2
+Via spacing should be minimum this.
+![image](https://user-images.githubusercontent.com/123365818/216832747-d62d6312-6001-4f0e-8930-56f32d26e85e.png)
+Next step is paracitic Extraction. so, the wire will get some resistance and capacitance value.
+![image](https://user-images.githubusercontent.com/123365818/216832809-af12ccaf-5e7c-4613-b50e-3c04798902ab.png)
+
