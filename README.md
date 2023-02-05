@@ -3849,6 +3849,128 @@ here, we can see the all details about the connectivity of the NMOS and PMOS and
 X0 is NMOS and X1 is PMOS and both's connectivity is shown as GATE DRAIN SUBSTATE SOURCE.
 
 But here the scale is 10000 um. but in Magic simulation, it is 0.01.
+![image](https://user-images.githubusercontent.com/123365818/216791453-bb0077a7-6800-472b-965a-7e46e87474c9.png)
+SO, we are going to change the dimension here in the terminal. so any measurement will be in this scale of 0.01u. i.e., width=37*0.01u.
+
+Now we have to include the PMOS and NMOS lib files. it is inside the libs folder in the vsdstdcellsdesign folder.
+/Desktop/work/tools/openlane_working_dir/openlane/vsdstdcelldesign/libs$ ls -ltr
+![image](https://user-images.githubusercontent.com/123365818/216791678-42e0ddde-b61d-4cfa-abbf-9a17a80b378c.png)
+so, now we include this file in the terminal by ".include ./libs/pshort.lib" and ".include ./libs/nshort.lib" comand.
+
+And then set the supply voltage "VDD" to 3.3v by "VDD VPWR 0 3.3V" comand. and similarly set the value of VSS also.
+
+Now, we need to specify the input files. by Va A VGND PULSE(0V 3.3V 0 0.1ns 2ns 4ns).
+
+Also add the comand for the analysis like, ".tran 1n 20n", ".control" , "run",".endc",".end".
+![image](https://user-images.githubusercontent.com/123365818/216792118-b2339b07-41b9-41e1-ad99-2f528436770f.png)
+	
+less pshort.lib
+![image](https://user-images.githubusercontent.com/123365818/216792197-fe6ce7c9-6654-49a1-8472-c321b0420346.png)
+
+after running this file we get output of ngspice like this,
+	
+	
+### Day 10	
+### SKY130_D4_SK1 - Timing modelling using delay tables	
+
+Timing modelling using delay tables
+Lab steps to convert grid info to track info
+	
+![image](https://user-images.githubusercontent.com/123365818/216794040-b97c16d3-9db8-4886-92b4-1fe25393309b.png)
+
+Till now we have done synthesis, floorplaning, placement and how to extract the spice out of it, done charecterization of it. till now, for placement and routing, we doesn't required any information about input/output port,logic path, power, ground.
+	
+
+
+Now the concept of 'lef' file will comes into the picture. it contains all the information which we discuss earlier. so our next objective is to extract the '.lef' file out of the '.mag' file. and next step is that extracted file could be placed into the picorv32a flow.
+
+you need to folow certain guideline while making standerd cells.the guidelines are
+
+The input and output port must lie on the intersection of the verticle and horizontal tracks
+The width of the satnderd cell should be odd multiple of the track pitch and the height should be odd multiple of track verticle pitch
+Now oprning the track file from the pdk/sky130/libs.tech /openlane/sky130_fd_sc_hd/track.info. where we get the info like this,
+less track.info
+![image](https://user-images.githubusercontent.com/123365818/216794167-100657ba-db1b-42bd-9245-9c65edfc9ded.png)
+	
+so, the track is basically nothing but it is used during the routing stage.Rout will be go over the tracks. tracks are basically trases of matel layers.i.e., metal 1, matel 2, etc.
+
+PNR is a automated. so we need to specified, where from we want routs to go. this specification is given by tracks. here we can see that each of the tracks are placed at (0.23 0.46)um horizontaly and (0.17 0.34)um vertically for li1, metal 1, metal 2 layer.
+
+In layout, we can see that the ports are on the li1 layer. so we need to insure that the ports are on the intersection of the tracks or not. For that we have to cinvert the grid into the tracks. for that we have to first into the tracks file and the open the tckon window and type the "help grid" comand.
+
+![image](https://user-images.githubusercontent.com/123365818/216794289-b5e15d3c-5a28-4257-a740-f3453ca7213b.png)
+	
+Then again write comand according to the track file.
+	
+![image](https://user-images.githubusercontent.com/123365818/216794415-3510aa92-2999-44f1-ad74-7a51dbb60983.png)
+	
+Let's see the changes in the layout.
+
+![image](https://user-images.githubusercontent.com/123365818/216794451-7fb849aa-42de-4349-b94a-7ec3c12c14b4.png)
+	
+Here we can see that, as per the guideline the ports are placed at the intersection of the tracks.
+
+![image](https://user-images.githubusercontent.com/123365818/216794537-f0ca4f43-2156-4e8f-a91f-729b5b7575fe.png)
+	
+
+now, between the boundaries, there is 3 boxes are coverd. so our second requirment also satisfied here.
+	
+![image](https://user-images.githubusercontent.com/123365818/216794621-a3ef661b-7b34-4c60-8df9-3234526932b8.png)
+
+	
+Lab steps to convert magic layout to std cell LEF
+here already the port name and the port definationa is seted, if not seted the we have to set the definanation and the name of the port.
+
+
 
 
 	
+![image](https://user-images.githubusercontent.com/123365818/216794656-94341b63-abe7-4731-8756-c2d01be2f3c3.png)
+
+As it parameters are set, we are ready to extract the 'LEF' file from the "mag" file. but before the extraction, let give the name to the cell by using tckon window.	
+![image](https://user-images.githubusercontent.com/123365818/216794810-24fd5558-df9d-4a50-881c-3a62ac48f31e.png)
+
+
+Now we can see this file in the vsdstdcellsdesign folder.
+![image](https://user-images.githubusercontent.com/123365818/216794829-0fb4ed60-b18c-4421-89e1-49c509815d38.png)
+
+Now, we open this file in the magic by using comand "magic -T sky130A.tech sky130_vsdinv.mag &".
+	
+![image](https://user-images.githubusercontent.com/123365818/216794871-02589692-85bf-48fd-b089-128ead541d3a.png)
+
+Now to extract the lef file we have to write the comand in the tckon window "lef write". 
+	
+![image](https://user-images.githubusercontent.com/123365818/216794901-d6e07447-3fd6-49c4-96fc-58eb887244c0.png)
+
+So it will create a lef file and we can check it in the vsdstdcellsdesign folder.
+	
+![image](https://user-images.githubusercontent.com/123365818/216794939-6881798c-8657-4192-af23-9e359163a518.png)
+Now, lef file is created and now next step is plug this lef file in picorv32a. 
+![image](https://user-images.githubusercontent.com/123365818/216794966-033840a5-f662-49f2-abeb-2ffd58141f24.png)
+	
+before that we move our files to src folder where all the design files are available at one location.
+	
+![image](https://user-images.githubusercontent.com/123365818/216795027-52cbbb2f-11bd-462f-9f08-4e03248751df.png)
+
+for that we are copiying this file in the src folder by 'cp' comand.
+![image](https://user-images.githubusercontent.com/123365818/216795138-9632db7a-84ff-407f-9dad-baa827f19327.png)
+
+#### SKY_L3 - Introduction to timing libs and steps to include new cell in synthesis
+The basic idea is that we have to include our custom cell into openlane flow. and the first stage in the openlane is the synthesis.
+![image](https://user-images.githubusercontent.com/123365818/216795247-07980eb0-daad-434d-ac18-3488145c4af4.png)
+
+![image](https://user-images.githubusercontent.com/123365818/216795251-8e1f5243-9eb6-4efe-8977-337ccdee0bdb.png)
+
+here, also we required library. so we copiying the library to the src folder.
+
+![image](https://user-images.githubusercontent.com/123365818/216795327-2fef210a-203f-48d3-8fa8-424361e5a0ec.png)
+	
+Before we do anything, we have to modified our congig.tcl file. so opening this file by "vim" comand and modifiying it.
+![image](https://user-images.githubusercontent.com/123365818/216795352-482652a5-fdf7-44d9-a81c-4700f996cb69.png)
+
+
+Now, start the new terminal and open the openlane by docker, make flow interactive and then add the package and then prep design with the privios run by the comand " prep -design pecorv32a -tag [last running time i.e.27-01_17-53] -overwrite".
+
+Now comes the deciding part. we have to see that the synthesis run and its maps our custom vsd inveter into this flow. so, run the synthesis.
+
+Introduction to delay tables
