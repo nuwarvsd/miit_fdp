@@ -4127,6 +4127,8 @@ As shown in below, figure, let's connect clk1 to FF1 & FF2 of stage 1 and FF1 of
 
 Timing analysis with ideal clocks using openSTA
 Now next step is run floorplan, place IO, do global placement or detail placement and genrate pdn file the run the cts by following comands.
+![image](https://user-images.githubusercontent.com/123365818/216879513-6f835192-10a4-4ddc-bf99-43fdbff3d287.png)
+
 run_placement
 ![image](https://user-images.githubusercontent.com/123365818/216814031-297698c6-2c36-4168-a6db-7b0211d51048.png)
 	
@@ -4387,6 +4389,7 @@ So, the Hold slack = 1.6982nsec because here we can see that (arrivel time) >(re
 
 #### SKY_L4 - Lab steps to execute OpenSTA with right timing libraries and CTS assignment
 TritonCTS is right now built according to optimize fully according to one corner and we had bulid the clock tree for typical corner. and library also min and max. so we made tree according to typical corner but we analize it according to one corner. so, analysis become incorrect.
+![image](https://user-images.githubusercontent.com/123365818/216879016-82b3830b-d48f-4091-a743-d5255401babc.png)
 
 so, first we exits from the openroad by using "exit" command and we have to include the typical library for typical analysis. for that we have to open the "openroad" again and add this typical library. now we don't need to add lef and def file here. now commands for the adding a file is:
 
@@ -4493,3 +4496,96 @@ Via spacing should be minimum this.
 Next step is paracitic Extraction. so, the wire will get some resistance and capacitance value.
 ![image](https://user-images.githubusercontent.com/123365818/216832809-af12ccaf-5e7c-4613-b50e-3c04798902ab.png)
 
+#### SKY_L1 - Lab steps to build power distribution network
+IS in case, our terminal is delected by some cause, the if we want the previos terminal once again then this steps should be followed:
+
+docker
+./flow.tcl -interactive
+package require openlane 0.9
+prep -design picorv32a -tag [run file name i.e., 20-01_22-23]
+03.02_05.15
+Now to check the which was the last stage we perorm, the command is:"echo $::env(CURRENT_DEF)".
+![image](https://user-images.githubusercontent.com/123365818/216877711-71e65645-4545-4835-b5bc-469925e9ff13.png)
+
+
+So, till now we have done CTS and now we are going to do the routing. but before routing we have to generate the PDN(power distribution network)file. for that command is: "gen_pdn".
+
+![image](https://user-images.githubusercontent.com/123365818/216877337-d03c020a-e8e6-418a-a1a8-e7ce27174882.png)
+
+Here we can see the total number of nodes on the net VGND and it is also says that Grid matrix is created successfully. here total connection between all PDN nodes establish in the net VGND.
+
+Now, till here we have picorv32a chip, and it needs the power. so it will get power from VDD and GND pads. From the pads, power goes to the tracks and from the tracks, the cells get power.
+![image](https://user-images.githubusercontent.com/123365818/216878084-a3578a5f-cb92-4696-b6b9-783a24a69ead.png)
+
+#### SKY_L2 - Lab steps from power straps to std cell power
+
+To understan this, take an example here,
+
+![image](https://user-images.githubusercontent.com/123365818/216878224-3d979abe-e6b8-44d2-a6de-6bc7485541b8.png)
+
+In this figure, the green box is available is let say picorv32a chip. And the yellow, red and blue boxes which are the shown on the outside of the frame are the I/O pins and the power and ground pads. in this pads, the corner ones are called corner pads.
+
+Red pads are the power pads and Blue pads are ground pads.
+
+Power is transfered to the rings from the pads through Via which is shown by black dots on the cross section points of the ring and pads.
+
+Now we need to insure that the power is transfered from the ring to the chip. for that we have vertiocal and horizontal tracks which are also shown by the red and blue color.
+
+NOw, we need to supply power to the standerd cell (Which are shown by rectangular white boxes) from these tracks. this is done by horizontal small connections shown in the figure.
+
+So, in a lab we have done this all the things till power distribution.
+
+![image](https://user-images.githubusercontent.com/123365818/216878434-d2ffdc22-722c-4d90-974f-475a5860eadc.png)
+
+
+Now next and the final step is routing.
+
+#### SKY_L3 - Basics of global and detail routing and configure TritonRoute
+
+power generation
+![image](https://user-images.githubusercontent.com/123365818/216878634-01be38c9-2f2a-4ed7-bd8b-f2cdba0473a9.png)
+
+Now current def.file is change to pdn.def from the cts.def. pdn.def file is now in the "runs/29-01_22-23/tem/floorplan/pdn.def".
+
+In the routing process we are focusing on the routing strategy. there are 5 routing strategies are there. 0,1,2,3 and 14. routing is done in the TritonRoute engine. we have to specifies the strategy for the routing. for example if we ser the strategy to 14 then "TritonRoute14" strategy is used.
+
+![image](https://user-images.githubusercontent.com/123365818/216878951-fa9aa365-c702-4b11-9598-fa5609641412.png)
+
+
+If we set the TritonRouting strategy to "0" then it want converge to a 0 TRC routing. but because of this we will improve in the memory requirement and run time. if we use TritonRoute14 then the run time will be approximate 1 hours. but in the TritonRoute0 it will be around the 30 minutes. here we use the "TritonRoute0". so in our flow first we check the routing strategy by the command "echo $::env(ROUTING_STRATEGY)". if it is "0" then it is fine, otherwise we have to change the strategy to "0".
+
+Now the last thing remains is routing. for that command is :"run_routing".
+![image](https://user-images.githubusercontent.com/123365818/216880410-91c7cabd-9600-4a30-aff1-49e39cbc1602.png)
+
+![image](https://user-images.githubusercontent.com/123365818/216880441-8df2227d-19e7-4120-8e7c-2f82a69d17dc.png)
+
+![image](https://user-images.githubusercontent.com/123365818/216880469-ff73d7b5-20ba-4652-afb5-ff093b4e8f2a.png)
+
+![image](https://user-images.githubusercontent.com/123365818/216880511-3f61ebca-d757-4089-882f-afd8e6882fd4.png)
+
+
+The routing process is very complex.So, total routing is devided into two part.
+
+Fast route (Global route)
+Detailed route
+![image](https://user-images.githubusercontent.com/123365818/216881313-3b2f6a51-cd2b-45e1-a9f6-2000cde4062b.png)
+In the Global route, the routing region is devided into the rectangular grids cells as shown in the figure. and it is represented as 3D routing graph. Global route is done by FAST route engine.The detailed route is done by TritonRoute engine.
+
+As shown in the figure, A,B,C,D are four pins which we want to connects through routing. and this whole image of A,B,C,D show the nets.
+
+Now, the routing is successfully done.
+![image](https://user-images.githubusercontent.com/123365818/216882489-3b67cbf4-ae9f-4d4d-a728-9d2b0fec7302.png)
+
+#### SKY_L1 - TritonRoute feature 1 - Honors pre-processed route guides
+
+![image](https://user-images.githubusercontent.com/123365818/216882387-43005534-74e2-47ed-a16a-7d7e77b529b1.png)
+
+It performs initial detail route.
+It attempts as much as possible to route within route guides.
+requierment of processed guides are 1)should have within unit lenth 2)should be in the preferred direction.
+
+![image](https://user-images.githubusercontent.com/123365818/216882337-5ebd03d1-59c3-4b29-80e4-e1ac866e6857.png)
+
+Assumes route guides for each net satisfy inter-guide connectivity.
+If two guides are connected then 1) they are on the same metal layer with touching edges. 2) they are on the neighbouring metal layers with a nonzero vertically overlapped area.
+Assumes route guides for each net satisfy inter-guide connectivity.
