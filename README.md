@@ -4589,3 +4589,92 @@ requierment of processed guides are 1)should have within unit lenth 2)should be 
 Assumes route guides for each net satisfy inter-guide connectivity.
 If two guides are connected then 1) they are on the same metal layer with touching edges. 2) they are on the neighbouring metal layers with a nonzero vertically overlapped area.
 Assumes route guides for each net satisfy inter-guide connectivity.
+
+#### SKY_L2 - TritonRoute Feature2 & 3 - Inter-guide connectivity and intra- & inter-layer routing
+
+Each unconnected terminal. i.e, poin of a standerd-cell instance should have its pin shape overlapped by a route guide.
+![image](https://user-images.githubusercontent.com/123365818/216901980-a0e784e4-e536-4d15-bcd8-5cd8cd67f4e5.png)
+
+Here we can see that black dots are pins of the cells and it is overlapped by route guide. if you have pins on the intersection of the vertical and horizontal tracks that will ensure that it will be overlapped by route guides.
+
+Intra-layer parallel and inter-layer sequential panel routing
+Intra layer means within the layers and inter layear means between the layers.
+
+
+![image](https://user-images.githubusercontent.com/123365818/216901787-f4847984-d2c2-42bb-81ba-f72866c1ce12.png)
+n this figure we can see the 4 layers of metal. each of these layers are devided in to the "--" lines. lets focus on metal 2 layer. here we assume the routing direction vertical. These "--" lines are called pannels. each pannels assigns the routing guides. here we can see the blue arrows. here routing is heppenes in the even index. it means that intra layer parallel routing. first it is heppenes in the even index and the it will heppen in the odd index. but it is heppening in the parallel in this perticular layer.
+
+So, the (a) figure shows the parallel routing of panels on M2.In (b) figure, we can see the parallel routing of even panels on M3 and (c) shows the parallel routing of odd panels on M3.
+
+#### SKY_L3 - TritonRoute method to handle connectivity
+
+INPUTS: LEF
+OUTPUTS:detailed routing solution with optimized wore-length and via count
+CONSTRAINTS:Route guide honouring, connectivity constraonts and design rukes
+![image](https://user-images.githubusercontent.com/123365818/216902346-a256d06f-057e-4df0-a8f2-04b20270c70a.png)
+
+
+Now we have to defined the space where detailed routing take spaced.
+
+Handling connectivity
+![image](https://user-images.githubusercontent.com/123365818/216902471-a658e85f-9d74-486b-97be-a96e79182fea.png)
+o handle the connectivity, two concepts comes into the picture,
+
+Access point:An on-gride point on the metal layer of the route guide, and is used to connect to lower-layer segments, upper-layer segments, pins or IO ports.
+Access point cluster (APC): A union of all access points derived from same lower-layer segment,upper-layer guide, a pin or an IO port
+Here in the figure shown above, the illustration of access points:
+
+(a)To a lower-layer segment
+
+(b)To a pin shape
+
+(c)To upper layer
+
+Routing topology algorithm and final files list post-route
+
+![image](https://user-images.githubusercontent.com/123365818/216903334-b5f36f23-70fe-463d-98d4-088ae72604cf.png)
+
+
+The algorithm says that for each APCs we have to find the cost associated with it and we have to do minimum spaning tree betweem the APCs and the cost. finally the conclusion of the algorithm is that we have to find the minimul and the most optimal poits between two APCs.
+![image](https://user-images.githubusercontent.com/123365818/216903390-326fadc0-d71e-44ac-8208-3d2c4e0ea8ef.png)
+
+Now, remaning things is the post routing STA analysis. for that the first goal is to extract the perasetic (SPEF). This SPEF extraction is done outside the openlane because openlane does not have SPEF extraction tool.
+
+The .spef file can be found under the routing folder under the results folder.
+The following command can be used to stream in the generated GDSII file.
+
+"run_magic"
+
+Now the gds file will be generated and it is stored in the magic folder under results folder.
+All commands to run the openlane flow
+docker
+
+./flow.tcl -interactive
+
+package require openlane 0.9
+
+prep -design picorv32a
+
+set ::env(SYNTH_STRATEGY) "DELAY 0"
+
+run_synthesis
+
+init_floorplan
+
+place_io
+
+global_placement_or
+
+detailed_placement
+
+tap_decap_or
+
+detailed_placement
+
+run_cts
+
+gen_pdn
+
+run_routing
+
+run_magic
